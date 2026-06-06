@@ -1,0 +1,545 @@
+<!DOCTYPE HTML>
+<html lang="en" class="light sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Flashing Start9 OS to USB drive - Rustacean X Bitcoiner Journey</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="A study and practice guide for Bitcoin and Rust from a journey of Rustacean X Bitcoiner guy">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="../favicon-de23e50b.svg">
+        <link rel="shortcut icon" href="../favicon-8114d1fc.png">
+        <link rel="stylesheet" href="../css/variables-8adf115d.css">
+        <link rel="stylesheet" href="../css/general-0392ca55.css">
+        <link rel="stylesheet" href="../css/chrome-fc474251.css">
+        <link rel="stylesheet" href="../css/print-9e4910d8.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../fonts/fonts-9644e21d.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="mdbook-highlight-css" href="../highlight-493f70e1.css">
+        <link rel="stylesheet" id="mdbook-tomorrow-night-css" href="../tomorrow-night-4c0ae647.css">
+        <link rel="stylesheet" id="mdbook-ayu-highlight-css" href="../ayu-highlight-3fdfc3ac.css">
+
+        <!-- Custom theme stylesheets -->
+
+
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "../";
+            const default_light_theme = "light";
+            const default_dark_theme = "coal";
+            window.path_to_searchindex_js = "../searchindex-190b9119.js";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="../toc-7e248055.js"></script>
+    </head>
+    <body>
+    <div id="mdbook-help-container">
+        <div id="mdbook-help-popup">
+            <h2 class="mdbook-help-title">Keyboard shortcuts</h2>
+            <div>
+                <p>Press <kbd>←</kbd> or <kbd>→</kbd> to navigate between chapters</p>
+                <p>Press <kbd>S</kbd> or <kbd>/</kbd> to search in the book</p>
+                <p>Press <kbd>?</kbd> to show this help</p>
+                <p>Press <kbd>Esc</kbd> to hide this help</p>
+            </div>
+        </div>
+    </div>
+    <div id="mdbook-body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="mdbook-sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("mdbook-sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+                sidebar_toggle.checked = false;
+            }
+            if (sidebar === 'visible') {
+                sidebar_toggle.checked = true;
+            } else {
+                html.classList.remove('sidebar-visible');
+            }
+        </script>
+
+        <nav id="mdbook-sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="../toc.html"></iframe>
+            </noscript>
+            <div id="mdbook-sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="mdbook-page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="mdbook-menu-bar-hover-placeholder"></div>
+                <div id="mdbook-menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="mdbook-sidebar-toggle" class="icon-button" for="mdbook-sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="mdbook-sidebar">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M0 96C0 78.3 14.3 64 32 64H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32C14.3 128 0 113.7 0 96zM0 256c0-17.7 14.3-32 32-32H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32c-17.7 0-32-14.3-32-32zM448 416c0 17.7-14.3 32-32 32H32c-17.7 0-32-14.3-32-32s14.3-32 32-32H416c17.7 0 32 14.3 32 32z"/></svg></span>
+                        </label>
+                        <button id="mdbook-theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="mdbook-theme-list">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M371.3 367.1c27.3-3.9 51.9-19.4 67.2-42.9L600.2 74.1c12.6-19.5 9.4-45.3-7.6-61.2S549.7-4.4 531.1 9.6L294.4 187.2c-24 18-38.2 46.1-38.4 76.1L371.3 367.1zm-19.6 25.4l-116-104.4C175.9 290.3 128 339.6 128 400c0 3.9 .2 7.8 .6 11.6c1.8 17.5-10.2 36.4-27.8 36.4H96c-17.7 0-32 14.3-32 32s14.3 32 32 32H240c61.9 0 112-50.1 112-112c0-2.5-.1-5-.2-7.5z"/></svg></span>
+                        </button>
+                        <ul id="mdbook-theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-ayu">Ayu</button></li>
+                        </ul>
+                        <button id="mdbook-search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="mdbook-searchbar">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M416 208c0 45.9-14.9 88.3-40 122.7L502.6 457.4c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L330.7 376c-34.4 25.2-76.8 40-122.7 40C93.1 416 0 322.9 0 208S93.1 0 208 0S416 93.1 416 208zM208 352c79.5 0 144-64.5 144-144s-64.5-144-144-144S64 128.5 64 208s64.5 144 144 144z"/></svg></span>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">Rustacean X Bitcoiner Journey</h1>
+
+                    <div class="right-buttons">
+                        <a href="../print.html" title="Print this book" aria-label="Print this book">
+                            <span class=fa-svg id="print-button"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M128 0C92.7 0 64 28.7 64 64v96h64V64H354.7L384 93.3V160h64V93.3c0-17-6.7-33.3-18.7-45.3L400 18.7C388 6.7 371.7 0 354.7 0H128zM384 352v32 64H128V384 368 352H384zm64 32h32c17.7 0 32-14.3 32-32V256c0-35.3-28.7-64-64-64H64c-35.3 0-64 28.7-64 64v96c0 17.7 14.3 32 32 32H64v64c0 35.3 28.7 64 64 64H384c35.3 0 64-28.7 64-64V384zm-16-88c-13.3 0-24-10.7-24-24s10.7-24 24-24s24 10.7 24 24s-10.7 24-24 24z"/></svg></span>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="mdbook-search-wrapper" class="hidden">
+                    <form id="mdbook-searchbar-outer" class="searchbar-outer">
+                        <div class="search-wrapper">
+                            <input type="search" id="mdbook-searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="mdbook-searchresults-outer" aria-describedby="searchresults-header">
+                            <div class="spinner-wrapper">
+                                <span class=fa-svg id="fa-spin"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M304 48c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zm0 416c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zM48 304c26.5 0 48-21.5 48-48s-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48zm464-48c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zM142.9 437c18.7-18.7 18.7-49.1 0-67.9s-49.1-18.7-67.9 0s-18.7 49.1 0 67.9s49.1 18.7 67.9 0zm0-294.2c18.7-18.7 18.7-49.1 0-67.9S93.7 56.2 75 75s-18.7 49.1 0 67.9s49.1 18.7 67.9 0zM369.1 437c18.7 18.7 49.1 18.7 67.9 0s18.7-49.1 0-67.9s-49.1-18.7-67.9 0s-18.7 49.1 0 67.9z"/></svg></span>
+                            </div>
+                        </div>
+                    </form>
+                    <div id="mdbook-searchresults-outer" class="searchresults-outer hidden">
+                        <div id="mdbook-searchresults-header" class="searchresults-header"></div>
+                        <ul id="mdbook-searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('mdbook-sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('mdbook-sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#mdbook-sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="mdbook-content" class="content">
+                    <main>
+                        <h1 id="flashing-start9-os-to-usb-drive"><a class="header" href="#flashing-start9-os-to-usb-drive">Flashing Start9 OS to USB Drive</a></h1>
+<p>This guide provides clear, step-by-step instructions for flashing the Start9 OS image to a USB drive using a Mac. This process prepares your USB drive for installing Start9 OS on your Mini PC or compatible server hardware.</p>
+<p><strong>In this guide, you will:</strong></p>
+<ul>
+<li>Download the correct Start9 OS image</li>
+<li>Verify the image’s integrity (optional but recommended)</li>
+<li>Flash the image to a USB drive using Balena Etcher</li>
+<li>Safely eject and prepare the USB for installation</li>
+</ul>
+<hr>
+<h2 id="pre-requisites"><a class="header" href="#pre-requisites">Pre-requisites</a></h2>
+<h3 id="preparation"><a class="header" href="#preparation">Preparation</a></h3>
+<ul>
+<li>Use a Mac (Apple Silicon or Intel) with administrative access</li>
+<li>Ensure a stable, preferably wired, internet connection for large downloads</li>
+<li>Have at least 2–3 GB of free disk space in your Downloads folder</li>
+<li>Review hardware compatibility notes for your Mini PC (see below if using Proxmox VE)</li>
+</ul>
+<h3 id="hardware"><a class="header" href="#hardware">Hardware</a></h3>
+<ul>
+<li>MacBook Air M1 (or any Mac with Apple Silicon or Intel)
+<ul>
+<li>Tested on macOS Tahoe 26.1 (Apple Silicon, 16GB RAM)</li>
+</ul>
+</li>
+<li>USB drive, 16GB minimum (e.g., SanDisk 64GB Ultra Dual Drive USB Type-C)</li>
+<li>Minisforum X1-255 Mini PC (or other compatible hardware for Start9 OS)</li>
+<li>Wired Ethernet connection (recommended for image download)</li>
+</ul>
+<h3 id="software"><a class="header" href="#software">Software</a></h3>
+<ul>
+<li><strong>Start9 OS image</strong> (<code>.iso</code> file to be flashed)</li>
+<li><strong>Balena Etcher</strong> (for flashing OS images to USB)</li>
+<li><strong>Web browser</strong> (Safari, Chrome, or Firefox for downloading images)</li>
+<li><strong>Terminal</strong> (for optional verification and disk management commands)</li>
+</ul>
+<h3 id="references"><a class="header" href="#references">References</a></h3>
+<ul>
+<li><a href="https://github.com/Start9Labs/start-os/releases">Start9 OS Releases</a></li>
+<li><a href="https://etcher.balena.io/">Balena Etcher Download</a></li>
+<li><a href="https://github.com/balena-io/etcher/releases/tag/v2.1.4">Balena Etcher ARM64 GitHub Release</a></li>
+</ul>
+<hr>
+<h2 id="stepbystep-instructions"><a class="header" href="#stepbystep-instructions">Step‑by‑Step Instructions</a></h2>
+<h3 id="step-1-download-start9-os-image"><a class="header" href="#step-1-download-start9-os-image">Step 1: Download Start9 OS Image</a></h3>
+<p>Download the Start9 OS image from the official GitHub releases page.</p>
+<p><strong>Understanding Version Types:</strong></p>
+<p>Start9 offers different release types on their GitHub page:</p>
+<ul>
+<li>
+<p><strong>Stable Release</strong>: Thoroughly tested, production-ready versions</p>
+<ul>
+<li>Filename format: <code>startos-[version]-[commit]_x86_64.iso</code></li>
+<li>Example: <code>startos-0.3.5.1-39de098_x86_64.iso</code></li>
+<li><strong>No</strong> “Pre-release” tag on GitHub</li>
+<li>Recommended for production use and maximum stability</li>
+</ul>
+</li>
+<li>
+<p><strong>Alpha/Beta Release</strong>: Latest features, actively developed versions</p>
+<ul>
+<li>Filename format: <code>startos-[version]-alpha.[number]-[commit].dev_x86_64.iso</code></li>
+<li>Example: <code>startos-0.4.0-alpha.15-24eb27f.dev_x86_64.iso</code></li>
+<li>Marked with <strong>“Pre-release”</strong> tag (yellow label) on GitHub</li>
+<li>Includes <code>.dev</code> in filename</li>
+<li>May have bugs, recommended for testing and learning</li>
+</ul>
+</li>
+</ul>
+<p><strong>For this guide, we’ll use the stable release (0.3.5.1)</strong> to maximize reliability while setting up a production-ready node.</p>
+<p><strong>Download Steps:</strong></p>
+<blockquote>
+<p><strong>🌐 Download Integrity Notice:</strong> Use a wired connection when downloading the Start9 OS image to avoid corruption from unstable WiFi. On MacBook Air M1, ensure you have a stable internet connection.</p>
+</blockquote>
+<ol>
+<li>
+<p>Open Safari or your preferred browser and navigate to the Start9 download page:
+<a href="https://github.com/Start9Labs/start-os/releases">Start9 Download Page</a></p>
+</li>
+<li>
+<p>Locate the latest <strong>stable</strong> release (no yellow <strong>“Pre-release”</strong> tag):</p>
+<ul>
+<li>Look for the newest tag without a Pre-release label (e.g., <strong>“0.3.5.1”</strong>)</li>
+<li>Stable builds are fully tested and recommended for production use</li>
+</ul>
+</li>
+</ol>
+<figure style="margin:1.5em 0;text-align:center;max-width:100%;">
+   <img src="../images/github_startos_release_stable_latest.png" alt="StartOS stable release on GitHub" style="width:100%;max-width:480px;height:auto;border-radius:12px;box-shadow:0 2px 8px rgba(0,0,0,0.08);object-fit:cover;" loading="lazy" decoding="async" sizes="(max-width: 600px) 95vw, 480px">
+   <figcaption style="font-size:0.98em;color:#555;margin-top:0.5em;">GitHub releases page showing a stable StartOS release with Assets.</figcaption>
+</figure>
+<ol start="3">
+<li>Under the <strong>Assets</strong> section of the stable release, click to download:
+<ul>
+<li><strong>File name</strong>: <code>startos-0.3.5.1-39de098_x86_64.iso</code></li>
+<li><strong>Architecture</strong>: x86_64 (compatible with Minisforum X1-255)</li>
+<li><strong>File size</strong>: ~1.1 GB</li>
+</ul>
+</li>
+</ol>
+<figure style="margin:1.5em 0;text-align:center;max-width:100%;">
+   <img src="../images/github_startos_stable_latest_assets.png" alt="StartOS Assets section showing .iso file" style="width:100%;max-width:480px;height:auto;border-radius:12px;box-shadow:0 2px 8px rgba(0,0,0,0.08);object-fit:cover;" loading="lazy" decoding="async" sizes="(max-width: 600px) 95vw, 480px">
+   <figcaption style="font-size:0.98em;color:#555;margin-top:0.5em;">Assets section displaying the startos-0.3.5.1-39de098_x86_64.iso file (~1.1 GB).</figcaption>
+</figure>
+<blockquote>
+<p><strong>💾 Storage Space Notice:</strong> Ensure your MacBook Air has at least 2-3 GB of free space in the Downloads folder for the Start9 OS image (actual size: ~1.1 GB).</p>
+</blockquote>
+<ol start="4">
+<li>The download will begin automatically and save to your <code>~/Downloads</code> folder</li>
+</ol>
+<p>Wait for the download to complete before proceeding to the next step.</p>
+<p>You can verify the download by running:</p>
+<pre><code class="language-bash">ls -lh ~/Downloads/startos-0.3.5.1-39de098_x86_64.iso
+</code></pre>
+<p>Expected output should show the file with a size of approximately 1.1 GB:</p>
+<pre><code class="language-text">-rw-r--r--  1 yourusername  staff   1.1G Nov 27 10:30 startos-0.3.5.1-39de098_x86_64.iso
+</code></pre>
+<p><strong>Verify file integrity (optional but recommended)</strong>:</p>
+<p>To ensure the downloaded ISO hasn’t been corrupted or modified, you can verify its SHA256 checksum:</p>
+<ol>
+<li>On the GitHub release page, look for the <strong>Checksums</strong> or <strong>Hashes</strong> section (usually in the release notes)</li>
+<li>Find the SHA256 hash for <code>startos-0.3.5.1-39de098_x86_64.iso</code></li>
+<li>Run the verification command:</li>
+</ol>
+<pre><code class="language-bash">shasum -a 256 ~/Downloads/startos-0.3.5.1-39de098_x86_64.iso
+</code></pre>
+<ol start="4">
+<li>Compare the output with the hash provided on GitHub. If they match exactly, the file is genuine and uncorrupted.</li>
+</ol>
+<pre><code class="language-text"># Expected output for version 0.3.5.1:
+181fec43a3b7287fe6c6cdb70bcba79a5596fc2be1dbe5a54e09a4c142272155  startos-0.3.5.1-39de098_x86_64.iso
+</code></pre>
+<h3 id="step-2-install-balena-etcher"><a class="header" href="#step-2-install-balena-etcher">Step 2: Install Balena Etcher</a></h3>
+<p>Download and install Balena Etcher for Apple Silicon Macs:</p>
+<ol>
+<li>Open your browser and go to the Etcher download page:
+<a href="https://etcher.balena.io/">Etcher Download</a></li>
+<li>Click the <strong>Download Etcher</strong> button; you’ll be taken to the downloads page with several platform options. Choose <strong>macOS (Apple Silicon/ARM64)</strong>.</li>
+</ol>
+<blockquote>
+<p><strong>🍏 Apple Silicon Notice:</strong> Balena Etcher for Apple Silicon (ARM64) runs natively on M1 Macs for optimal performance.</p>
+</blockquote>
+<figure style="margin:1.5em 0;text-align:center;max-width:100%;">
+   <img src="../images/balena_etcher_main_page.png" alt="Balena Etcher main page" style="width:100%;max-width:480px;height:auto;border-radius:12px;box-shadow:0 2px 8px rgba(0,0,0,0.08);object-fit:cover;" loading="lazy" decoding="async" sizes="(max-width: 600px) 95vw, 480px">
+   <figcaption style="font-size:0.98em;color:#555;margin-top:0.5em;">Balena Etcher homepage with "Download Etcher" button.</figcaption>
+</figure>
+<figure style="margin:1.5em 0;text-align:center;max-width:100%;">
+   <img src="../images/balena_etcher_download_page.png" alt="Balena Etcher download options page" style="width:100%;max-width:480px;height:auto;border-radius:12px;box-shadow:0 2px 8px rgba(0,0,0,0.08);object-fit:cover;" loading="lazy" decoding="async" sizes="(max-width: 600px) 95vw, 480px">
+   <figcaption style="font-size:0.98em;color:#555;margin-top:0.5em;">Download page showing platform options including macOS (Apple Silicon/ARM64).</figcaption>
+</figure>
+<ol start="3">
+<li>The file will download as <code>balenaEtcher-2.1.4-arm64.dmg</code> to your Downloads folder</li>
+<li>Open the downloaded <code>.dmg</code> file from your Downloads folder:</li>
+</ol>
+<pre><code class="language-bash">open ~/Downloads/balenaEtcher-*.dmg
+</code></pre>
+<ol start="5">
+<li>
+<p>Drag the <strong>balenaEtcher</strong> app icon to your Applications folder</p>
+</li>
+<li>
+<p>Eject the Balena Etcher disk image from Finder</p>
+<ul>
+<li>In Finder’s sidebar under “Locations”, select the mounted Etcher disk (e.g., “balenaEtcher”)</li>
+<li>Click the eject icon (⏏) next to the mounted disk, or right‑click and choose <strong>Eject</strong></li>
+<li>Alternatively, on the Desktop, drag the mounted Etcher disk to the Trash (which turns into an Eject icon)</li>
+<li>Wait for the volume to disappear from the sidebar/Desktop before proceeding</li>
+</ul>
+</li>
+<li>
+<p>Open Balena Etcher from your Applications folder or Launchpad</p>
+</li>
+<li>
+<p>If macOS shows a security warning, click <strong>Open</strong> to confirm you want to run the app</p>
+</li>
+</ol>
+<blockquote>
+<p><strong>🔒 Permissions Notice:</strong> You may need to grant Balena Etcher disk access permissions in System Settings &gt; Privacy &amp; Security &gt; Full Disk Access if prompted.</p>
+</blockquote>
+<p><strong>Verify Balena Etcher integrity (optional but recommended)</strong>:</p>
+<p>You can verify the Balena Etcher DMG file using SHA256 checksum. Choose one of the following options:</p>
+<p><strong>Option 1: Using the official SHA256SUMS file</strong></p>
+<ol>
+<li>Visit the Etcher ARM64 release page:
+<a href="https://github.com/balena-io/etcher/releases/tag/v2.1.4">Etcher v2.1.4 (ARM64) release</a></li>
+<li>Download the file <strong>SHA256SUMS.Darwin.arm64.txt</strong> from the Assets section</li>
+<li>Calculate the hash of your downloaded file:</li>
+</ol>
+<pre><code class="language-bash">shasum -a 256 ~/Downloads/balenaEtcher-2.1.4-arm64.dmg
+</code></pre>
+<ol start="4">
+<li>Compare the output with the hash in the SHA256SUMS file:</li>
+</ol>
+<pre><code class="language-bash">cat ~/Downloads/SHA256SUMS.Darwin.arm64.txt
+</code></pre>
+<p>If they match, the file is genuine and uncorrupted.</p>
+<p><strong>Option 2: Verify from GitHub release page</strong></p>
+<ol>
+<li>Visit the Etcher ARM64 release page:
+<a href="https://github.com/balena-io/etcher/releases/tag/v2.1.4">Etcher v2.1.4 (ARM64) release</a></li>
+<li>Look for the SHA256 hash for <code>balenaEtcher-2.1.4-arm64.dmg</code> in the release notes or checksums section</li>
+<li>Calculate the hash of your downloaded file:</li>
+</ol>
+<pre><code class="language-bash">shasum -a 256 ~/Downloads/balenaEtcher-2.1.4-arm64.dmg
+</code></pre>
+<ol start="4">
+<li>Compare the output with the hash from Etcher ARM64 release page. If they match, the file is genuine and uncorrupted.</li>
+</ol>
+<blockquote>
+<p><strong>💽 File Format Notice:</strong></p>
+<ul>
+<li>A <code>.dmg</code> file is a macOS disk image. When you open it, macOS mounts it like a virtual drive containing the application.</li>
+<li>After opening the <code>.dmg</code>, complete installation by dragging the <strong>balenaEtcher</strong> app into <code>Applications</code>. You can then eject the mounted disk image.</li>
+</ul>
+</blockquote>
+<h3 id="step-3-insert-the-usb-drive"><a class="header" href="#step-3-insert-the-usb-drive">Step 3: Insert the USB Drive</a></h3>
+<p>Connect your USB drive to your MacBook Air:</p>
+<figure style="margin:1.5em 0;text-align:center;max-width:100%;">
+   <img src="../images/sandisk_64gb_ultra_dual_drive_package.jpg" alt="SanDisk 64GB Ultra Dual Drive USB Type-C retail package" style="width:100%;max-width:480px;height:auto;border-radius:12px;box-shadow:0 2px 8px rgba(0,0,0,0.08);object-fit:cover;" loading="lazy" decoding="async" sizes="(max-width: 600px) 95vw, 480px">
+   <figcaption style="font-size:0.98em;color:#555;margin-top:0.5em;">SanDisk 64GB Ultra Dual Drive USB Type-C retail packaging.</figcaption>
+</figure>
+<ol>
+<li>
+<p>The SanDisk Ultra Dual Drive supports both <strong>USB‑C</strong> and <strong>USB‑A</strong> connectors. Connection speed considerations:</p>
+<ul>
+<li><strong>USB‑C</strong> (recommended): Provides speeds up to 5 Gbps — flashing typically completes in 30 seconds to 2 minutes</li>
+<li><strong>USB 3.0 or higher</strong>: Provides speeds up to 5 Gbps — expect 1-3 minutes for flashing</li>
+<li><strong>USB 2.0</strong>: Will work but is significantly slower (up to 480 Mbps). Expect longer flashing times (10-20 minutes)</li>
+</ul>
+</li>
+<li>
+<p>Plug the drive in and wait a few seconds for macOS to recognize it.</p>
+</li>
+<li>
+<p>A new volume should appear on your Desktop or in Finder’s sidebar</p>
+</li>
+</ol>
+<p>You can verify the USB drive is detected by running:</p>
+<pre><code class="language-bash">diskutil list
+</code></pre>
+<p>Look for your USB drive in the output (e.g., <code>/dev/disk2</code>, <code>/dev/disk3</code>, or <code>/dev/disk4</code>). Note the disk identifier for reference.</p>
+<p><strong>Example output:</strong></p>
+<pre><code class="language-text">/dev/disk4 (external, physical):
+   #:                       TYPE NAME                    SIZE       IDENTIFIER
+   0:     FDisk_partition_scheme                        *64.0 GB    disk4
+   1:             Windows_FAT_32 SANDISK                 64.0 GB    disk4s1
+</code></pre>
+<h3 id="step-4-flash-the-image"><a class="header" href="#step-4-flash-the-image">Step 4: Flash the Image</a></h3>
+<blockquote>
+<p><strong>🗑️ Data Loss Warning:</strong> Flashing will erase all data on the USB drive. Make sure it does not contain important files before proceeding.</p>
+</blockquote>
+<p>Use Balena Etcher to write the Start9 OS image to your USB drive:</p>
+<ol>
+<li>Open <strong>Balena Etcher</strong> from your Applications folder</li>
+<li>Click <strong>Flash from file</strong> button</li>
+<li>Navigate to your Downloads folder and select: <code>startos-0.3.5.1-39de098_x86_64.iso</code></li>
+<li>Click <strong>Select target</strong> button</li>
+<li>Choose your <strong>SanDisk USB drive</strong> from the list (be careful to select the correct drive!)</li>
+</ol>
+<figure style="margin:1.5em 0;text-align:center;max-width:100%;">
+   <img src="../images/balena_etcher_flash_image.png" alt="Balena Etcher interface with file and target selection" style="width:100%;max-width:480px;height:auto;border-radius:12px;box-shadow:0 2px 8px rgba(0,0,0,0.08);object-fit:cover;" loading="lazy" decoding="async" sizes="(max-width: 600px) 95vw, 480px">
+   <figcaption style="font-size:0.98em;color:#555;margin-top:0.5em;">Balena Etcher interface showing file selection, target drive, and Flash button</figcaption>
+</figure>
+<ol start="6">
+<li>Click <strong>Flash!</strong> to begin the flashing process</li>
+<li>macOS will show a popup asking for permission for Balena Etcher to access and write to the external USB drive. Click <strong>OK</strong> or <strong>Allow</strong> to grant permission.</li>
+<li>Enter your Mac password when prompted (required for disk write access)</li>
+<li>The flashing process will begin, showing progress and estimated time remaining</li>
+<li>Wait for the process to complete (typically 30 seconds to 3 minutes with USB-C, or 5-15 minutes with USB 2.0)</li>
+<li>Balena Etcher will automatically verify the written data to ensure integrity</li>
+<li>Once you see <strong>Flash Complete!</strong>, the USB drive is ready</li>
+</ol>
+<blockquote>
+<p><strong>💿 Boot Image Notice:</strong> After flashing completes, macOS may show a popup saying <strong>“The disk you inserted was not readable by this computer”</strong> with options to Initialize, Ignore, or Eject. This is <strong>normal and expected</strong>. The USB drive now contains a Linux-based boot image that macOS cannot read. Click <strong>Ignore</strong> or <strong>Eject</strong>. Do not click Initialize as it would erase the StartOS image.</p>
+</blockquote>
+<h3 id="step-5-safely-eject-the-usb-drive"><a class="header" href="#step-5-safely-eject-the-usb-drive">Step 5: Safely Eject the USB Drive</a></h3>
+<p>If you clicked <strong>Eject</strong> in the macOS popup from previous step, the USB drive has already been ejected and you can skip to physically removing it. Otherwise, follow one of the options below to properly eject the USB drive to prevent data corruption:</p>
+<p><strong>Option 1: Using Finder</strong></p>
+<ol>
+<li>Open Finder</li>
+<li>Locate your USB drive in the sidebar (under “Locations”)</li>
+<li>Click the eject icon (⏏) next to the drive name</li>
+<li>Wait for the drive to disappear from the sidebar</li>
+<li>Physically remove the USB drive from your MacBook Air</li>
+</ol>
+<p><strong>Option 2: Using Terminal</strong></p>
+<ol>
+<li>First, identify your disk with:</li>
+</ol>
+<pre><code class="language-bash">diskutil list
+</code></pre>
+<ol start="2">
+<li>Eject the disk (using your disk identifier, in this case <code>disk4</code>):</li>
+</ol>
+<pre><code class="language-bash">diskutil eject /dev/disk4
+</code></pre>
+<ol start="3">
+<li>You should see:</li>
+</ol>
+<pre><code class="language-text">Disk /dev/disk4 ejected
+</code></pre>
+<ol start="4">
+<li>Physically remove the USB drive from your MacBook Air</li>
+</ol>
+<p>The USB drive is now ready to be used as a <strong>boot drive</strong> for installing Start9 OS on the Minisforum Mini PC.</p>
+<blockquote>
+<p><strong>🔄 USB Drive Usage Notice:</strong> This USB drive is only needed for the initial installation. For my setup, it is also used to install Proxmox VE due to hardware compatibility. After Start9 OS is installed on the Mini PC’s SSD (or as a VM in Proxmox VE), the USB drive can be reused for other purposes.</p>
+</blockquote>
+<hr>
+<p>👈 Prev: <a href="./setup_hardware.html">Setting up Hardware with AT&amp;T BGW320 (Fiber 1 GIG)</a></p>
+<p>👉 Next: <a href="./inspect_minisforum.html">Inspecting Minisforum Hardware</a></p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="../bitcoin_node/setup_hardware.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
+                            </a>
+
+                            <a rel="next prefetch" href="../bitcoin_node/inspect_minisforum.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="../bitcoin_node/setup_hardware.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
+                    </a>
+
+                    <a rel="next prefetch" href="../bitcoin_node/inspect_minisforum.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
+                    </a>
+            </nav>
+
+        </div>
+
+        <template id=fa-eye><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M288 32c-80.8 0-145.5 36.8-192.6 80.6C48.6 156 17.3 208 2.5 243.7c-3.3 7.9-3.3 16.7 0 24.6C17.3 304 48.6 356 95.4 399.4C142.5 443.2 207.2 480 288 480s145.5-36.8 192.6-80.6c46.8-43.5 78.1-95.4 93-131.1c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C433.5 68.8 368.8 32 288 32zM432 256c0 79.5-64.5 144-144 144s-144-64.5-144-144s64.5-144 144-144s144 64.5 144 144zM288 192c0 35.3-28.7 64-64 64c-11.5 0-22.3-3-31.6-8.4c-.2 2.8-.4 5.5-.4 8.4c0 53 43 96 96 96s96-43 96-96s-43-96-96-96c-2.8 0-5.6 .1-8.4 .4c5.3 9.3 8.4 20.1 8.4 31.6z"/></svg></span></template>
+        <template id=fa-eye-slash><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M38.8 5.1C28.4-3.1 13.3-1.2 5.1 9.2S-1.2 34.7 9.2 42.9l592 464c10.4 8.2 25.5 6.3 33.7-4.1s6.3-25.5-4.1-33.7L525.6 386.7c39.6-40.6 66.4-86.1 79.9-118.4c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C465.5 68.8 400.8 32 320 32c-68.2 0-125 26.3-169.3 60.8L38.8 5.1zM223.1 149.5C248.6 126.2 282.7 112 320 112c79.5 0 144 64.5 144 144c0 24.9-6.3 48.3-17.4 68.7L408 294.5c5.2-11.8 8-24.8 8-38.5c0-53-43-96-96-96c-2.8 0-5.6 .1-8.4 .4c5.3 9.3 8.4 20.1 8.4 31.6c0 10.2-2.4 19.8-6.6 28.3l-90.3-70.8zm223.1 298L373 389.9c-16.4 6.5-34.3 10.1-53 10.1c-79.5 0-144-64.5-144-144c0-6.9 .5-13.6 1.4-20.2L83.1 161.5C60.3 191.2 44 220.8 34.5 243.7c-3.3 7.9-3.3 16.7 0 24.6c14.9 35.7 46.2 87.7 93 131.1C174.5 443.2 239.2 480 320 480c47.8 0 89.9-12.9 126.2-32.5z"/></svg></span></template>
+        <template id=fa-copy><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M502.6 70.63l-61.25-61.25C435.4 3.371 427.2 0 418.7 0H255.1c-35.35 0-64 28.66-64 64l.0195 256C192 355.4 220.7 384 256 384h192c35.2 0 64-28.8 64-64V93.25C512 84.77 508.6 76.63 502.6 70.63zM464 320c0 8.836-7.164 16-16 16H255.1c-8.838 0-16-7.164-16-16L239.1 64.13c0-8.836 7.164-16 16-16h128L384 96c0 17.67 14.33 32 32 32h47.1V320zM272 448c0 8.836-7.164 16-16 16H63.1c-8.838 0-16-7.164-16-16L47.98 192.1c0-8.836 7.164-16 16-16H160V128H63.99c-35.35 0-64 28.65-64 64l.0098 256C.002 483.3 28.66 512 64 512h192c35.2 0 64-28.8 64-64v-32h-47.1L272 448z"/></svg></span></template>
+        <template id=fa-play><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M73 39c-14.8-9.1-33.4-9.4-48.5-.9S0 62.6 0 80V432c0 17.4 9.4 33.4 24.5 41.9s33.7 8.1 48.5-.9L361 297c14.3-8.7 23-24.2 23-41s-8.7-32.2-23-41L73 39z"/></svg></span></template>
+        <template id=fa-clock-rotate-left><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M75 75L41 41C25.9 25.9 0 36.6 0 57.9V168c0 13.3 10.7 24 24 24H134.1c21.4 0 32.1-25.9 17-41l-30.8-30.8C155 85.5 203 64 256 64c106 0 192 86 192 192s-86 192-192 192c-40.8 0-78.6-12.7-109.7-34.4c-14.5-10.1-34.4-6.6-44.6 7.9s-6.6 34.4 7.9 44.6C151.2 495 201.7 512 256 512c141.4 0 256-114.6 256-256S397.4 0 256 0C185.3 0 121.3 28.7 75 75zm181 53c-13.3 0-24 10.7-24 24V256c0 6.4 2.5 12.5 7 17l72 72c9.4 9.4 24.6 9.4 33.9 0s9.4-24.6 0-33.9l-65-65V152c0-13.3-10.7-24-24-24z"/></svg></span></template>
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="../elasticlunr-ef4e11c1.min.js"></script>
+        <script src="../mark-09e88c2c.min.js"></script>
+        <script src="../searcher-09f2665d.js"></script>
+
+        <script src="../clipboard-1626706a.min.js"></script>
+        <script src="../highlight-abc7f01d.js"></script>
+        <script src="../book-c22b7243.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+
+    </div>
+    </body>
+</html>

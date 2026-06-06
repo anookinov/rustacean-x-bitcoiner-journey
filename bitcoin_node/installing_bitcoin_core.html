@@ -1,0 +1,911 @@
+<!DOCTYPE HTML>
+<html lang="en" class="light sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Installing Bitcoin Core - Rustacean X Bitcoiner Journey</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="A study and practice guide for Bitcoin and Rust from a journey of Rustacean X Bitcoiner guy">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="../favicon-de23e50b.svg">
+        <link rel="shortcut icon" href="../favicon-8114d1fc.png">
+        <link rel="stylesheet" href="../css/variables-8adf115d.css">
+        <link rel="stylesheet" href="../css/general-0392ca55.css">
+        <link rel="stylesheet" href="../css/chrome-fc474251.css">
+        <link rel="stylesheet" href="../css/print-9e4910d8.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../fonts/fonts-9644e21d.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="mdbook-highlight-css" href="../highlight-493f70e1.css">
+        <link rel="stylesheet" id="mdbook-tomorrow-night-css" href="../tomorrow-night-4c0ae647.css">
+        <link rel="stylesheet" id="mdbook-ayu-highlight-css" href="../ayu-highlight-3fdfc3ac.css">
+
+        <!-- Custom theme stylesheets -->
+
+
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "../";
+            const default_light_theme = "light";
+            const default_dark_theme = "coal";
+            window.path_to_searchindex_js = "../searchindex-190b9119.js";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="../toc-7e248055.js"></script>
+    </head>
+    <body>
+    <div id="mdbook-help-container">
+        <div id="mdbook-help-popup">
+            <h2 class="mdbook-help-title">Keyboard shortcuts</h2>
+            <div>
+                <p>Press <kbd>←</kbd> or <kbd>→</kbd> to navigate between chapters</p>
+                <p>Press <kbd>S</kbd> or <kbd>/</kbd> to search in the book</p>
+                <p>Press <kbd>?</kbd> to show this help</p>
+                <p>Press <kbd>Esc</kbd> to hide this help</p>
+            </div>
+        </div>
+    </div>
+    <div id="mdbook-body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="mdbook-sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("mdbook-sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+                sidebar_toggle.checked = false;
+            }
+            if (sidebar === 'visible') {
+                sidebar_toggle.checked = true;
+            } else {
+                html.classList.remove('sidebar-visible');
+            }
+        </script>
+
+        <nav id="mdbook-sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="../toc.html"></iframe>
+            </noscript>
+            <div id="mdbook-sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="mdbook-page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="mdbook-menu-bar-hover-placeholder"></div>
+                <div id="mdbook-menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="mdbook-sidebar-toggle" class="icon-button" for="mdbook-sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="mdbook-sidebar">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M0 96C0 78.3 14.3 64 32 64H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32C14.3 128 0 113.7 0 96zM0 256c0-17.7 14.3-32 32-32H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32c-17.7 0-32-14.3-32-32zM448 416c0 17.7-14.3 32-32 32H32c-17.7 0-32-14.3-32-32s14.3-32 32-32H416c17.7 0 32 14.3 32 32z"/></svg></span>
+                        </label>
+                        <button id="mdbook-theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="mdbook-theme-list">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M371.3 367.1c27.3-3.9 51.9-19.4 67.2-42.9L600.2 74.1c12.6-19.5 9.4-45.3-7.6-61.2S549.7-4.4 531.1 9.6L294.4 187.2c-24 18-38.2 46.1-38.4 76.1L371.3 367.1zm-19.6 25.4l-116-104.4C175.9 290.3 128 339.6 128 400c0 3.9 .2 7.8 .6 11.6c1.8 17.5-10.2 36.4-27.8 36.4H96c-17.7 0-32 14.3-32 32s14.3 32 32 32H240c61.9 0 112-50.1 112-112c0-2.5-.1-5-.2-7.5z"/></svg></span>
+                        </button>
+                        <ul id="mdbook-theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-ayu">Ayu</button></li>
+                        </ul>
+                        <button id="mdbook-search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="mdbook-searchbar">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M416 208c0 45.9-14.9 88.3-40 122.7L502.6 457.4c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L330.7 376c-34.4 25.2-76.8 40-122.7 40C93.1 416 0 322.9 0 208S93.1 0 208 0S416 93.1 416 208zM208 352c79.5 0 144-64.5 144-144s-64.5-144-144-144S64 128.5 64 208s64.5 144 144 144z"/></svg></span>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">Rustacean X Bitcoiner Journey</h1>
+
+                    <div class="right-buttons">
+                        <a href="../print.html" title="Print this book" aria-label="Print this book">
+                            <span class=fa-svg id="print-button"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M128 0C92.7 0 64 28.7 64 64v96h64V64H354.7L384 93.3V160h64V93.3c0-17-6.7-33.3-18.7-45.3L400 18.7C388 6.7 371.7 0 354.7 0H128zM384 352v32 64H128V384 368 352H384zm64 32h32c17.7 0 32-14.3 32-32V256c0-35.3-28.7-64-64-64H64c-35.3 0-64 28.7-64 64v96c0 17.7 14.3 32 32 32H64v64c0 35.3 28.7 64 64 64H384c35.3 0 64-28.7 64-64V384zm-16-88c-13.3 0-24-10.7-24-24s10.7-24 24-24s24 10.7 24 24s-10.7 24-24 24z"/></svg></span>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="mdbook-search-wrapper" class="hidden">
+                    <form id="mdbook-searchbar-outer" class="searchbar-outer">
+                        <div class="search-wrapper">
+                            <input type="search" id="mdbook-searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="mdbook-searchresults-outer" aria-describedby="searchresults-header">
+                            <div class="spinner-wrapper">
+                                <span class=fa-svg id="fa-spin"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M304 48c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zm0 416c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zM48 304c26.5 0 48-21.5 48-48s-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48zm464-48c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zM142.9 437c18.7-18.7 18.7-49.1 0-67.9s-49.1-18.7-67.9 0s-18.7 49.1 0 67.9s49.1 18.7 67.9 0zm0-294.2c18.7-18.7 18.7-49.1 0-67.9S93.7 56.2 75 75s-18.7 49.1 0 67.9s49.1 18.7 67.9 0zM369.1 437c18.7 18.7 49.1 18.7 67.9 0s18.7-49.1 0-67.9s-49.1-18.7-67.9 0s-18.7 49.1 0 67.9z"/></svg></span>
+                            </div>
+                        </div>
+                    </form>
+                    <div id="mdbook-searchresults-outer" class="searchresults-outer hidden">
+                        <div id="mdbook-searchresults-header" class="searchresults-header"></div>
+                        <ul id="mdbook-searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('mdbook-sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('mdbook-sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#mdbook-sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="mdbook-content" class="content">
+                    <main>
+                        <h1 id="installing-bitcoin-core"><a class="header" href="#installing-bitcoin-core">Installing Bitcoin Core</a></h1>
+<p>This guide provides step-by-step instructions to install and configure Bitcoin Core on your Start9 OS instance. Running your own Bitcoin Core node gives you complete sovereignty over your Bitcoin transactions and eliminates trust in third parties.</p>
+<p><strong>In this guide, you will:</strong></p>
+<ul>
+<li>Access the Start9 Marketplace</li>
+<li>Install Bitcoin Core</li>
+<li>Configure node settings</li>
+<li>Monitor blockchain sync</li>
+<li>Enable port forwarding (optional)</li>
+<li>Connect other services</li>
+</ul>
+<hr>
+<h2 id="pre-requisites"><a class="header" href="#pre-requisites">Pre-requisites</a></h2>
+<h3 id="preparation"><a class="header" href="#preparation">Preparation</a></h3>
+<ul>
+<li>Start9 OS installed and accessible via web interface</li>
+<li>Initial Start9 setup wizard completed</li>
+<li>Master password set during initial setup</li>
+</ul>
+<h3 id="hardware"><a class="header" href="#hardware">Hardware</a></h3>
+<ul>
+<li>Start9 OS device (native or Proxmox VM)</li>
+<li>At least 600GB free storage space</li>
+<li>MacBook or desktop for access</li>
+</ul>
+<h3 id="software"><a class="header" href="#software">Software</a></h3>
+<ul>
+<li>Start9 OS running</li>
+<li>Web browser (Safari, Chrome, Firefox, etc.)</li>
+</ul>
+<h3 id="references"><a class="header" href="#references">References</a></h3>
+<ul>
+<li><a href="https://bitcoin.org/en/bitcoin-core/">Bitcoin Core Documentation</a></li>
+<li><a href="https://docs.start9.com/">Start9 Bitcoin Core Guide</a></li>
+</ul>
+<hr>
+<h2 id="step-by-step-instructions"><a class="header" href="#step-by-step-instructions">Step-by-Step Instructions</a></h2>
+<h3 id="step-1-access-start9-marketplace"><a class="header" href="#step-1-access-start9-marketplace">Step 1: Access Start9 Marketplace</a></h3>
+<p>Bitcoin Core is the reference implementation of a Bitcoin full node. It validates all transactions, enforces consensus rules, provides privacy, supports the network, and enables Lightning.</p>
+<ol>
+<li>Open your web browser</li>
+<li>Navigate to your Start9 web interface:
+<ul>
+<li><strong>Local access</strong>: <code>https://xxx-yyy.local</code> (replace with your device name)</li>
+<li><strong>IP access</strong>: <code>https://192.168.1.101</code> (use your Start9 IP address)</li>
+</ul>
+</li>
+<li>Log in with your Start9 master password</li>
+</ol>
+<h3 id="step-2-browse-and-install-bitcoin-core"><a class="header" href="#step-2-browse-and-install-bitcoin-core">Step 2: Browse and Install Bitcoin Core</a></h3>
+<ol>
+<li>Click on <strong>Marketplace</strong> in the left sidebar</li>
+<li>Search for “Bitcoin Core” in the search bar</li>
+<li>Locate <strong>Bitcoin Core</strong> in the results</li>
+<li>Click on <strong>Bitcoin Core</strong> to open the service details</li>
+<li>Review the service description and requirements</li>
+<li>Click <strong>Install</strong> button</li>
+<li>Wait for the download and installation to complete (~2-5 minutes)</li>
+</ol>
+<blockquote>
+<p><strong>🌐 Marketplace Help:</strong> If you don’t see Bitcoin Core, ensure you’re connected to the internet and refresh the marketplace.</p>
+</blockquote>
+<h3 id="step-3-configure-bitcoin-core"><a class="header" href="#step-3-configure-bitcoin-core">Step 3: Configure Bitcoin Core</a></h3>
+<p>After installation completes:</p>
+<ol>
+<li>
+<p>Select the <strong>Bitcoin Core</strong> service in the Services list.</p>
+</li>
+<li>
+<p>For first-time setup, click <strong>Status → Configure</strong>. For future changes, use <strong>Menu → Config</strong> to access Bitcoin Core settings.</p>
+</li>
+<li>
+<p>Review and adjust the configuration options as shown in the screenshot below. Available config settings include (suggested values in parentheses):</p>
+<ul>
+<li><strong>RPC Settings</strong> (RPC configuration options)
+<ul>
+<li>Enable (Allow remote RPC requests) (<strong>On</strong> — required for Start9 web portal to connect; do not expose to the public internet)</li>
+<li>Username (<strong>custom, not default</strong>) — Set a strong, unique username for security.</li>
+<li>RPC Password (<strong>custom, not default</strong>) — Set a strong, unique password for security.</li>
+<li>Advanced:
+<ul>
+<li>Authorization (<strong>default</strong>; nothing is added)</li>
+<li>RPC Server Timeout (<strong>30s</strong>)</li>
+<li>Threads (<strong>16</strong>) — Increase for high-performance or multi-user environments.</li>
+<li>Work Queue (<strong>128 requests</strong>) — Default is fine unless you have many concurrent RPC calls.</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><strong>ZeroMQ Enabled</strong> (<strong>On</strong> for service integrations)</li>
+<li><strong>Transaction Index</strong> (<strong>On</strong> — default) — Recommended for full nodes with sufficient storage (pruning disabled). Required for Mempool, Electrum, and other advanced services. Leave enabled if you plan to install these or want full transaction search capabilities.</li>
+<li><strong>Cointstat Index</strong> (<strong>Off</strong> unless required by another service)</li>
+<li><strong>Wallet</strong>
+<ul>
+<li>Enable Wallet (<strong>On</strong> if you want to use the built-in wallet)</li>
+<li>Avoid Partial Spends (<strong>On</strong>)</li>
+<li>Discard Change Tolerance (<strong>0.0001 BTC/kB</strong>)</li>
+</ul>
+</li>
+<li><strong>Advanced</strong>
+<ul>
+<li><strong>Mempool</strong>
+<ul>
+<li>Persist Mempool (<strong>On</strong>)</li>
+<li>Max Mempool Size (<strong>300 MiB</strong>)</li>
+<li>Mempool Expiration (<strong>336 hours</strong>)</li>
+<li>Enable Full RBF (<strong>On</strong>) — Recommended for modern wallets and fee flexibility.</li>
+<li>Permit Bare Multisig (<strong>On</strong>) — Only disable for strict policy or privacy reasons.</li>
+<li>Relay OP_RETURN Transactions (<strong>On</strong>)</li>
+<li>Max OP_RETURN Size (<strong>83 bytes</strong>)</li>
+</ul>
+</li>
+<li><strong>Peers</strong>
+<ul>
+<li>Make public (<strong>On</strong> if you want to help the network)</li>
+<li>Disable Peer Discovery (<strong>Off</strong>)</li>
+<li>Disable Clearnet (<strong>Off</strong>)</li>
+<li>Use V2 P2P Transport Protocol (<strong>On</strong>)</li>
+<li>Add Nodes (<strong>leave blank unless connecting to specific peers</strong>; nothing is added)</li>
+</ul>
+</li>
+<li><strong>Pruning Mode</strong> (<strong>Automatic</strong>) — Use Automatic for most users; set a custom value if you need to limit disk usage.
+<ul>
+<li>Max Chain Size (<strong>550 MiB</strong>) — Minimum for pruned node; set higher for more history.</li>
+</ul>
+</li>
+<li>Database Cache (<strong>5000 MiB</strong>) — Higher cache improves performance if you have RAM available.</li>
+<li>Database Batch (<strong>33554432 bytes</strong>) — Default is fine for most users.</li>
+<li><strong>Block Filters</strong>
+<ul>
+<li>Compute Compact Block Filters (BIP158) (<strong>On</strong> for Electrum)</li>
+<li>Serve Compact Block Filters to Peers (BIP157) (<strong>Off</strong>) — Enable only if you want to serve filters to other clients.</li>
+</ul>
+</li>
+<li><strong>Bloom Filters (BIP37)</strong>
+<ul>
+<li>Serve Bloom Filter to Peers (<strong>Off</strong> unless needed by a wallet)</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ol>
+<figure style="margin:1.5em 0;text-align:center;max-width:100%;">
+   <img src="../images/bitcoin_core_config.png" alt="Bitcoin Core configuration page showing recommended settings" style="width:100%;max-width:480px;height:auto;border-radius:12px;box-shadow:0 2px 8px rgba(0,0,0,0.08);object-fit:cover;" loading="lazy" decoding="async" sizes="(max-width: 600px) 95vw, 480px">
+   <figcaption style="font-size:0.98em;color:#555;margin-top:0.5em;">Bitcoin Core configuration page showing recommended settings.</figcaption>
+</figure>
+<ol start="4">
+<li>Click <strong>Save</strong> to apply configuration</li>
+</ol>
+<h3 id="step-4-start-bitcoin-core"><a class="header" href="#step-4-start-bitcoin-core">Step 4: Start Bitcoin Core</a></h3>
+<ol>
+<li>After configuration is saved, click <strong>Start</strong> button</li>
+<li>Confirm you want to start the service</li>
+<li>Wait for the service to initialize (~30 seconds)</li>
+</ol>
+<h3 id="step-5-monitor-initial-blockchain-download-ibd"><a class="header" href="#step-5-monitor-initial-blockchain-download-ibd">Step 5: Monitor Initial Blockchain Download (IBD)</a></h3>
+<p>Bitcoin Core must download and verify the entire blockchain history:</p>
+<ol>
+<li>Click on <strong>Bitcoin Core</strong> in the Services list</li>
+<li>Navigate to <strong>Logs</strong> or <strong>Status</strong> tab</li>
+<li>Monitor synchronization progress</li>
+</ol>
+<p><strong>IBD Progress Indicators:</strong></p>
+<pre><code class="language-text">Progress: 15.23%
+Current Height: 150,000
+Best Block: 850,000
+Verification Progress: 15.23%
+</code></pre>
+<p><strong>Expected Timeline:</strong></p>
+<ul>
+<li><strong>Day 1-2</strong>: Downloads blocks rapidly (10-30% per day)</li>
+<li><strong>Day 3-5</strong>: Verification slows (older blocks have more transactions)</li>
+<li><strong>Day 5-7</strong>: Final verification and indexing</li>
+<li><strong>Total</strong>: 1-7 days depending on hardware and connection</li>
+</ul>
+<p><strong>Network &amp; Memory Activity:</strong></p>
+<ul>
+<li><strong>Download</strong>: ~600GB total</li>
+<li><strong>Upload</strong>: Minimal during IBD</li>
+<li><strong>CPU</strong>: Moderate usage during verification</li>
+<li><strong>Memory</strong>: Typically 1–4 GB RAM used during sync (can be higher if database cache is increased)</li>
+</ul>
+<h3 id="step-6-verify-bitcoin-core-is-running"><a class="header" href="#step-6-verify-bitcoin-core-is-running">Step 6: Verify Bitcoin Core is Running</a></h3>
+<p>Once IBD completes:</p>
+<ol>
+<li>Check service status shows <strong>Running</strong></li>
+<li>Verify <strong>Synced</strong> indicator shows 100%</li>
+<li>Check peer connections (should be 8-125 peers)</li>
+</ol>
+<p><strong>Indicators of successful sync:</strong></p>
+<pre><code class="language-text">Status: Running
+Synced: 100%
+Peers: 45
+Best Block: 850,000 (current tip)
+</code></pre>
+<h3 id="step-7-enable-port-forwarding-recommended"><a class="header" href="#step-7-enable-port-forwarding-recommended">Step 7: Enable Port Forwarding (Recommended)</a></h3>
+<p>After Bitcoin Core is installed and running, you should enable port forwarding on your router to allow inbound connections from the Bitcoin network:</p>
+<ol>
+<li>Access your router’s configuration page (see your router’s manual for details)</li>
+<li>Forward <strong>Port 8333 (TCP)</strong> to your Start9 node’s IP address (e.g., <code>192.168.1.101</code>)</li>
+<li>Save and apply the changes</li>
+<li>Verify port is open by checking Bitcoin Core peer connections (should increase to 40-125)</li>
+</ol>
+<p><strong>Why port forwarding?</strong></p>
+<ul>
+<li>Supports the Bitcoin network</li>
+<li>Helps new nodes sync faster</li>
+<li>Increases network decentralization</li>
+</ul>
+<blockquote>
+<p><strong>🔒 Network Ports Explained:</strong></p>
+<ul>
+<li><strong>RPC port 8332</strong> (🔑): For remote commands (web portal, integrations). Keep this accessible only on your local network—<strong>do not forward</strong> to the internet.</li>
+<li><strong>P2P port 8333</strong> (🌐): For Bitcoin network peer connections. This is the <strong>only</strong> port you will forward in Step 7 to help the network.</li>
+<li>Enabling remote RPC does <strong>not</strong> expose your node to the public internet unless you manually forward port 8332 (not recommended).</li>
+</ul>
+</blockquote>
+<h3 id="step-8-verify-your-published-ip-address"><a class="header" href="#step-8-verify-your-published-ip-address">Step 8: Verify Your Published IP Address</a></h3>
+<p>To check what IP address Bitcoin Core is advertising to the network:</p>
+<p><strong>Method 1: Check Bitcoin Core Logs (Optional But Recommended)</strong></p>
+<ol>
+<li>
+<p>Go to <strong>Bitcoin Core</strong> → <strong>Logs</strong> in Start9 interface</p>
+</li>
+<li>
+<p>Search for lines containing <code>addr</code> or <code>Trying to listen on port</code></p>
+</li>
+<li>
+<p>Look for output like:</p>
+<pre><code class="language-text">
+2025-01-15 10:23:45 Listening on port 8333
+2025-01-15 10:23:46 Received addr from peer: 203.0.113.42:8333
+</code></pre>
+</li>
+</ol>
+<p><strong>Method 2: Use Bitcoin Core RPC (Advanced)</strong></p>
+<p>If you want to query Bitcoin Core directly via RPC (requires RPC credentials):</p>
+<pre><code class="language-bash"># Get RPC credentials from Start9 Bitcoin Core properties
+# Then query from your MacBook:
+curl -u rpc_user:rpc_password http://192.168.1.101:8332 \
+  -d '{"jsonrpc":"1.0","id":"curltest","method":"getnetworkinfo","params":[]}' \
+  -H 'content-type: application/json'
+
+# Look for "localaddresses" section in the output
+# It will show:
+# "address": "192.168.1.101"      # (without port forwarding)
+# "address": "203.0.113.42"       # (with port forwarding - your public IP)
+</code></pre>
+<p><strong>Note:</strong> <code>bitcoin-cli</code> command won’t work via SSH to Start9 because Bitcoin Core runs in a container. Use the RPC method instead or check logs.</p>
+<p><strong>Method 3: Check External Services (Quick)</strong></p>
+<ol>
+<li>Visit https://bitnodes.io/ (Bitcoin node explorer)</li>
+<li>Search for your <strong>public IP address</strong> (check at https://whatismyipaddress.com/)</li>
+<li>Status will show one of:
+<ul>
+<li><strong>Unreachable</strong> ❌ (no port forwarding)</li>
+<li><strong>Reachable</strong> ✅ (port forwarding configured)</li>
+</ul>
+</li>
+</ol>
+<p><strong>Understanding “Unreachable” Status (Normal Before Port Forwarding):</strong></p>
+<p>When your node shows as <strong>Unreachable on Bitnodes.io</strong>, it means:</p>
+<ul>
+<li>Your Bitcoin Core node IS running</li>
+<li>Your Bitcoin Core IS syncing the blockchain</li>
+<li>Your Bitcoin Core IS connecting to other peers (outbound connections)</li>
+<li>External nodes CANNOT initiate connections TO your node (inbound)</li>
+</ul>
+<p><strong>Implications:</strong></p>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th>Aspect</th><th>Unreachable (No Port Forwarding)</th><th>Reachable (Port Forwarding)</th></tr>
+</thead>
+<tbody>
+<tr><td><strong>Blockchain Sync</strong></td><td>✅ Works normally</td><td>✅ Works normally</td></tr>
+<tr><td><strong>Broadcasting Transactions</strong></td><td>✅ Full nodes relay</td><td>✅ Full nodes relay</td></tr>
+<tr><td><strong>Supporting Lightning</strong></td><td>✅ Works normally</td><td>✅ Works normally</td></tr>
+<tr><td><strong>Network Support</strong></td><td>⚠️ Limited (outbound only)</td><td>✅ Helps new nodes sync</td></tr>
+<tr><td><strong>Your Privacy</strong></td><td>✅ Better (hidden)</td><td>⚠️ Public IP visible</td></tr>
+</tbody>
+</table>
+</div>
+<p><strong>Key Point:</strong> Your node still functions 100% for personal use (running Lightning, Electrum, etc.). The only thing you’re missing is helping OTHER nodes find and sync from you.</p>
+<p><strong>What to do next:</strong></p>
+<ol>
+<li>If you have not already, see <a href="#step-7-enable-port-forwarding-recommended"><strong>Step 7: Enable Port Forwarding</strong></a> to allow inbound connections (forward port 8333 to your node as needed).</li>
+<li>Wait 5–10 minutes for Bitcoin to re-advertise your node.</li>
+<li>Check Bitnodes.io again—should show <strong>Reachable</strong> ✅ if port forwarding is working.</li>
+<li>Peer count in Start9 should increase significantly.</li>
+</ol>
+<p><strong>What you should see:</strong></p>
+<ul>
+<li><strong>Without port forwarding</strong>: Your local IP (192.168.1.101) appears in Start9 logs, Bitnodes shows “Unreachable”</li>
+<li><strong>With port forwarding</strong>: Your ISP’s public IP appears in Bitnodes shows “Reachable”, peer connections increase</li>
+<li><strong>Peer connections</strong>: Typically 8-30 outbound peers always, 40-125+ total with inbound connections</li>
+</ul>
+<p><strong>Troubleshooting:</strong></p>
+<ul>
+<li>If peers don’t increase after port forwarding, wait 5-10 minutes (Bitcoin needs time to advertise)</li>
+<li>Check that port 8333 TCP is actually forwarded (test at canyouseeme.org)</li>
+<li>Verify Bitcoin Core status shows “Public: Enabled” in configuration</li>
+</ul>
+<h3 id="step-9-configure-blockchain-pruning-optional"><a class="header" href="#step-9-configure-blockchain-pruning-optional">Step 9: Configure Blockchain Pruning (Optional)</a></h3>
+<p>If storage is limited and you don’t need full blockchain:</p>
+<ol>
+<li><strong>Stop Bitcoin Core</strong> service</li>
+<li>Go to <strong>Configure</strong></li>
+<li>Enable <strong>Pruning Mode</strong></li>
+<li>Set pruning size (minimum 550MB, recommended 10-20GB)</li>
+<li><strong>Save</strong> and <strong>Restart</strong></li>
+</ol>
+<p><strong>Warning:</strong> Pruning requires re-downloading and re-verifying the blockchain. Do this during initial setup, not after full sync.</p>
+<h3 id="step-10-test-rpc-connection"><a class="header" href="#step-10-test-rpc-connection">Step 10: Test RPC Connection</a></h3>
+<p>Verify Bitcoin Core RPC is accessible:</p>
+<ol>
+<li>Go to <strong>Bitcoin Core</strong> → <strong>Menu</strong> → <strong>Properties</strong></li>
+<li>Find <strong>RPC Credentials</strong>:</li>
+</ol>
+<blockquote>
+<p><strong>ℹ️ Default Credentials:</strong> If you did not change them, the default is <strong>RPC User:</strong> <code>bitcoin</code>, <strong>RPC Password:</strong> (auto-generated by Start9; see Properties page)</p>
+</blockquote>
+<pre><code class="language-text">
+RPC URL: http://192.168.1.101:8332
+RPC User: bitcoin
+RPC Password: [auto-generated]
+
+</code></pre>
+<ol start="3">
+<li>Copy credentials for use with other services</li>
+</ol>
+<h3 id="step-11-check-blockchain-data"><a class="header" href="#step-11-check-blockchain-data">Step 11: Check Blockchain Data</a></h3>
+<p>Verify blockchain storage:</p>
+<ol>
+<li>Go to <strong>Bitcoin Core</strong> → <strong>Menu</strong> → <strong>Properties</strong></li>
+<li>Check <strong>Disk Usage</strong>: Should show ~600GB when fully synced</li>
+<li>Verify <strong>Synced Block Height</strong>: Should match current Bitcoin <strong>Block Height</strong></li>
+</ol>
+<p>You have now completed all the essential steps to install and configure your Bitcoin Core node on Start9 OS. If, in the future, you need to upgrade your VM’s resources (for example, to enable advanced features like transaction indexing, improve sync speed, or resolve performance issues), refer to the section below for detailed instructions.</p>
+<blockquote>
+<p><strong>🛠️ Resource Upgrade Tip:</strong> For tips on upgrading your VM’s resources, see <a href="#ongoing-maintenance-and-improvement">Ongoing Maintenance and Improvement</a>.</p>
+</blockquote>
+<hr>
+<h2 id="ongoing-maintenance-and-improvement"><a class="header" href="#ongoing-maintenance-and-improvement">Ongoing Maintenance and Improvement</a></h2>
+<p>If your Bitcoin node sync is slow, memory usage is high, or you need to enable features like transaction indexing (which requires pruning to be disabled), you may need to increase the memory and storage allocated to your Start9 VM in Proxmox VE.</p>
+<h3 id="increasing-memory-ram"><a class="header" href="#increasing-memory-ram">Increasing Memory (RAM)</a></h3>
+<ol>
+<li>In Proxmox VE, select your Start9 VM in the left sidebar.</li>
+<li>Click the <strong>Hardware</strong> tab.</li>
+<li>Select <strong>Memory</strong> and click <strong>Edit</strong>.</li>
+<li>For the MINISFORUM AI X1-255 (with 32GB DDR5 RAM), allocate <strong>24,576 MiB to 28,672 MiB</strong> RAM to your Start9 VM. This ensures optimal performance for Bitcoin Core and all other apps, while leaving 4,096–8,192 MiB for Proxmox VE host overhead and system stability.</li>
+<li>Click <strong>OK</strong>.</li>
+<li>Restart the VM for the new memory allocation to take effect.</li>
+</ol>
+<blockquote>
+<p><strong>💡 Recommended:</strong> With 32GB RAM and only one main VM (Start9 OS), allocating 24,576–28,672 MiB to Start9 is ideal for running multiple Bitcoin apps and future-proofing your node.</p>
+</blockquote>
+<h3 id="increasing-storage"><a class="header" href="#increasing-storage">Increasing Storage</a></h3>
+<ol>
+<li>The MINISFORUM AI X1-255 comes with a 1TB NVMe SSD, which is suitable for most users running Proxmox VE and a single Start9 VM with all apps installed via Start9 OS.</li>
+<li>In Proxmox VE, select your Start9 VM.</li>
+<li>Click the <strong>Hardware</strong> tab.</li>
+<li>Select the disk (e.g., <code>scsi0</code> or <code>virtio0</code>), click the <strong>Disk Action</strong> button, then select <strong>Resize</strong>. In the ‘Resize Disk’ popup, enter the <strong>Size Increment (GiB)</strong> to expand the disk if you add a larger SSD in the future.</li>
+<li>For most setups, allocate at least <strong>800GB</strong> to the Start9 VM to ensure enough space for the Bitcoin blockchain, apps, and future growth. Leave the remainder for Proxmox VE and system overhead.</li>
+<li>Click <strong>Resize disk</strong> if expanding.</li>
+<li>In Start9 OS, expand the filesystem to use the new space:
+<ul>
+<li>Log in to the Start9 web interface.</li>
+<li>Go to <strong>System → Monitor</strong> (under the Insights section), then check the <strong>Disk</strong> section for storage info.</li>
+<li>Use the built-in disk expansion tool if available, and follow prompts to expand the root filesystem and use the new space.</li>
+</ul>
+</li>
+</ol>
+<blockquote>
+<p><strong>💡 Recommended:</strong> With a 1TB SSD, allocate 800GB+ to your Start9 VM for blockchain and app data. This covers current needs and allows for future expansion. If you plan to run additional services or store large files, consider upgrading to a larger SSD (2TB+) in the future.</p>
+</blockquote>
+<h3 id="restart-and-verify"><a class="header" href="#restart-and-verify">Restart and Verify</a></h3>
+<ul>
+<li>Restart the Start9 VM.</li>
+<li>Check available memory and storage in the Start9 web interface (<strong>System → About</strong> or <strong>System → Storage</strong>).</li>
+</ul>
+<blockquote>
+<p><strong>ℹ️ Tip:</strong> Upgrading your VM’s resources can help with sync speed, reduce memory pressure, and enable features like transaction indexing (txindex) that require pruning to be disabled.</p>
+</blockquote>
+<h4 id="option-reclaim-used-space-from-existing-1tb-ssd-no-new-physical-storage"><a class="header" href="#option-reclaim-used-space-from-existing-1tb-ssd-no-new-physical-storage">Option: Reclaim Used Space from Existing 1TB SSD (No New Physical Storage)</a></h4>
+<p>If you want to reclaim space on your existing 1TB internal SSD (for example, if old or unused VM disks are taking up space), you can safely delete those disks and reallocate the freed space to your current Start9 VM. This is useful if you want to maximize available storage without adding new hardware.</p>
+<p><strong>Steps:</strong></p>
+<ol>
+<li><strong>Shut down your Start9 VM</strong> in Proxmox VE.</li>
+<li><strong>Detach and remove old/unused virtual disks</strong>:
+<ul>
+<li>In the Proxmox web UI, select your Start9 VM.</li>
+<li>Go to the <strong>Hardware</strong> tab, select the old or unused disk (e.g., <code>scsi1</code>, <code>virtio1</code>, or similar), and click <strong>Detach</strong>.</li>
+<li>After detaching, click <strong>Remove</strong> to delete the disk entry from the VM.</li>
+</ul>
+</li>
+<li><strong>Delete the unused disk image to reclaim space</strong>:
+<ul>
+<li>Go to <strong>Datacenter → Storage</strong> and select the storage pool (e.g., <code>local-lvm</code>).</li>
+<li>Find the unused disk image (it may be listed as ‘Unused Disk’ or by VM ID) and delete it. This will free up space on your 1TB SSD.</li>
+</ul>
+</li>
+</ol>
+<blockquote>
+<p><strong>⚠️ Disk Reclaim Safety:</strong> Always back up important data before deleting disks. Double-check you are removing the correct disk to avoid accidental data loss.</p>
+</blockquote>
+<ol start="4">
+<li>
+<p><strong>(If needed) Re-add the ‘local-lvm’ storage to Proxmox:</strong></p>
+<ul>
+<li>In the Proxmox web UI, go to <strong>Datacenter → Storage → Add → LVM-Thin</strong> (or <strong>LVM</strong> if appropriate).</li>
+<li>Select the correct volume group (usually <code>local-lvm</code>), give it a name, and confirm to re-add it to your storage list.</li>
+</ul>
+</li>
+<li>
+<p><strong>Add a new virtual disk to your Start9 VM</strong>:</p>
+<ul>
+<li>In the Proxmox web UI, select your Start9 VM.</li>
+<li>Go to the <strong>Hardware</strong> tab, click <strong>Add → Hard Disk</strong>.</li>
+<li>Choose the storage pool (e.g., <code>local-lvm</code>) where you reclaimed space, set the desired size, and select the disk type (<code>scsi</code> or <code>virtio</code> recommended).</li>
+<li>Add the new disk to the VM.</li>
+</ul>
+</li>
+<li>
+<p><strong>Change boot option to CD/DVD ISO and mount Start9 ISO image:</strong></p>
+<ul>
+<li>In the Proxmox web UI, select your Start9 VM.</li>
+<li>Go to the <strong>Hardware</strong> tab, click <strong>Add → CD/DVD Drive</strong> (if not already present).</li>
+<li>Select the Start9 OS ISO image from your Proxmox storage.</li>
+<li>Go to the <strong>Options</strong> tab, set <strong>Boot Order</strong> to prioritize the CD/DVD drive.</li>
+<li>Confirm changes.</li>
+<li>Restart the Start9 VM to boot from the ISO image and begin installation or recovery as needed.</li>
+</ul>
+</li>
+<li>
+<p><strong>Start the Start9 VM after reinstalling from ISO</strong> and expand the filesystem in Start9 OS:</p>
+<ul>
+<li>After completing the Start9 OS installation or recovery from the ISO (see previous step), start the Start9 VM.</li>
+<li>Log in to the Start9 web interface.</li>
+<li>Go to <strong>System → Monitor</strong> (under the Insights section), then check the <strong>Disk</strong> section for storage info.</li>
+<li>Use the built-in disk expansion tool if available, and follow prompts to expand the root filesystem and use the new space.</li>
+</ul>
+</li>
+</ol>
+<blockquote>
+<p><strong>🛑 Storage Full Warning:</strong> If you experience issues with Bitcoin Core not starting or syncing, see <a href="#troubleshooting-no-space-left-on-device-after-syncing-bitcoin-blockchain">Troubleshooting: “No space left on device” after syncing Bitcoin blockchain</a> for solutions.</p>
+</blockquote>
+<hr>
+<h2 id="troubleshooting-no-space-left-on-device-after-syncing-bitcoin-blockchain"><a class="header" href="#troubleshooting-no-space-left-on-device-after-syncing-bitcoin-blockchain">Troubleshooting: “No space left on device” after syncing Bitcoin blockchain</a></h2>
+<p><strong>Initial Symptom:</strong></p>
+<ul>
+<li>The Bitcoin Core app in Start9 OS gets stuck in <strong>Starting…</strong> and never progresses to syncing or completing the blockchain download. This is often the first sign that your storage is full, even if no error is shown.</li>
+</ul>
+<p><strong>Explicit Error:</strong></p>
+<ul>
+<li>After you restart the Start9 OS VM in Proxmox VE, you may see a <code>no space left on device</code> error. This confirms that your VM or device storage is full.</li>
+</ul>
+<p>Both symptoms require the same solutions below.</p>
+<h3 id="what-causes-this"><a class="header" href="#what-causes-this">What causes this?</a></h3>
+<ul>
+<li>The Bitcoin blockchain (as of 2025) is 700–800GB and growing.</li>
+<li>Start9 OS, apps, logs, and overhead require additional space (20–40GB+).</li>
+<li>If your VM disk is 1TB or less, you may run out of space after a full sync, especially if running other apps or keeping old backups/logs.</li>
+</ul>
+<h3 id="options-to-resolve"><a class="header" href="#options-to-resolve">Options to resolve</a></h3>
+<h4 id="1-free-up-space-temporary-fix"><a class="header" href="#1-free-up-space-temporary-fix">1. Free up space (temporary fix)</a></h4>
+<ul>
+<li>Delete old backups, logs, or unused apps from the Start9 web interface (look under <strong>System</strong>, <strong>Storage</strong>, or the app’s own settings page).</li>
+<li>Remove unnecessary files via SSH if enabled.</li>
+<li>This may only provide a short-term solution.</li>
+</ul>
+<h4 id="2-expand-with-ssd-storage-faster-more-expensive-path-to-internal-upgrade"><a class="header" href="#2-expand-with-ssd-storage-faster-more-expensive-path-to-internal-upgrade">2. Expand with SSD storage (faster, more expensive, path to internal upgrade)</a></h4>
+<ul>
+<li>Add a new, larger SSD to your Proxmox host (internal NVMe or external USB 3.0/3.1 SSD).</li>
+</ul>
+<p><strong>🔎 SSD Comparison Table (2TB, Dec 2025):</strong></p>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th>SSD</th><th>PCIe</th><th>Read (MB/s)</th><th>Write (MB/s)</th><th>Random IOPS (mfg, read/write)</th><th>DRAM</th><th>NAND</th><th>TBW (2TB)</th><th>Notes</th></tr>
+</thead>
+<tbody>
+<tr><td><a href="https://www.amazon.com/dp/B0F9XMYR15">Crucial T710</a></td><td>Gen5</td><td>14,900</td><td>13,800</td><td>2,200K / 2,300K</td><td>Yes</td><td>TLC</td><td>1200</td><td>Top Gen5; best balance.</td></tr>
+<tr><td><a href="https://www.amazon.com/dp/B0DX2DPJZ5">Samsung 9100 PRO</a></td><td>Gen5</td><td>14,800</td><td>13,400</td><td>2,200K / 2,600K</td><td>Yes</td><td>TLC</td><td>1200</td><td>Best random writes.</td></tr>
+<tr><td><a href="https://www.amazon.com/dp/B0CTRVZKG7">Crucial T705</a></td><td>Gen5</td><td>14,500</td><td>12,700</td><td>1,400K / 1,700K</td><td>Yes</td><td>TLC</td><td>1200</td><td>Very fast; slightly older tuning.</td></tr>
+<tr><td><a href="https://www.amazon.com/dp/B0C3K7MTSY">Crucial T700</a></td><td>Gen5</td><td>12,400</td><td>11,800</td><td>1,500K / 1,500K</td><td>Yes</td><td>TLC</td><td>1200</td><td>First‑gen Gen5; still strong.</td></tr>
+<tr><td><a href="https://www.amazon.com/dp/B0DZ5XQNLM">Crucial P510</a></td><td>Gen5</td><td>10,000</td><td>8,500–8,700</td><td>N/A (not clearly published)</td><td>No</td><td>TLC</td><td>1200</td><td>Value Gen5; DRAM‑less.</td></tr>
+<tr><td><a href="https://www.amazon.com/dp/B0BHJJ9Y77">Samsung 990 PRO</a></td><td>Gen4</td><td>7,450</td><td>6,900</td><td>1,400K / 1,550K</td><td>Yes</td><td>TLC</td><td>1200</td><td>Best Gen4 overall.</td></tr>
+<tr><td><a href="https://www.amazon.com/dp/B0B7CMZ3QH">WD SN850X</a></td><td>Gen4</td><td>7,300</td><td>6,600</td><td>1,200K / 1,100K</td><td>Yes</td><td>TLC</td><td>1200</td><td>Top gaming Gen4.</td></tr>
+<tr><td><a href="https://www.amazon.com/dp/B09K7DRMSC">Kingston KC3000</a></td><td>Gen4</td><td>7,000</td><td>7,000</td><td>1,000K / 1,000K</td><td>Yes</td><td>TLC</td><td>1600</td><td>Best endurance Gen4.</td></tr>
+<tr><td><a href="https://www.amazon.com/dp/B0CK2TC9XQ">Crucial T500</a></td><td>Gen4</td><td>7,400</td><td>7,000</td><td>1,400K / 1,500K</td><td>Yes</td><td>TLC</td><td>1200</td><td>Modern, efficient Gen4.</td></tr>
+<tr><td><a href="https://www.amazon.com/dp/B08RK2SR23">Samsung 980 PRO</a></td><td>Gen4</td><td>7,000</td><td>5,100</td><td>1,000K / 1,000K</td><td>Yes</td><td>TLC</td><td>1200</td><td>Older but still solid.</td></tr>
+<tr><td><a href="https://www.amazon.com/dp/B0DN6ZQ3PD">WD SN7100</a></td><td>Gen4</td><td>7,250</td><td>6,900</td><td>N/A (not clearly published)</td><td>No</td><td>TLC</td><td>N/A (not clearly published)</td><td>Fast DRAM‑less TLC.</td></tr>
+<tr><td><a href="https://www.amazon.com/dp/B0DHLCRF91">Samsung 990 EVO Plus</a></td><td>Gen4 / Gen5 x2</td><td>7,250</td><td>6,300</td><td>~850K / ~800K</td><td>No</td><td>TLC</td><td>1200</td><td>Efficient DRAM‑less.</td></tr>
+<tr><td><a href="https://www.amazon.com/dp/B09QV5KJHV">WD SN770</a></td><td>Gen4</td><td>5,150</td><td>4,900</td><td>~700K / ~700K</td><td>No</td><td>TLC</td><td>1200</td><td>Great budget gaming.</td></tr>
+<tr><td><a href="https://www.amazon.com/dp/B0DC8RVRBZ">Crucial P310</a></td><td>Gen4</td><td>7,100</td><td>6,000</td><td>N/A (not clearly published)</td><td>No</td><td>QLC</td><td>N/A (QLC, varies by spec sheet)</td><td>Fast burst; QLC limits.</td></tr>
+</tbody>
+</table>
+</div>
+<blockquote>
+<p>⚙️ <strong>Hardware Compatibility:</strong> The MINISFORUM AI X1-255 supports M.2 2280 NVMe SSDs (PCIe Gen 3, Gen 4, and Gen 5 only—not SATA). All SSDs in the table above are physically compatible with the internal slot, but Gen 5 drives will operate at Gen 4 speeds due to platform limits.</p>
+</blockquote>
+<p><strong>Recommended picks for the MINISFORUM AI X1-255 (Dec 2025):</strong></p>
+<ul>
+<li><strong>Best Value &amp; Performance:</strong> <a href="https://www.amazon.com/dp/B0BHJJ9Y77">Samsung 990 PRO 2TB</a> — Outstanding Gen 4 speed, high endurance, and proven reliability. Ideal for most users.</li>
+<li><strong>Best Budget:</strong> <a href="https://www.amazon.com/dp/B0DC8RVRBZ">Crucial P310 2TB</a> — QLC-based, but fast for the price; suitable for light to moderate workloads.</li>
+<li><strong>Best for Future-Proofing:</strong> <a href="https://www.amazon.com/dp/B0F9XMYR15">Crucial T710 2TB</a> or <a href="https://www.amazon.com/dp/B0DX2DPJZ5">Samsung 9100 PRO 2TB</a> — Gen 5 drives, fully compatible but limited to Gen 4 speeds in this system; choose if you plan to reuse the SSD in a future Gen 5 device.</li>
+</ul>
+<p>All other models in the table are also compatible and offer excellent performance. Always choose 2TB or larger for future-proofing your node, and verify the model and capacity before purchase.</p>
+<blockquote>
+<p>💡 <strong>Alternative Option: Quick but Temporary External SSD Storage</strong></p>
+<p>You can use a 2.5“ SATA SSD (such as Crucial MX500, WD Blue 3D NAND, or Samsung 870 EVO) in a USB enclosure (e.g., <a href="https://www.amazon.com/dp/B06XWRRMYX">UGREEN 2.5“ SATA to USB 3.0 Enclosure</a>) for fast data transfer or as a temporary external drive. This is useful for migration or backup, but these drives will <strong>not</strong> fit the internal M.2 slots of the MINISFORUM AI X1-255 and are not recommended for permanent use as your main node storage.</p>
+</blockquote>
+<h4 id="3-expand-with-hdd-storage-slower-cheaper-path-to-nas-storage-upgrade"><a class="header" href="#3-expand-with-hdd-storage-slower-cheaper-path-to-nas-storage-upgrade">3. Expand with HDD storage (slower, cheaper, path to NAS storage upgrade)</a></h4>
+<blockquote>
+<p>🗄️ <strong>HDD Storage Options: Best Value for Large, Reusable Storage</strong></p>
+</blockquote>
+<p>If you are comfortable with slower storage (for archival, blockchain, or NAS use), HDDs offer the best cost per TB and can be easily repurposed for Nextcloud, RAID-1, or other NAS storage in the future. There are two main approaches:</p>
+<p><strong>Option 1: Buy a NAS HDD and Enclosure (Modular, Flexible, RAID-Ready)</strong></p>
+<ul>
+<li>Buy a bare NAS-grade HDD (e.g., Seagate IronWolf, WD Red Plus) and a compatible USB 3.0/3.1 or SATA enclosure.</li>
+<li>Example drives:
+<ul>
+<li><a href="https://www.amazon.com/dp/B09NHV3CK9">Seagate IronWolf 4TB NAS HDD</a></li>
+<li><a href="https://www.amazon.com/dp/B0BDXSK2K7">WD Red Plus 4TB NAS HDD</a></li>
+</ul>
+</li>
+<li>Choose larger capacities (6TB, 8TB, or more) as needed for future NAS/RAID-1 upgrades.</li>
+<li>Pair with a quality enclosure (single or dual-bay for RAID-1, e.g., TerraMaster, ORICO, or similar brands).</li>
+<li>This setup is ideal if you want to migrate the drive(s) into a dedicated NAS or RAID-1 box for Nextcloud or other self-hosted storage later.</li>
+</ul>
+<p><strong>Option 2: Buy an All-in-One External HDD (Plug-and-Play, Shuckable)</strong></p>
+<ul>
+<li>Purchase a pre-assembled external HDD with enclosure, such as the <a href="https://www.bestbuy.com/product/seagate-expansion-24tb-external-usb-3-0-desktop-hard-drive-with-rescue-data-recovery-services-black/J37C5H5HKC">Seagate Expansion 24TB/26TB External USB 3.0 Desktop Hard Drive</a>.</li>
+<li>These are plug-and-play with Proxmox and can be used immediately for blockchain or archival storage.</li>
+<li>When ready to upgrade, you can “shuck” (remove) the internal HDD and install it in a NAS or RAID-1 enclosure for Nextcloud or other uses.</li>
+</ul>
+<blockquote>
+<p><strong>🛠️ Shucking &amp; Warranty:</strong> Shucking voids the Seagate warranty, but is a common, cost-effective upgrade path for large, reliable storage.</p>
+</blockquote>
+<ul>
+<li>The internal drive is typically a Seagate Exos or similar enterprise-class model, compatible with most NAS/RAID systems.</li>
+</ul>
+<p>Both options provide a clear path to future NAS/RAID-1 storage for Nextcloud or other self-hosted solutions. Choose based on your comfort with assembling enclosures (Option 1) or convenience and best value per TB (Option 2).</p>
+<h3 id="samsung-990-pro-2tb-user-experience--step-by-step-upgrade-dec-2025"><a class="header" href="#samsung-990-pro-2tb-user-experience--step-by-step-upgrade-dec-2025">Samsung 990 PRO 2TB: User Experience &amp; Step-by-Step Upgrade (Dec 2025)</a></h3>
+<p><strong>My Final Choice:</strong> I chose to buy the Samsung 990 PRO 2TB NVMe SSD for my MINISFORUM AI X1-255. This drive offers the best balance of speed, endurance, and reliability for running a full Bitcoin node and Start9 OS in a Proxmox VM.</p>
+<p><strong>Why this is best:</strong> The Samsung 990 PRO delivers top-tier Gen 4 performance, high endurance (1200 TBW), and proven compatibility with the MINISFORUM AI X1-255. Upgrading to this SSD ensures fast sync, responsive apps, and future-proof storage for blockchain and self-hosted services.</p>
+<p><strong>How to migrate Start9 OS and all app data to a new 2TB SSD (cleanest, most future-proof method):</strong></p>
+<blockquote>
+<p><strong>🛑 Important:</strong> This method ensures all Start9 OS, apps, and data are on the new 2TB SSD, making future upgrades, backups, and migrations much simpler. The 1TB SSD is now free for Proxmox host use or other VMs.</p>
+</blockquote>
+<p><strong>If you are starting fresh:</strong></p>
+<ul>
+<li>You can skip the backup and restore steps below. Simply follow the instructions to install the 2TB SSD, prepare it in Proxmox, and perform a clean Start9 OS installation on the new disk.</li>
+</ul>
+<p><strong>If you need to migrate existing data:</strong></p>
+<ul>
+<li>In the Start9 web interface, go to <strong>System → Backup</strong> and create a full backup of your node, apps, and settings. Download the backup file to your computer or external drive.</li>
+<li>After installing Start9 OS on the new disk, restore your backup from the web interface to recover your node, apps, and data.</li>
+</ul>
+<p><strong>Step-by-step for a clean install or migration:</strong></p>
+<ol>
+<li>
+<p><strong>Shut down all running services and systems:</strong></p>
+<ul>
+<li>In the Start9 web interface, stop all running apps (including Bitcoin Core).</li>
+<li>Go to <strong>System → Power → Shutdown</strong> to power off Start9 OS.</li>
+<li>In Proxmox VE, select your Start9 VM and click the <strong>Stop</strong> button to fully power off the VM.</li>
+<li>Once all VMs are off, shut down the Proxmox VE host if you plan to install the SSD physically.</li>
+</ul>
+</li>
+<li>
+<p><strong>Physically install the new 2TB SSD:</strong></p>
+<ul>
+<li>Power off and unplug your MINISFORUM device.</li>
+<li>Open the case, install the 2TB NVMe SSD in the M.2 slot, and reassemble the device.</li>
+</ul>
+</li>
+<li>
+<p><strong>Prepare the 2TB SSD for Proxmox VM storage:</strong></p>
+<ul>
+<li>Power on the device and boot into Proxmox VE.</li>
+<li>In the Proxmox web UI, go to <strong>Datacenter → Node → Disks</strong> and confirm the new SSD is listed.</li>
+<li>Select the 2TB SSD, click <strong>Wipe Disk</strong> (if needed), then <strong>Initialize Disk with GPT</strong>.</li>
+<li>Go to <strong>Datacenter → Node → LVM</strong> and click <strong>Create: Volume Group</strong>. Select the 2TB SSD and create a new volume group (e.g., <code>vg-2tb</code>).</li>
+<li><em>(Optional)</em> Go to <strong>Datacenter → Node → LVM-Thin</strong> and click <strong>Create: Thinpool</strong>. Select the new volume group and allocate ~1900–2000GB for the thin pool (e.g., <code>data-2tb</code>).
+<ul>
+<li><strong>Only create an LVM-Thin pool if you want to use thin provisioning, fast snapshots, or plan to run multiple VMs/disks on this storage.</strong></li>
+<li>If you are dedicating the entire disk to a single VM disk, standard LVM is sufficient and simpler.</li>
+</ul>
+</li>
+</ul>
+</li>
+</ol>
+<blockquote>
+<p>⚠️ <strong>Thin Provisioning Risk:</strong> LVM-Thin allows you to over-allocate space (thin provisioning), which is flexible but risky: if the physical disk fills up because thin-provisioned volumes use more space than is physically available, all VMs/disks on that pool can become read-only or fail. Monitor disk usage carefully if using LVM-Thin.</p>
+</blockquote>
+<ol start="4">
+<li>
+<p><strong>Remove the old 1TB LVM-Thin pool and free up the 1TB SSD for Proxmox host use:</strong></p>
+<ul>
+<li>In the Proxmox web UI, go to <strong>Datacenter → Node → LVM-Thin</strong> and identify the existing 1TB LVM-Thin pool (e.g., <code>local-lvm</code>).</li>
+<li>Make sure no VMs or disks are using this pool (detach and remove any VM disks if needed).</li>
+<li>Select the LVM-Thin pool, click <strong>More → Destroy</strong> to delete it.</li>
+<li>Go to <strong>Datacenter → Node → LVM</strong>, select the associated volume group from the 1TB SSD, and click <strong>More → Destroy</strong> to remove it (required if you want to recreate a new LVM or LVM-Thin pool on the 1TB SSD).</li>
+<li>The 1TB SSD is now ready for new Proxmox VE storage, ISOs, or other VMs as needed.</li>
+</ul>
+</li>
+</ol>
+<blockquote>
+<p><strong>💡 Tip:</strong> Always double-check that all important data is backed up before deleting or removing any disks or storage pools. Handle SSDs and device internals with care to avoid static damage.</p>
+</blockquote>
+<ol start="5">
+<li>
+<p><strong>Create a new LVM or LVM-Thin storage pool on the 1TB SSD for Proxmox VE:</strong></p>
+<ul>
+<li>In the Proxmox web UI, go to <strong>Datacenter → Node → Disks</strong> and select the 1TB SSD.</li>
+<li>Wipe the 1TB SSD or re-initialize it with GPT if you want to repurpose it for new Proxmox storage or VMs. This will remove all existing partitions (BIOS boot, EFI, LVM, etc.) and allow you to create new storage pools as needed.</li>
+<li>After destroying the old LVM-Thin pool and LVM volume group, simply create a new volume group and LVM-Thin pool using the existing LVM partition.</li>
+<li>Go to <strong>Datacenter → Node → LVM</strong> and click <strong>Create: Volume Group</strong>. Select the existing LVM partition on the 1TB SSD and create a new volume group (e.g., <code>vg-1tb</code>).</li>
+<li><em>(Optional)</em> Go to <strong>Datacenter → Node → LVM-Thin</strong> and click <strong>Create: Thinpool</strong>. Select the new volume group and allocate the desired size for the thin pool (e.g., <code>data-1tb</code>).</li>
+</ul>
+</li>
+</ol>
+<blockquote>
+<p>🗑️ <strong>Destructive Operation Warning:</strong> Only wipe or re-initialize the disk if you are certain you no longer need any data or partitions on it. This action is destructive and cannot be undone. Double-check that all important data is backed up before proceeding.</p>
+</blockquote>
+<ol start="6">
+<li>
+<p><strong>Create a new Start9 VM disk on the 2TB SSD:</strong></p>
+<ul>
+<li>In the Proxmox web UI, select your Start9 VM (or create a new one if desired).</li>
+<li>Go to the <strong>Hardware</strong> tab, click <strong>Add → Hard Disk</strong>.</li>
+<li>Select the new 2TB LVM pool (not LVM-Thin) as the storage location, set the disk size (e.g., 1900GB or slightly less than the available space), and choose the disk type (<code>scsi</code> or <code>virtio</code> recommended).</li>
+<li>Remove any old VM disks from the 1TB SSD (detach and delete in the Hardware tab).</li>
+</ul>
+</li>
+</ol>
+<blockquote>
+<p>🛑 <strong>Troubleshooting: Insufficient Free Space When Creating VM Disk</strong></p>
+<p>If you see an error like <code>TASK ERROR: lvcreate 'start9/vm-100-disk-0' error:   Volume group "start9" has insufficient free space (476932 extents): 486400 required.</code>, this means your LVM volume group does not have enough free space for the requested disk size. To resolve:</p>
+<ol>
+<li>Double-check the size of your LVM pool in Proxmox (<strong>Datacenter → Node → LVM</strong>). If it’s smaller than your SSD, you may need to:
+<ul>
+<li>Delete and recreate the volume group with a larger size.</li>
+<li>Remove any unused logical volumes or snapshots.</li>
+</ul>
+</li>
+<li>Make sure the volume group (VG) uses the full SSD capacity.</li>
+<li>When creating the VM disk, set the size to slightly less than the available space (e.g., 1800GB for a 2TB SSD, not 1900GB).</li>
+<li>If needed, destroy and recreate the volume group to use the full disk.</li>
+</ol>
+<p>For more details, see <a href="https://pve.proxmox.com/wiki/Storage:_LVM">Proxmox LVM documentation</a>.</p>
+</blockquote>
+<ol start="7">
+<li>
+<p><strong>Mount the Start9 OS ISO and reinstall:</strong></p>
+<ul>
+<li>In the Hardware tab, add a <strong>CD/DVD Drive</strong> if not already present, and select the Start9 OS ISO image.</li>
+<li>Go to the <strong>Options</strong> tab, set the <strong>Boot Order</strong> to prioritize the CD/DVD drive.</li>
+<li>Start the VM and boot from the ISO to begin the Start9 OS installation.</li>
+</ul>
+</li>
+<li>
+<p><strong>Restore your backup and verify:</strong></p>
+<ul>
+<li>After installing Start9 OS, log in to the web interface and restore your backup if you created one.</li>
+<li>Go to <strong>System → Monitor → Disk</strong> to confirm the full 2TB is available for OS, apps, and data.</li>
+<li>Reinstall or restore Bitcoin Core and other apps as needed.</li>
+</ul>
+</li>
+</ol>
+<hr>
+<p>👈 Prev: <a href="./securing_start9_vm.html">Securing Start9 OS and VM Environment</a></p>
+<p>👉 Next: <a href="./installing_mempool.html">Installing Mempool Explorer</a></p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="../bitcoin_node/securing_start9_vm.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
+                            </a>
+
+                            <a rel="next prefetch" href="../bitcoin_node/installing_mempool.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="../bitcoin_node/securing_start9_vm.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
+                    </a>
+
+                    <a rel="next prefetch" href="../bitcoin_node/installing_mempool.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
+                    </a>
+            </nav>
+
+        </div>
+
+        <template id=fa-eye><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M288 32c-80.8 0-145.5 36.8-192.6 80.6C48.6 156 17.3 208 2.5 243.7c-3.3 7.9-3.3 16.7 0 24.6C17.3 304 48.6 356 95.4 399.4C142.5 443.2 207.2 480 288 480s145.5-36.8 192.6-80.6c46.8-43.5 78.1-95.4 93-131.1c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C433.5 68.8 368.8 32 288 32zM432 256c0 79.5-64.5 144-144 144s-144-64.5-144-144s64.5-144 144-144s144 64.5 144 144zM288 192c0 35.3-28.7 64-64 64c-11.5 0-22.3-3-31.6-8.4c-.2 2.8-.4 5.5-.4 8.4c0 53 43 96 96 96s96-43 96-96s-43-96-96-96c-2.8 0-5.6 .1-8.4 .4c5.3 9.3 8.4 20.1 8.4 31.6z"/></svg></span></template>
+        <template id=fa-eye-slash><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M38.8 5.1C28.4-3.1 13.3-1.2 5.1 9.2S-1.2 34.7 9.2 42.9l592 464c10.4 8.2 25.5 6.3 33.7-4.1s6.3-25.5-4.1-33.7L525.6 386.7c39.6-40.6 66.4-86.1 79.9-118.4c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C465.5 68.8 400.8 32 320 32c-68.2 0-125 26.3-169.3 60.8L38.8 5.1zM223.1 149.5C248.6 126.2 282.7 112 320 112c79.5 0 144 64.5 144 144c0 24.9-6.3 48.3-17.4 68.7L408 294.5c5.2-11.8 8-24.8 8-38.5c0-53-43-96-96-96c-2.8 0-5.6 .1-8.4 .4c5.3 9.3 8.4 20.1 8.4 31.6c0 10.2-2.4 19.8-6.6 28.3l-90.3-70.8zm223.1 298L373 389.9c-16.4 6.5-34.3 10.1-53 10.1c-79.5 0-144-64.5-144-144c0-6.9 .5-13.6 1.4-20.2L83.1 161.5C60.3 191.2 44 220.8 34.5 243.7c-3.3 7.9-3.3 16.7 0 24.6c14.9 35.7 46.2 87.7 93 131.1C174.5 443.2 239.2 480 320 480c47.8 0 89.9-12.9 126.2-32.5z"/></svg></span></template>
+        <template id=fa-copy><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M502.6 70.63l-61.25-61.25C435.4 3.371 427.2 0 418.7 0H255.1c-35.35 0-64 28.66-64 64l.0195 256C192 355.4 220.7 384 256 384h192c35.2 0 64-28.8 64-64V93.25C512 84.77 508.6 76.63 502.6 70.63zM464 320c0 8.836-7.164 16-16 16H255.1c-8.838 0-16-7.164-16-16L239.1 64.13c0-8.836 7.164-16 16-16h128L384 96c0 17.67 14.33 32 32 32h47.1V320zM272 448c0 8.836-7.164 16-16 16H63.1c-8.838 0-16-7.164-16-16L47.98 192.1c0-8.836 7.164-16 16-16H160V128H63.99c-35.35 0-64 28.65-64 64l.0098 256C.002 483.3 28.66 512 64 512h192c35.2 0 64-28.8 64-64v-32h-47.1L272 448z"/></svg></span></template>
+        <template id=fa-play><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M73 39c-14.8-9.1-33.4-9.4-48.5-.9S0 62.6 0 80V432c0 17.4 9.4 33.4 24.5 41.9s33.7 8.1 48.5-.9L361 297c14.3-8.7 23-24.2 23-41s-8.7-32.2-23-41L73 39z"/></svg></span></template>
+        <template id=fa-clock-rotate-left><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M75 75L41 41C25.9 25.9 0 36.6 0 57.9V168c0 13.3 10.7 24 24 24H134.1c21.4 0 32.1-25.9 17-41l-30.8-30.8C155 85.5 203 64 256 64c106 0 192 86 192 192s-86 192-192 192c-40.8 0-78.6-12.7-109.7-34.4c-14.5-10.1-34.4-6.6-44.6 7.9s-6.6 34.4 7.9 44.6C151.2 495 201.7 512 256 512c141.4 0 256-114.6 256-256S397.4 0 256 0C185.3 0 121.3 28.7 75 75zm181 53c-13.3 0-24 10.7-24 24V256c0 6.4 2.5 12.5 7 17l72 72c9.4 9.4 24.6 9.4 33.9 0s9.4-24.6 0-33.9l-65-65V152c0-13.3-10.7-24-24-24z"/></svg></span></template>
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="../elasticlunr-ef4e11c1.min.js"></script>
+        <script src="../mark-09e88c2c.min.js"></script>
+        <script src="../searcher-09f2665d.js"></script>
+
+        <script src="../clipboard-1626706a.min.js"></script>
+        <script src="../highlight-abc7f01d.js"></script>
+        <script src="../book-c22b7243.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+
+    </div>
+    </body>
+</html>

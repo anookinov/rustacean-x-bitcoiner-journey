@@ -1,0 +1,541 @@
+<!DOCTYPE HTML>
+<html lang="en" class="light sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Configuring VS Code Agent Extensions - Rustacean X Bitcoiner Journey</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="A study and practice guide for Bitcoin and Rust from a journey of Rustacean X Bitcoiner guy">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="../favicon-de23e50b.svg">
+        <link rel="shortcut icon" href="../favicon-8114d1fc.png">
+        <link rel="stylesheet" href="../css/variables-8adf115d.css">
+        <link rel="stylesheet" href="../css/general-0392ca55.css">
+        <link rel="stylesheet" href="../css/chrome-fc474251.css">
+        <link rel="stylesheet" href="../css/print-9e4910d8.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../fonts/fonts-9644e21d.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="mdbook-highlight-css" href="../highlight-493f70e1.css">
+        <link rel="stylesheet" id="mdbook-tomorrow-night-css" href="../tomorrow-night-4c0ae647.css">
+        <link rel="stylesheet" id="mdbook-ayu-highlight-css" href="../ayu-highlight-3fdfc3ac.css">
+
+        <!-- Custom theme stylesheets -->
+
+
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "../";
+            const default_light_theme = "light";
+            const default_dark_theme = "coal";
+            window.path_to_searchindex_js = "../searchindex-190b9119.js";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="../toc-7e248055.js"></script>
+    </head>
+    <body>
+    <div id="mdbook-help-container">
+        <div id="mdbook-help-popup">
+            <h2 class="mdbook-help-title">Keyboard shortcuts</h2>
+            <div>
+                <p>Press <kbd>←</kbd> or <kbd>→</kbd> to navigate between chapters</p>
+                <p>Press <kbd>S</kbd> or <kbd>/</kbd> to search in the book</p>
+                <p>Press <kbd>?</kbd> to show this help</p>
+                <p>Press <kbd>Esc</kbd> to hide this help</p>
+            </div>
+        </div>
+    </div>
+    <div id="mdbook-body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="mdbook-sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("mdbook-sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+                sidebar_toggle.checked = false;
+            }
+            if (sidebar === 'visible') {
+                sidebar_toggle.checked = true;
+            } else {
+                html.classList.remove('sidebar-visible');
+            }
+        </script>
+
+        <nav id="mdbook-sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="../toc.html"></iframe>
+            </noscript>
+            <div id="mdbook-sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="mdbook-page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="mdbook-menu-bar-hover-placeholder"></div>
+                <div id="mdbook-menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="mdbook-sidebar-toggle" class="icon-button" for="mdbook-sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="mdbook-sidebar">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M0 96C0 78.3 14.3 64 32 64H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32C14.3 128 0 113.7 0 96zM0 256c0-17.7 14.3-32 32-32H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32c-17.7 0-32-14.3-32-32zM448 416c0 17.7-14.3 32-32 32H32c-17.7 0-32-14.3-32-32s14.3-32 32-32H416c17.7 0 32 14.3 32 32z"/></svg></span>
+                        </label>
+                        <button id="mdbook-theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="mdbook-theme-list">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M371.3 367.1c27.3-3.9 51.9-19.4 67.2-42.9L600.2 74.1c12.6-19.5 9.4-45.3-7.6-61.2S549.7-4.4 531.1 9.6L294.4 187.2c-24 18-38.2 46.1-38.4 76.1L371.3 367.1zm-19.6 25.4l-116-104.4C175.9 290.3 128 339.6 128 400c0 3.9 .2 7.8 .6 11.6c1.8 17.5-10.2 36.4-27.8 36.4H96c-17.7 0-32 14.3-32 32s14.3 32 32 32H240c61.9 0 112-50.1 112-112c0-2.5-.1-5-.2-7.5z"/></svg></span>
+                        </button>
+                        <ul id="mdbook-theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-ayu">Ayu</button></li>
+                        </ul>
+                        <button id="mdbook-search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="mdbook-searchbar">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M416 208c0 45.9-14.9 88.3-40 122.7L502.6 457.4c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L330.7 376c-34.4 25.2-76.8 40-122.7 40C93.1 416 0 322.9 0 208S93.1 0 208 0S416 93.1 416 208zM208 352c79.5 0 144-64.5 144-144s-64.5-144-144-144S64 128.5 64 208s64.5 144 144 144z"/></svg></span>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">Rustacean X Bitcoiner Journey</h1>
+
+                    <div class="right-buttons">
+                        <a href="../print.html" title="Print this book" aria-label="Print this book">
+                            <span class=fa-svg id="print-button"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M128 0C92.7 0 64 28.7 64 64v96h64V64H354.7L384 93.3V160h64V93.3c0-17-6.7-33.3-18.7-45.3L400 18.7C388 6.7 371.7 0 354.7 0H128zM384 352v32 64H128V384 368 352H384zm64 32h32c17.7 0 32-14.3 32-32V256c0-35.3-28.7-64-64-64H64c-35.3 0-64 28.7-64 64v96c0 17.7 14.3 32 32 32H64v64c0 35.3 28.7 64 64 64H384c35.3 0 64-28.7 64-64V384zm-16-88c-13.3 0-24-10.7-24-24s10.7-24 24-24s24 10.7 24 24s-10.7 24-24 24z"/></svg></span>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="mdbook-search-wrapper" class="hidden">
+                    <form id="mdbook-searchbar-outer" class="searchbar-outer">
+                        <div class="search-wrapper">
+                            <input type="search" id="mdbook-searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="mdbook-searchresults-outer" aria-describedby="searchresults-header">
+                            <div class="spinner-wrapper">
+                                <span class=fa-svg id="fa-spin"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M304 48c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zm0 416c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zM48 304c26.5 0 48-21.5 48-48s-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48zm464-48c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zM142.9 437c18.7-18.7 18.7-49.1 0-67.9s-49.1-18.7-67.9 0s-18.7 49.1 0 67.9s49.1 18.7 67.9 0zm0-294.2c18.7-18.7 18.7-49.1 0-67.9S93.7 56.2 75 75s-18.7 49.1 0 67.9s49.1 18.7 67.9 0zM369.1 437c18.7 18.7 49.1 18.7 67.9 0s18.7-49.1 0-67.9s-49.1-18.7-67.9 0s-18.7 49.1 0 67.9z"/></svg></span>
+                            </div>
+                        </div>
+                    </form>
+                    <div id="mdbook-searchresults-outer" class="searchresults-outer hidden">
+                        <div id="mdbook-searchresults-header" class="searchresults-header"></div>
+                        <ul id="mdbook-searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('mdbook-sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('mdbook-sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#mdbook-sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="mdbook-content" class="content">
+                    <main>
+                        <h1 id="configuring-vs-code-agent-extensions"><a class="header" href="#configuring-vs-code-agent-extensions">Configuring VS Code Agent Extensions</a></h1>
+<p>With Ollama running on the AI VM and accessible from my MacBook, this page wires it into VS Code through Roo Code — a VS Code extension that supports an Orchestrator mode, per-mode model selection, and agentic file editing. Each mode is configured with a distinct local Ollama model matched to the role’s demands: a reasoning model for planning and design, a code-specialized model for implementation and debugging.</p>
+<p>VS Code’s process cannot route directly to LAN IP addresses on macOS in some configurations. The solution is a persistent SSH tunnel: <code>autossh</code> forwards <code>localhost:11434</code> on the MacBook through SSH to Ollama on the AI VM. Roo Code connects to <code>localhost</code>, which always works. Port 11434 does not need to be exposed on the LAN — only SSH (port 22) is used.</p>
+<p><strong>In this guide, you will:</strong></p>
+<ul>
+<li>Install the Roo Code extension in VS Code</li>
+<li>Set up a persistent autossh tunnel from the MacBook to the AI VM</li>
+<li>Pull the Ollama models needed for reasoning and planning roles</li>
+<li>Add named Ollama API configurations in Roo Code (one per model)</li>
+<li>Assign a specific model to each built-in agent mode (Orchestrator, Architect, Code, Debug, Ask)</li>
+<li>Test each mode to verify it generates responses from the expected model</li>
+</ul>
+<hr>
+<h2 id="pre-requisites"><a class="header" href="#pre-requisites">Pre-requisites</a></h2>
+<h3 id="preparation"><a class="header" href="#preparation">Preparation</a></h3>
+<ul>
+<li>Ollama running on the AI VM at <code>192.168.1.101</code> with SSH access from the MacBook</li>
+<li><code>qwen2.5-coder:7b</code> already pulled in Ollama (from <a href="./installing_ollama.html">Installing Ollama and Models</a>)</li>
+<li>VS Code installed on your MacBook</li>
+<li>Homebrew installed on your MacBook</li>
+</ul>
+<h3 id="software"><a class="header" href="#software">Software</a></h3>
+<ul>
+<li>VS Code (latest stable release)</li>
+<li>Roo Code extension (<code>roo-cline.roo-cline</code> in VS Code marketplace)</li>
+<li>autossh (<code>brew install autossh</code>)</li>
+</ul>
+<h3 id="references"><a class="header" href="#references">References</a></h3>
+<ul>
+<li><a href="https://docs.roocode.com">Roo Code documentation</a></li>
+<li><a href="https://github.com/ollama/ollama/blob/main/docs/openai.md">Ollama OpenAI-compatible API docs</a></li>
+</ul>
+<hr>
+<h2 id="step-by-step-instructions"><a class="header" href="#step-by-step-instructions">Step-by-Step Instructions</a></h2>
+<h3 id="step-1-install-roo-code"><a class="header" href="#step-1-install-roo-code">Step 1: Install Roo Code</a></h3>
+<ol>
+<li>
+<p>Open VS Code on your MacBook</p>
+</li>
+<li>
+<p>Open the Extensions panel: <strong>Cmd+Shift+X</strong></p>
+</li>
+<li>
+<p>Search for <code>Roo Code</code></p>
+</li>
+<li>
+<p>Find the extension by <strong>Roo Code</strong> (publisher: <code>roo-cline</code>) and click <strong>Install</strong></p>
+</li>
+<li>
+<p>After installation, a Roo Code icon (🦘) appears in the VS Code Activity Bar on the left sidebar</p>
+</li>
+<li>
+<p>Click the icon to open the Roo Code panel</p>
+</li>
+</ol>
+<h3 id="step-2-set-up-the-autossh-tunnel"><a class="header" href="#step-2-set-up-the-autossh-tunnel">Step 2: Set up the Autossh Tunnel</a></h3>
+<p><code>autossh</code> runs as a macOS launchd agent, forwarding <code>localhost:11434</code> on the MacBook to Ollama on the AI VM through SSH. It starts at login and reconnects automatically if the AI VM restarts or the network drops.</p>
+<ol>
+<li>
+<p>Install autossh:</p>
+<pre><code class="language-bash">brew install autossh
+</code></pre>
+</li>
+<li>
+<p>Create the launchd agent plist:</p>
+<pre><code class="language-bash">cat &gt; ~/Library/LaunchAgents/com.local.ollama-tunnel.plist &lt;&lt; 'EOF'
+&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+&lt;!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd"&gt;
+&lt;plist version="1.0"&gt;
+&lt;dict&gt;
+    &lt;key&gt;Label&lt;/key&gt;
+    &lt;string&gt;com.local.ollama-tunnel&lt;/string&gt;
+    &lt;key&gt;ProgramArguments&lt;/key&gt;
+    &lt;array&gt;
+        &lt;string&gt;/opt/homebrew/bin/autossh&lt;/string&gt;
+        &lt;string&gt;-M&lt;/string&gt;
+        &lt;string&gt;0&lt;/string&gt;
+        &lt;string&gt;-N&lt;/string&gt;
+        &lt;string&gt;-L&lt;/string&gt;
+        &lt;string&gt;11434:localhost:11434&lt;/string&gt;
+        &lt;string&gt;-o&lt;/string&gt;
+        &lt;string&gt;ServerAliveInterval=60&lt;/string&gt;
+        &lt;string&gt;-o&lt;/string&gt;
+        &lt;string&gt;ServerAliveCountMax=3&lt;/string&gt;
+        &lt;string&gt;-o&lt;/string&gt;
+        &lt;string&gt;ExitOnForwardFailure=yes&lt;/string&gt;
+        &lt;string&gt;ai@192.168.1.101&lt;/string&gt;
+    &lt;/array&gt;
+    &lt;key&gt;RunAtLoad&lt;/key&gt;
+    &lt;true/&gt;
+    &lt;key&gt;KeepAlive&lt;/key&gt;
+    &lt;true/&gt;
+    &lt;key&gt;StandardErrorPath&lt;/key&gt;
+    &lt;string&gt;/tmp/ollama-tunnel.log&lt;/string&gt;
+&lt;/dict&gt;
+&lt;/plist&gt;
+EOF
+</code></pre>
+</li>
+<li>
+<p>Load the agent:</p>
+<pre><code class="language-bash">launchctl load ~/Library/LaunchAgents/com.local.ollama-tunnel.plist
+</code></pre>
+</li>
+<li>
+<p>Verify it is running:</p>
+<pre><code class="language-bash">launchctl list | grep ollama-tunnel
+curl http://localhost:11434/v1/models
+</code></pre>
+<p>The <code>launchctl</code> output should show a PID in the first column (not <code>-</code>). The curl should return a JSON list of Ollama models.</p>
+</li>
+</ol>
+<blockquote>
+<p><strong>💻 Intel Mac:</strong> Replace <code>/opt/homebrew/bin/autossh</code> with <code>/usr/local/bin/autossh</code> in the plist.</p>
+<p><strong>🔄 Reloading after plist changes:</strong> <code>launchctl unload ~/Library/LaunchAgents/com.local.ollama-tunnel.plist &amp;&amp; launchctl load ~/Library/LaunchAgents/com.local.ollama-tunnel.plist</code></p>
+</blockquote>
+<h3 id="step-3-add-the-ollama-api-configurations"><a class="header" href="#step-3-add-the-ollama-api-configurations">Step 3: Add the Ollama API Configurations</a></h3>
+<p>Roo Code stores provider settings as named <strong>API Configurations</strong> — each is a saved profile with a provider type, base URL, and model. Assigning different models to different modes requires one configuration per model. Create three configurations, all pointing at the same Ollama server:</p>
+<ol>
+<li>
+<p>In the Roo Code panel, click the <strong>Settings</strong> gear icon (⚙️) in the top-right corner</p>
+</li>
+<li>
+<p>Go to <strong>API Configuration</strong> and create the first profile:</p>
+<ul>
+<li><strong>Configuration name</strong>: <code>ollama-coder</code></li>
+<li><strong>Provider</strong>: OpenAI Compatible</li>
+<li><strong>Base URL</strong>: <code>http://localhost:11434/v1</code></li>
+<li><strong>API Key</strong>: <code>ollama</code> (any non-empty string; Ollama does not validate keys)</li>
+<li><strong>Model</strong>: <code>qwen2.5-coder:7b</code></li>
+<li>Save</li>
+</ul>
+</li>
+<li>
+<p>Create the second profile:</p>
+<ul>
+<li><strong>Configuration name</strong>: <code>ollama-reasoning</code></li>
+<li><strong>Provider</strong>: OpenAI Compatible</li>
+<li><strong>Base URL</strong>: <code>http://localhost:11434/v1</code></li>
+<li><strong>API Key</strong>: <code>ollama</code></li>
+<li><strong>Model</strong>: <code>qwen3:8b</code></li>
+<li>Save</li>
+</ul>
+</li>
+<li>
+<p>Create the third profile:</p>
+<ul>
+<li><strong>Configuration name</strong>: <code>ollama-architect</code></li>
+<li><strong>Provider</strong>: OpenAI Compatible</li>
+<li><strong>Base URL</strong>: <code>http://localhost:11434/v1</code></li>
+<li><strong>API Key</strong>: <code>ollama</code></li>
+<li><strong>Model</strong>: <code>deepseek-r1:8b</code></li>
+<li>Save</li>
+</ul>
+</li>
+</ol>
+<blockquote>
+<p><strong>🌐 Provider URL:</strong> Use <code>http://localhost:11434/v1</code> — the autossh tunnel (Step 2) forwards this to Ollama on the AI VM. The <code>/v1</code> suffix is required; Ollama’s OpenAI-compatible endpoint lives at <code>/v1/chat/completions</code>.</p>
+<p><strong>📦 Three configs, one server:</strong> All three configurations point at the same tunnel endpoint. Three named profiles is the correct pattern — Roo Code uses the configuration name to distinguish which model to invoke when switching modes.</p>
+</blockquote>
+<h3 id="step-4-pull-the-reasoning-models"><a class="header" href="#step-4-pull-the-reasoning-models">Step 4: Pull the Reasoning Models</a></h3>
+<p>The Orchestrator and Architect roles use reasoning-focused models different from the coding-specialized model. Pull them on the AI VM before configuring Roo Code.</p>
+<ol>
+<li>
+<p>SSH into the AI VM:</p>
+<pre><code class="language-bash">ssh ai@192.168.1.101
+</code></pre>
+</li>
+<li>
+<p>Pull the two reasoning models:</p>
+<pre><code class="language-bash">ollama pull qwen3:8b
+ollama pull deepseek-r1:8b
+</code></pre>
+</li>
+<li>
+<p>Verify all three models are available:</p>
+<pre><code class="language-bash">ollama list
+</code></pre>
+<p>You should see <code>qwen3:8b</code>, <code>deepseek-r1:8b</code>, and <code>qwen2.5-coder:7b</code> in the output.</p>
+</li>
+</ol>
+<blockquote>
+<p><strong>💡 Model roles:</strong> <code>qwen3:8b</code> handles orchestration and general reasoning with a built-in thinking mode. <code>deepseek-r1:8b</code> uses chain-of-thought reasoning before answering, making it well-suited for architectural design decisions. <code>qwen2.5-coder:7b</code> remains the dedicated coding model. <code>llama3.1:8b</code> is no longer needed and can be freed with <code>ollama rm llama3.1:8b</code>.</p>
+</blockquote>
+<h3 id="step-5-assign-api-configurations-to-each-mode"><a class="header" href="#step-5-assign-api-configurations-to-each-mode">Step 5: Assign API Configurations to Each Mode</a></h3>
+<p>Each mode is assigned one of the named API configurations created in Step 3. The configuration determines which model that mode uses:</p>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th>Mode</th><th>Purpose</th><th>API Configuration</th><th>Model</th></tr>
+</thead>
+<tbody>
+<tr><td><strong>Orchestrator</strong></td><td>Breaking tasks into sub-tasks, delegating</td><td><code>ollama-reasoning</code></td><td><code>qwen3:8b</code></td></tr>
+<tr><td><strong>Architect</strong></td><td>System design, planning, breaking down tasks</td><td><code>ollama-architect</code></td><td><code>deepseek-r1:8b</code></td></tr>
+<tr><td><strong>Code</strong></td><td>Writing and editing code files</td><td><code>ollama-coder</code></td><td><code>qwen2.5-coder:7b</code></td></tr>
+<tr><td><strong>Debug</strong></td><td>Diagnosing errors and tracing issues</td><td><code>ollama-coder</code></td><td><code>qwen2.5-coder:7b</code></td></tr>
+<tr><td><strong>Ask</strong></td><td>Questions and explanations, no file edits</td><td><code>ollama-reasoning</code></td><td><code>qwen3:8b</code></td></tr>
+</tbody>
+</table>
+</div>
+<p>Custom verification and specialist modes (Quality Guard, Code Reviewer, etc.) are added in the <a href="./multi_agent_workflow.html">Multi-Agent Workflow with Local AI Agents</a> guide.</p>
+<p>To assign a configuration to each mode:</p>
+<ol>
+<li>
+<p>Click the mode selector (dropdown at the top of the Roo Code panel showing the current mode name)</p>
+</li>
+<li>
+<p>Select a mode (e.g., <strong>Architect</strong>)</p>
+</li>
+<li>
+<p>In the mode settings, click the <strong>API Configuration</strong> dropdown</p>
+</li>
+<li>
+<p>Select <code>ollama-architect</code> for Architect (or the configuration shown in the table for each mode)</p>
+</li>
+<li>
+<p>Repeat for all remaining modes following the table above</p>
+</li>
+</ol>
+<blockquote>
+<p><strong>🔄 Flexibility:</strong> To swap a model for a role, edit the API configuration rather than changing each mode individually. All modes sharing that configuration update automatically.</p>
+</blockquote>
+<h3 id="step-6-test-each-mode"><a class="header" href="#step-6-test-each-mode">Step 6: Test Each Mode</a></h3>
+<p><strong>Test the Code mode (Ollama qwen2.5-coder:7b):</strong></p>
+<ol>
+<li>
+<p>Switch to <strong>Code</strong> mode in the Roo Code panel</p>
+</li>
+<li>
+<p>Open a Rust project (or any code file) in VS Code</p>
+</li>
+<li>
+<p>Send a prompt: <code>Add a unit test for this function</code></p>
+</li>
+<li>
+<p>Roo Code should show the model name (<code>qwen2.5-coder:7b</code>) in the response header</p>
+</li>
+<li>
+<p>You will see the response stream in with a latency of ~5–15 seconds for a short response (CPU inference)</p>
+</li>
+</ol>
+<p><strong>Test the Architect mode (deepseek-r1:8b):</strong></p>
+<ol>
+<li>
+<p>Switch to <strong>Architect</strong> mode</p>
+</li>
+<li>
+<p>Send a prompt: <code>I need to build a CLI tool in Rust that monitors Bitcoin mempool fees and sends ntfy notifications. Outline the architecture.</code></p>
+</li>
+<li>
+<p>You will see a visible reasoning pass as DeepSeek R1 works through the problem, followed by a structured design document</p>
+</li>
+</ol>
+<p><strong>Test the Orchestrator mode (qwen3:8b):</strong></p>
+<ol>
+<li>
+<p>Switch to <strong>Orchestrator</strong> mode</p>
+</li>
+<li>
+<p>Send a prompt: <code>I want to add a fee alert feature to my Bitcoin monitoring tool. Break this down into sub-tasks and identify which agent should handle each.</code></p>
+</li>
+<li>
+<p>The Orchestrator decomposes the task and produces a delegation plan with acceptance criteria. Prepend <code>/no_think</code> to the prompt for a faster response without the reasoning pass.</p>
+</li>
+</ol>
+<blockquote>
+<p><strong>⏱️ Response Times:</strong> All models run locally on CPU, producing ~10–25 tokens/second. A 200-token response takes roughly 8–20 seconds. <code>deepseek-r1:8b</code> includes a reasoning pass that adds latency before the visible response begins — this is expected behavior, not an error.</p>
+</blockquote>
+<h3 id="step-7-configure-vs-code-settings-for-roo-code"><a class="header" href="#step-7-configure-vs-code-settings-for-roo-code">Step 7: Configure VS Code Settings for Roo Code</a></h3>
+<p>Open VS Code User Settings (Cmd+,) and add/verify these settings for a smooth Roo Code experience:</p>
+<pre><code class="language-json">{
+  "roo-cline.autoApproveReadOnly": true,
+  "roo-cline.autoApproveWrite": false,
+  "roo-cline.autoApproveExecute": false
+}
+</code></pre>
+<ul>
+<li><code>autoApproveReadOnly: true</code> — Roo Code can read files without prompting you each time</li>
+<li><code>autoApproveWrite: false</code> — you approve every file write (recommended until you trust the workflow)</li>
+<li><code>autoApproveExecute: false</code> — you approve every shell command execution</li>
+</ul>
+<blockquote>
+<p><strong>🛡️ Approval Settings:</strong> Starting with write and execute approvals required gives you explicit control over what the AI agents change on your machine. As you grow comfortable with specific task types, you can selectively enable auto-approval for lower-risk actions.</p>
+</blockquote>
+<hr>
+<h2 id="troubleshooting"><a class="header" href="#troubleshooting">Troubleshooting</a></h2>
+<p><strong>Roo Code shows “connection refused”, “fetch failed”, or “connection error” for Ollama:</strong></p>
+<ul>
+<li>Verify the tunnel is running: <code>launchctl list | grep ollama-tunnel</code> — the first column must show a PID, not <code>-</code></li>
+<li>Test the tunnel: <code>curl http://localhost:11434/v1/models</code> — if this fails, the tunnel is down</li>
+<li>Reload the tunnel: <code>launchctl unload ~/Library/LaunchAgents/com.local.ollama-tunnel.plist &amp;&amp; launchctl load ~/Library/LaunchAgents/com.local.ollama-tunnel.plist</code></li>
+<li>Check the tunnel error log: <code>cat /tmp/ollama-tunnel.log</code></li>
+<li>Verify Ollama is running on the AI VM: <code>ssh ai@192.168.1.101 "ollama list"</code></li>
+<li>All three API configurations must use <code>http://localhost:11434/v1</code> as the Base URL — not the AI VM’s LAN IP</li>
+</ul>
+<p><strong>Model name not found error:</strong></p>
+<ul>
+<li>The model name in Roo Code must exactly match what <code>ollama list</code> shows (e.g., <code>qwen2.5-coder:7b</code>, not <code>qwen2.5-coder</code>)</li>
+<li>Run <code>ollama list</code> in the AI VM to get exact names</li>
+</ul>
+<p><strong>Responses cut off mid-generation:</strong></p>
+<ul>
+<li>Ollama may have hit a context length or output token limit. Try a shorter prompt or switch to a model with a larger context window.</li>
+</ul>
+<hr>
+<p>👈 Prev: <a href="./installing_ollama.html">Installing Ollama and Models</a></p>
+<p>👉 Next: <a href="./multi_agent_workflow.html">Multi-Agent Workflow with Local AI Agents</a></p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="../local_ai_agents/installing_ollama.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
+                            </a>
+
+                            <a rel="next prefetch" href="../local_ai_agents/multi_agent_workflow.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="../local_ai_agents/installing_ollama.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
+                    </a>
+
+                    <a rel="next prefetch" href="../local_ai_agents/multi_agent_workflow.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
+                    </a>
+            </nav>
+
+        </div>
+
+        <template id=fa-eye><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M288 32c-80.8 0-145.5 36.8-192.6 80.6C48.6 156 17.3 208 2.5 243.7c-3.3 7.9-3.3 16.7 0 24.6C17.3 304 48.6 356 95.4 399.4C142.5 443.2 207.2 480 288 480s145.5-36.8 192.6-80.6c46.8-43.5 78.1-95.4 93-131.1c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C433.5 68.8 368.8 32 288 32zM432 256c0 79.5-64.5 144-144 144s-144-64.5-144-144s64.5-144 144-144s144 64.5 144 144zM288 192c0 35.3-28.7 64-64 64c-11.5 0-22.3-3-31.6-8.4c-.2 2.8-.4 5.5-.4 8.4c0 53 43 96 96 96s96-43 96-96s-43-96-96-96c-2.8 0-5.6 .1-8.4 .4c5.3 9.3 8.4 20.1 8.4 31.6z"/></svg></span></template>
+        <template id=fa-eye-slash><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M38.8 5.1C28.4-3.1 13.3-1.2 5.1 9.2S-1.2 34.7 9.2 42.9l592 464c10.4 8.2 25.5 6.3 33.7-4.1s6.3-25.5-4.1-33.7L525.6 386.7c39.6-40.6 66.4-86.1 79.9-118.4c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C465.5 68.8 400.8 32 320 32c-68.2 0-125 26.3-169.3 60.8L38.8 5.1zM223.1 149.5C248.6 126.2 282.7 112 320 112c79.5 0 144 64.5 144 144c0 24.9-6.3 48.3-17.4 68.7L408 294.5c5.2-11.8 8-24.8 8-38.5c0-53-43-96-96-96c-2.8 0-5.6 .1-8.4 .4c5.3 9.3 8.4 20.1 8.4 31.6c0 10.2-2.4 19.8-6.6 28.3l-90.3-70.8zm223.1 298L373 389.9c-16.4 6.5-34.3 10.1-53 10.1c-79.5 0-144-64.5-144-144c0-6.9 .5-13.6 1.4-20.2L83.1 161.5C60.3 191.2 44 220.8 34.5 243.7c-3.3 7.9-3.3 16.7 0 24.6c14.9 35.7 46.2 87.7 93 131.1C174.5 443.2 239.2 480 320 480c47.8 0 89.9-12.9 126.2-32.5z"/></svg></span></template>
+        <template id=fa-copy><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M502.6 70.63l-61.25-61.25C435.4 3.371 427.2 0 418.7 0H255.1c-35.35 0-64 28.66-64 64l.0195 256C192 355.4 220.7 384 256 384h192c35.2 0 64-28.8 64-64V93.25C512 84.77 508.6 76.63 502.6 70.63zM464 320c0 8.836-7.164 16-16 16H255.1c-8.838 0-16-7.164-16-16L239.1 64.13c0-8.836 7.164-16 16-16h128L384 96c0 17.67 14.33 32 32 32h47.1V320zM272 448c0 8.836-7.164 16-16 16H63.1c-8.838 0-16-7.164-16-16L47.98 192.1c0-8.836 7.164-16 16-16H160V128H63.99c-35.35 0-64 28.65-64 64l.0098 256C.002 483.3 28.66 512 64 512h192c35.2 0 64-28.8 64-64v-32h-47.1L272 448z"/></svg></span></template>
+        <template id=fa-play><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M73 39c-14.8-9.1-33.4-9.4-48.5-.9S0 62.6 0 80V432c0 17.4 9.4 33.4 24.5 41.9s33.7 8.1 48.5-.9L361 297c14.3-8.7 23-24.2 23-41s-8.7-32.2-23-41L73 39z"/></svg></span></template>
+        <template id=fa-clock-rotate-left><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M75 75L41 41C25.9 25.9 0 36.6 0 57.9V168c0 13.3 10.7 24 24 24H134.1c21.4 0 32.1-25.9 17-41l-30.8-30.8C155 85.5 203 64 256 64c106 0 192 86 192 192s-86 192-192 192c-40.8 0-78.6-12.7-109.7-34.4c-14.5-10.1-34.4-6.6-44.6 7.9s-6.6 34.4 7.9 44.6C151.2 495 201.7 512 256 512c141.4 0 256-114.6 256-256S397.4 0 256 0C185.3 0 121.3 28.7 75 75zm181 53c-13.3 0-24 10.7-24 24V256c0 6.4 2.5 12.5 7 17l72 72c9.4 9.4 24.6 9.4 33.9 0s9.4-24.6 0-33.9l-65-65V152c0-13.3-10.7-24-24-24z"/></svg></span></template>
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="../elasticlunr-ef4e11c1.min.js"></script>
+        <script src="../mark-09e88c2c.min.js"></script>
+        <script src="../searcher-09f2665d.js"></script>
+
+        <script src="../clipboard-1626706a.min.js"></script>
+        <script src="../highlight-abc7f01d.js"></script>
+        <script src="../book-c22b7243.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+
+    </div>
+    </body>
+</html>

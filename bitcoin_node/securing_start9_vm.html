@@ -1,0 +1,916 @@
+<!DOCTYPE HTML>
+<html lang="en" class="light sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Securing Start9 OS and VM Environment - Rustacean X Bitcoiner Journey</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="A study and practice guide for Bitcoin and Rust from a journey of Rustacean X Bitcoiner guy">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="../favicon-de23e50b.svg">
+        <link rel="shortcut icon" href="../favicon-8114d1fc.png">
+        <link rel="stylesheet" href="../css/variables-8adf115d.css">
+        <link rel="stylesheet" href="../css/general-0392ca55.css">
+        <link rel="stylesheet" href="../css/chrome-fc474251.css">
+        <link rel="stylesheet" href="../css/print-9e4910d8.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../fonts/fonts-9644e21d.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="mdbook-highlight-css" href="../highlight-493f70e1.css">
+        <link rel="stylesheet" id="mdbook-tomorrow-night-css" href="../tomorrow-night-4c0ae647.css">
+        <link rel="stylesheet" id="mdbook-ayu-highlight-css" href="../ayu-highlight-3fdfc3ac.css">
+
+        <!-- Custom theme stylesheets -->
+
+
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "../";
+            const default_light_theme = "light";
+            const default_dark_theme = "coal";
+            window.path_to_searchindex_js = "../searchindex-190b9119.js";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="../toc-7e248055.js"></script>
+    </head>
+    <body>
+    <div id="mdbook-help-container">
+        <div id="mdbook-help-popup">
+            <h2 class="mdbook-help-title">Keyboard shortcuts</h2>
+            <div>
+                <p>Press <kbd>←</kbd> or <kbd>→</kbd> to navigate between chapters</p>
+                <p>Press <kbd>S</kbd> or <kbd>/</kbd> to search in the book</p>
+                <p>Press <kbd>?</kbd> to show this help</p>
+                <p>Press <kbd>Esc</kbd> to hide this help</p>
+            </div>
+        </div>
+    </div>
+    <div id="mdbook-body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="mdbook-sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("mdbook-sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+                sidebar_toggle.checked = false;
+            }
+            if (sidebar === 'visible') {
+                sidebar_toggle.checked = true;
+            } else {
+                html.classList.remove('sidebar-visible');
+            }
+        </script>
+
+        <nav id="mdbook-sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="../toc.html"></iframe>
+            </noscript>
+            <div id="mdbook-sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="mdbook-page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="mdbook-menu-bar-hover-placeholder"></div>
+                <div id="mdbook-menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="mdbook-sidebar-toggle" class="icon-button" for="mdbook-sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="mdbook-sidebar">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M0 96C0 78.3 14.3 64 32 64H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32C14.3 128 0 113.7 0 96zM0 256c0-17.7 14.3-32 32-32H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32c-17.7 0-32-14.3-32-32zM448 416c0 17.7-14.3 32-32 32H32c-17.7 0-32-14.3-32-32s14.3-32 32-32H416c17.7 0 32 14.3 32 32z"/></svg></span>
+                        </label>
+                        <button id="mdbook-theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="mdbook-theme-list">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M371.3 367.1c27.3-3.9 51.9-19.4 67.2-42.9L600.2 74.1c12.6-19.5 9.4-45.3-7.6-61.2S549.7-4.4 531.1 9.6L294.4 187.2c-24 18-38.2 46.1-38.4 76.1L371.3 367.1zm-19.6 25.4l-116-104.4C175.9 290.3 128 339.6 128 400c0 3.9 .2 7.8 .6 11.6c1.8 17.5-10.2 36.4-27.8 36.4H96c-17.7 0-32 14.3-32 32s14.3 32 32 32H240c61.9 0 112-50.1 112-112c0-2.5-.1-5-.2-7.5z"/></svg></span>
+                        </button>
+                        <ul id="mdbook-theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-ayu">Ayu</button></li>
+                        </ul>
+                        <button id="mdbook-search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="mdbook-searchbar">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M416 208c0 45.9-14.9 88.3-40 122.7L502.6 457.4c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L330.7 376c-34.4 25.2-76.8 40-122.7 40C93.1 416 0 322.9 0 208S93.1 0 208 0S416 93.1 416 208zM208 352c79.5 0 144-64.5 144-144s-64.5-144-144-144S64 128.5 64 208s64.5 144 144 144z"/></svg></span>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">Rustacean X Bitcoiner Journey</h1>
+
+                    <div class="right-buttons">
+                        <a href="../print.html" title="Print this book" aria-label="Print this book">
+                            <span class=fa-svg id="print-button"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M128 0C92.7 0 64 28.7 64 64v96h64V64H354.7L384 93.3V160h64V93.3c0-17-6.7-33.3-18.7-45.3L400 18.7C388 6.7 371.7 0 354.7 0H128zM384 352v32 64H128V384 368 352H384zm64 32h32c17.7 0 32-14.3 32-32V256c0-35.3-28.7-64-64-64H64c-35.3 0-64 28.7-64 64v96c0 17.7 14.3 32 32 32H64v64c0 35.3 28.7 64 64 64H384c35.3 0 64-28.7 64-64V384zm-16-88c-13.3 0-24-10.7-24-24s10.7-24 24-24s24 10.7 24 24s-10.7 24-24 24z"/></svg></span>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="mdbook-search-wrapper" class="hidden">
+                    <form id="mdbook-searchbar-outer" class="searchbar-outer">
+                        <div class="search-wrapper">
+                            <input type="search" id="mdbook-searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="mdbook-searchresults-outer" aria-describedby="searchresults-header">
+                            <div class="spinner-wrapper">
+                                <span class=fa-svg id="fa-spin"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M304 48c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zm0 416c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zM48 304c26.5 0 48-21.5 48-48s-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48zm464-48c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zM142.9 437c18.7-18.7 18.7-49.1 0-67.9s-49.1-18.7-67.9 0s-18.7 49.1 0 67.9s49.1 18.7 67.9 0zm0-294.2c18.7-18.7 18.7-49.1 0-67.9S93.7 56.2 75 75s-18.7 49.1 0 67.9s49.1 18.7 67.9 0zM369.1 437c18.7 18.7 49.1 18.7 67.9 0s18.7-49.1 0-67.9s-49.1-18.7-67.9 0s-18.7 49.1 0 67.9z"/></svg></span>
+                            </div>
+                        </div>
+                    </form>
+                    <div id="mdbook-searchresults-outer" class="searchresults-outer hidden">
+                        <div id="mdbook-searchresults-header" class="searchresults-header"></div>
+                        <ul id="mdbook-searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('mdbook-sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('mdbook-sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#mdbook-sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="mdbook-content" class="content">
+                    <main>
+                        <h1 id="securing-start9-os-and-vm-environment"><a class="header" href="#securing-start9-os-and-vm-environment">Securing Start9 OS and VM Environment</a></h1>
+<p>This guide provides step-by-step instructions to secure your Start9 OS instance—whether running natively or as a Proxmox VM—before installing Bitcoin Core and other self-sovereignty software. Securing your operating system is essential for protecting your node, wallets, and all self-hosted services from unauthorized access, data loss, and privacy threats.</p>
+<p><strong>Objectives:</strong></p>
+<ul>
+<li>Change the Start9 master password to a strong, unique value</li>
+<li>Configure and verify automatic encrypted backups</li>
+<li>Enable Tor for anonymous, private access to your node</li>
+<li>Verify system health, resources, and connectivity</li>
+<li>Document your configuration and backup details securely</li>
+</ul>
+<hr>
+<h2 id="pre-requisites"><a class="header" href="#pre-requisites">Pre-requisites</a></h2>
+<p>Before starting, ensure you have completed the initial Start9 OS setup and have access to the web interface from a trusted device.</p>
+<h3 id="preparation"><a class="header" href="#preparation">Preparation</a></h3>
+<ul>
+<li>Start9 OS installed and booted (native or as a Proxmox VM)</li>
+<li>Initial Start9 setup wizard completed</li>
+<li>Master password set during initial setup</li>
+<li>Access to Start9 web interface (<code>https://xxx-yyy.local</code> or via IP address)</li>
+</ul>
+<h3 id="hardware"><a class="header" href="#hardware">Hardware</a></h3>
+<ul>
+<li><strong>Start9 OS device</strong> (native hardware or Proxmox VM)</li>
+<li><strong>MacBook, desktop, or laptop</strong> for secure access and documentation</li>
+<li><strong>USB drive, NAS, or external storage</strong> for backups (optional)</li>
+</ul>
+<h3 id="software"><a class="header" href="#software">Software</a></h3>
+<ul>
+<li>Start9 OS running (latest stable release)</li>
+<li>Web browser (Safari, Chrome, Firefox, etc.)</li>
+<li>SSH client for advanced access (optional)</li>
+<li>or Browser for private access (optional)</li>
+</ul>
+<h3 id="references"><a class="header" href="#references">References</a></h3>
+<ul>
+<li><a href="https://docs.start9.com">Start9 Official Documentation</a></li>
+<li><a href="https://www.torproject.org/download/">Tor Browser Download</a></li>
+<li><a href="https://community.start9.com/">Start9 Community Forums</a></li>
+<li><a href="https://pve.proxmox.com/wiki/Storage:_CIFS">Proxmox: How to add a Samba (CIFS) share</a></li>
+<li><a href="https://www.samba.org/samba/docs/">Samba: Official Documentation</a></li>
+<li><a href="https://documentation.ubuntu.com/server/how-to/samba">Ubuntu: Samba server guide</a></li>
+</ul>
+<hr>
+<h2 id="step-by-step-instructions"><a class="header" href="#step-by-step-instructions">Step-by-Step Instructions</a></h2>
+<p>Step 1: Change Start9 Master Password</p>
+<p>The master password is your primary access control to Start9. Set a strong, unique password:</p>
+<ol>
+<li>Access Start9 web interface: <code>https://xxx-yyy.local</code> or <code>https://192.168.1.101</code></li>
+<li>Log in with your existing master password</li>
+<li>Click on <strong>System</strong> in the sidebar</li>
+<li>Go to <strong>Manage</strong></li>
+<li>Select <strong>Change Master Password</strong></li>
+<li>Enter your current password</li>
+<li>Enter new strong password (20+ characters)</li>
+<li>Confirm new password</li>
+<li>Click <strong>Change Password</strong></li>
+</ol>
+<blockquote>
+<p><strong>🔒 Password Recommendations:</strong></p>
+<ul>
+<li>Minimum 20 characters</li>
+<li>Mix uppercase, lowercase, numbers, special characters</li>
+<li>Use passphrase format (e.g., <code>Bitcoin*Sovereignty2025!</code>)</li>
+<li>Store securely in password manager</li>
+<li>Keep backup written down in secure location</li>
+</ul>
+</blockquote>
+<p>Step 2: Configure Start9 Backup &amp; Recovery</p>
+<p>Back up your Start9 OS before proceeding. First, decide where you want to store your backup. Start9 supports several backup destinations:</p>
+<p><strong>Backup destination options (for this setup):</strong></p>
+<ul>
+<li><strong>Internal SSD (chosen):</strong> A dedicated folder on the 1TB SSD used by Proxmox VE and other VMs, selected because it has ample available space for regular backups. This SSD is separate from the 2TB SSD fully allocated to Start9 OS and its data, ensuring true redundancy and protecting against data loss if the main Start9 disk fails.</li>
+<li><strong>Local storage:</strong> USB drive connected to Start9 (optional, for portability and offline safety)</li>
+<li><strong>External storage:</strong> NAS or external hard drive on your local network (optional)</li>
+<li><strong>Cloud backup:</strong> Encrypted backup to a supported cloud provider (optional)</li>
+</ul>
+<blockquote>
+<p><strong>🔐 Backup Safety:</strong> Backups contain all your service data, private keys, and configurations. Store them securely and encrypt if using external storage.</p>
+</blockquote>
+<p>If you choose to use an internal SSD (allocated to Proxmox VE and other services/VMs) as your backup destination, follow these steps:</p>
+<p><strong>How to prepare and use an internal SSD for Start9 backups:</strong></p>
+<ol>
+<li>
+<p>On your Proxmox VE host, identify the 1TB SSD (used for Proxmox VE and other VMs) that has available space for backups. Do not use the 2TB SSD fully allocated to Start9 OS and its data—this is for redundancy.</p>
+<p><strong>To create a dedicated backup folder on the 1TB SSD:</strong></p>
+<ul>
+<li>
+<p>Log in to your Proxmox VE host via SSH or the web shell.</p>
+</li>
+<li>
+<p>Create a folder for Start9 backups (e.g., <code>/mnt/start9-backups</code>):</p>
+<pre><code class="language-bash">sudo mkdir -p /mnt/start9-backups
+# Check the UID and GID for the 'start9' user and group:
+id start9
+# Example output: uid=1000(start9) gid=1001(start9) ...
+# Use these values to set ownership:
+sudo chown 1000:1001 /mnt/start9-backups
+# (Replace 1000:1001 with the actual UID:GID if different)
+</code></pre>
+</li>
+</ul>
+</li>
+</ol>
+<blockquote>
+<p>🧑‍💻 <strong>Create start9 User and Group (if needed):</strong></p>
+<pre><code class="language-bash">sudo groupadd -g 1001 start9
+sudo useradd -m -u 1000 -g 1001 start9
+sudo passwd start9
+</code></pre>
+<p>This creates a <code>start9</code> user with UID 1000 and GID 1001, and sets a password for use as backup credentials.</p>
+</blockquote>
+<ul>
+<li>
+<p>(Optional) If you want to use a dedicated partition, use <code>lsblk</code> to identify free space, then partition and format it (e.g., with <code>fdisk</code> and <code>mkfs.ext4</code>), then mount it at <code>/mnt/start9-backups</code> and add to <code>/etc/fstab</code> for persistence.</p>
+</li>
+<li>
+<p>Next, map the directory in Proxmox VE:</p>
+</li>
+<li>
+<p>In the Proxmox web UI, go to <strong>Datacenter</strong> → <strong>Directory Mapping</strong>.</p>
+</li>
+<li>
+<p>Click <strong>Add</strong>.</p>
+</li>
+<li>
+<p>In the pop-up, fill in the following attributes:</p>
+<ul>
+<li><strong>Name:</strong> start9-backups</li>
+<li><strong>Path:</strong> /mnt/start9-backups</li>
+<li><strong>Node:</strong> (select your Proxmox node)</li>
+<li><strong>Comment:</strong> (optional, e.g., “Start9 backup storage”)</li>
+</ul>
+</li>
+<li>
+<p>Click <strong>Create</strong> to add the mapping.</p>
+</li>
+</ul>
+<figure style="margin:1.5em 0;text-align:center;max-width:100%;">
+   <img src="../images/proxmox_datacenter_directory_mapping.png" alt="Proxmox Datacenter Directory Mapping UI" style="width:100%;max-width:480px;height:auto;border-radius:12px;box-shadow:0 2px 8px rgba(0,0,0,0.08);object-fit:cover;" loading="lazy" decoding="async" sizes="(max-width: 600px) 95vw, 480px">
+   <figcaption style="font-size:0.98em;color:#555;margin-top:0.5em;">Proxmox Datacenter Directory Mapping UI.</figcaption>
+</figure>
+<ol start="2">
+<li>
+<p>Make this folder accessible to your Start9 VM as a network share (SMB/CIFS or NFS):</p>
+<p>Set up an SMB (Samba) or NFS share for <code>/mnt/start9-backups</code> on your Proxmox host, and connect to it from the Start9 OS using the backup destination setup. Ensure network access and permissions are configured appropriately.</p>
+<p>→ For detailed instructions, see <a href="#how-to-set-up-an-smb-samba-or-nfs-share-on-proxmox-ve">How to Set Up an SMB (Samba) or NFS Share on Proxmox VE</a></p>
+</li>
+<li>
+<p>In the Start9 web interface, click on <strong>System</strong> in the sidebar.</p>
+</li>
+<li>
+<p>Go to <strong>Backups</strong>.</p>
+</li>
+<li>
+<p>Click <strong>Create Backup</strong>.</p>
+</li>
+<li>
+<p>In the backup dialog, click <strong>Open New</strong> to select or add a new backup destination.</p>
+</li>
+</ol>
+<figure style="margin:1.5em 0;text-align:center;max-width:100%;">
+   <img src="../images/start9_system_backups_create_backup.png" alt="Start9 System Backups Create Backup UI" style="width:100%;max-width:480px;height:auto;border-radius:12px;box-shadow:0 2px 8px rgba(0,0,0,0.08);object-fit:cover;" loading="lazy" decoding="async" sizes="(max-width: 600px) 95vw, 480px">
+   <figcaption style="font-size:0.98em;color:#555;margin-top:0.5em;">Start9 System Backups Create Backup UI.</figcaption>
+</figure>
+<ol start="8">
+<li>
+<p>Fill in values for backup destination attributes to create new network folder:</p>
+<ul>
+<li><strong>Hostname/IP:</strong> The IP address or hostname of your Proxmox host (e.g., <code>192.168.1.100</code>)</li>
+<li><strong>Path:</strong> The shared folder path (e.g., <code>/mnt/start9-backups</code>)</li>
+<li><strong>Username:</strong> The user account with access to the share (e.g., <code>start9</code> or your Proxmox user)</li>
+<li><strong>Password:</strong> The password for the above user account</li>
+</ul>
+</li>
+<li>
+<p>After filling in the backup destination values, click the <strong>Connect</strong> button to continue.</p>
+</li>
+<li>
+<p>Select the Start9 services you want to back up (e.g., Bitcoin Core, Electrs, Mempool) by checking their boxes.</p>
+</li>
+</ol>
+<figure style="margin:1.5em 0;text-align:center;max-width:100%;">
+   <img src="../images/start9_system_create_backup_select_services_to_back_up.png" alt="Start9 System Create Backup - Select Services to Back Up" style="width:100%;max-width:480px;height:auto;border-radius:12px;box-shadow:0 2px 8px rgba(0,0,0,0.08);object-fit:cover;" loading="lazy" decoding="async" sizes="(max-width: 600px) 95vw, 480px">
+   <figcaption style="font-size:0.98em;color:#555;margin-top:0.5em;">Start9 System Create Backup - Select Services to Back Up.</figcaption>
+</figure>
+<ol start="11">
+<li>Click <strong>Back Up Selected</strong> button to continue.</li>
+<li>When prompted, enter your Start9 master password (this will be used to encrypt the backup).</li>
+<li>Click <strong>Create Backup</strong> button to start the process.</li>
+<li>Wait for the backup to complete and verify that it finishes successfully.</li>
+</ol>
+<ul>
+<li>You can verify backup completion in two ways:
+<ul>
+<li><strong>Via notification:</strong>
+<ul>
+<li>Under <strong>Notifications</strong>, a notification will appear when the backup completes successfully.</li>
+</ul>
+<figure style="margin:1.5em 0;text-align:center;max-width:100%;">
+  <img src="../images/start9_notifications_backup_complete.png" alt="Start9 Backup Complete Notification" style="width:100%;max-width:480px;height:auto;border-radius:12px;box-shadow:0 2px 8px rgba(0,0,0,0.08);object-fit:cover;" loading="lazy" decoding="async" sizes="(max-width: 600px) 95vw, 480px">
+  <figcaption style="font-size:0.98em;color:#555;margin-top:0.5em;">Start9 Backup Complete Notification.</figcaption>
+</figure>
+</li>
+<li><strong>Via last backup info:</strong>
+<ul>
+<li>The last backup information is shown under <strong>System → Backups → Create Backup</strong> menu.</li>
+</ul>
+<figure style="margin:1.5em 0;text-align:center;max-width:100%;">
+  <img src="../images/start9_system_last_backup.png" alt="Start9 System Last Backup Info" style="width:100%;max-width:480px;height:auto;border-radius:12px;box-shadow:0 2px 8px rgba(0,0,0,0.08);object-fit:cover;" loading="lazy" decoding="async" sizes="(max-width: 600px) 95vw, 480px">
+  <figcaption style="font-size:0.98em;color:#555;margin-top:0.5em;">Start9 System Last Backup Info.</figcaption>
+</figure>
+</li>
+</ul>
+</li>
+</ul>
+<blockquote>
+<p><strong>💡 Backup Tip:</strong></p>
+<p>Start9 backups cannot be scheduled automatically. Make it a habit to perform manual backups regularly—especially after major changes, updates, or installing new services. This ensures your data and configurations are always protected.</p>
+</blockquote>
+<h3 id="step-3-enable-tor-service-for-anonymity"><a class="header" href="#step-3-enable-tor-service-for-anonymity">Step 3: Enable Tor Service for Anonymity</a></h3>
+<p>Start9 OS includes built-in Tor support for accessing your node privately.</p>
+<ol>
+<li>In the Start9 web interface, click on <strong>System</strong> in the sidebar.</li>
+<li>Go to <strong>About</strong>.</li>
+<li>Under <strong>Web Addresses</strong>, locate the <strong>Tor</strong> address (looks like: <code>abcd1234efgh5678.onion</code>).</li>
+<li>Document your Tor address securely.</li>
+</ol>
+<p><strong>Benefits:</strong></p>
+<ul>
+<li>Access Start9 from anywhere without exposing your IP</li>
+<li>Enhanced privacy when connecting to your node</li>
+<li>Protection from ISP monitoring</li>
+</ul>
+<p><strong>Usage:</strong></p>
+<ul>
+<li>Install Tor Browser on your MacBook</li>
+<li>Navigate to your <code>.onion</code> address to access Start9 securely</li>
+<li>Connect wallets and services via Tor for maximum privacy</li>
+</ul>
+<p><strong>How to install Tor Browser on macOS:</strong></p>
+<blockquote>
+<p><strong>📱 iOS Access Guide:</strong> See <a href="#accessing-start9-web-interface-via-tor-on-ios">Accessing Start9 Web Interface via Tor on iOS</a> for step-by-step instructions.</p>
+</blockquote>
+<ol>
+<li>
+<p>Go to <a href="https://www.torproject.org/download/">Tor Browser Download Page</a> — Official site to download the Tor Browser for macOS, Windows, and Linux.</p>
+</li>
+<li>
+<p>Click <strong>Download</strong> for macOS</p>
+</li>
+<li>
+<p><strong>Verify the download</strong> (critical security step):</p>
+<ul>
+<li>On the Tor Project page, find the <strong>“Signature”</strong> link next to your macOS download</li>
+<li>Download both the <code>.dmg</code> file and its <code>.asc</code> signature file</li>
+<li>Open Terminal and run:</li>
+</ul>
+<pre><code class="language-bash"># Install GnuPG if needed
+brew install gnupg
+
+# Navigate to Downloads folder
+cd ~/Downloads
+
+# Verify the signature
+# Optional: Fetch the key (may fail if keyserver is down)
+gpg --recv-keys 0xEBE9E286975A05796955E2084E3EDDDD37601E14 2&gt;/dev/null || true
+
+# Verify - this works even if recv-keys fails (uses cached key or key in signature)
+gpg --verify tor-browser-macos-15.0.3.dmg.asc tor-browser-macos-15.0.3.dmg
+</code></pre>
+<ul>
+<li>You should see: <strong>“Good signature from Tor Project”</strong> ✓</li>
+<li>If you see “no public key” error, try the recv-keys command again or download the key manually from https://keys.openpgp.org/</li>
+<li>If signature verification fails, <strong>do not use the file</strong> - download again</li>
+</ul>
+</li>
+<li>
+<p>Open the verified <code>.dmg</code> file</p>
+</li>
+<li>
+<p>Drag <strong>Tor Browser</strong> to your <strong>Applications</strong> folder</p>
+</li>
+<li>
+<p>Open <strong>Applications</strong> → <strong>Tor Browser</strong></p>
+</li>
+<li>
+<p>Click <strong>Connect</strong> to connect to the Tor network (takes 30-60 seconds)</p>
+</li>
+<li>
+<p>Once connected, paste your Start9 <code>.onion</code> address in the address bar</p>
+</li>
+<li>
+<p>You may see a certificate warning - <strong>This is normal and expected</strong></p>
+</li>
+</ol>
+<p><strong>About the HTTPS certificate warning:</strong></p>
+<p>When you access your Start9 <code>.onion</code> address via Tor Browser, you’ll likely see:</p>
+<pre><code class="language-text">Warning: Potential Security Risk Ahead
+Tor Browser detected a potential security threat...
+</code></pre>
+<p><strong>This is NOT a security problem.</strong> Here’s why:</p>
+<ul>
+<li>Start9 uses a <strong>self-signed certificate</strong> (not from a Certificate Authority)</li>
+<li>Self-signed certs are normal for local/private services</li>
+<li>Tor Browser warns about self-signed certs as a precaution</li>
+<li>Your connection is still encrypted via Tor</li>
+</ul>
+<p><strong>How to proceed:</strong></p>
+<ol>
+<li>Click <strong>Advanced</strong> → <strong>Accept the Risk and Continue</strong></li>
+<li>You’ll now see Start9 login page</li>
+<li>Log in with your Start9 <strong>master password</strong></li>
+<li>The connection is secure (traffic goes through Tor encryption + HTTPS)</li>
+</ol>
+<p><strong>Why self-signed certs are fine here:</strong></p>
+<ul>
+<li>You’re connecting to your own hardware via Tor (private network)</li>
+<li>Tor provides encryption and anonymity</li>
+<li>Certificate validation is less critical for personal services</li>
+<li>This is standard practice for self-hosted services</li>
+</ul>
+<p><strong>How to permanently fix the certificate warning:</strong></p>
+<p>There are two approaches:</p>
+<p><strong>Option 1: Install a valid certificate (Advanced)</strong></p>
+<blockquote>
+<p><strong>🛡️ macOS Security Prompt:</strong> During this process, macOS will prompt you to enter your Mac password to confirm changes to the System keychain and trust settings.</p>
+</blockquote>
+<ol>
+<li>In the Start9 web interface, click on <strong>System</strong> in the sidebar.</li>
+<li>Go to <strong>Manage</strong>.</li>
+<li>Click the <strong>Root CA</strong> section.</li>
+<li>Click the <strong>Download Root CA</strong> button to download the certificate authority file.</li>
+<li>Install the Root CA on your Mac to trust your Start9’s self-signed certificates:
+<ul>
+<li>Double-click the downloaded Root CA file (named after your Start9 device, e.g., <code>xxx-yyy.crt</code>).</li>
+<li>The <strong>Keychain Access</strong> app will open. Choose <strong>System</strong> as the keychain and click <strong>Add</strong>.</li>
+<li>In Keychain Access, find the imported certificate under the <strong>System</strong> keychain, named after your Start9 device (e.g., <code>xxx-yyy Local Root CA</code>).</li>
+<li>Double-click the certificate, expand <strong>Trust</strong>, and set <strong>When using this certificate</strong> to <strong>Always Trust</strong>.</li>
+<li>Close the window.</li>
+<li>Restart your browser (including Tor Browser) for the changes to take effect.</li>
+<li>Your browser will now trust your Start9’s self-signed certificates, and you should no longer see HTTPS warnings when accessing your node.</li>
+</ul>
+</li>
+<li>Once installed, your browser (including Tor Browser) will recognize the certificate as valid for your Start9 services.</li>
+</ol>
+<p><strong>Option 2: Trust the self-signed certificate (Simple)</strong></p>
+<ol>
+<li>On first visit, click <strong>Advanced</strong> → <strong>Accept the Risk and Continue</strong></li>
+<li>Tor Browser will remember the certificate for this <code>.onion</code> address</li>
+<li>On future visits, the warning may not appear (or appear less prominently)</li>
+<li>This is the practical approach for personal self-hosted services</li>
+</ol>
+<p><strong>Option 3: Use HTTP (Least Secure)</strong></p>
+<ol>
+<li>Access Start9 over unencrypted HTTP (not recommended)</li>
+<li>Less security but no certificate warnings</li>
+<li><strong>Not recommended</strong> - defeats the purpose of HTTPS</li>
+</ol>
+<p><strong>Recommendation:</strong></p>
+<ul>
+<li>For personal use: <strong>Option 2</strong> (accept and continue) is recommended and widely used</li>
+<li>For multiple users or shared environments: <strong>Option 1</strong> (install Root CA) is more secure and preferred</li>
+<li>Most Bitcoin node operators use Option 2 without issues; Option 1 is for advanced or multi-user setups</li>
+</ul>
+<p><strong>Why verify the signature?</strong></p>
+<ul>
+<li>Protects against man-in-the-middle attacks</li>
+<li>Ensures the file hasn’t been tampered with</li>
+<li>Verifies it’s authentic Tor Project software</li>
+</ul>
+<blockquote>
+<p><strong>🕸️ Tor Connection Tip:</strong> The first connection may take a few seconds as Tor establishes a circuit. If you see a security warning, ensure you typed the .onion address correctly.</p>
+</blockquote>
+<p><strong>Alternative: Using curl with Tor (command line):</strong></p>
+<pre><code class="language-bash"># If you prefer CLI access:
+brew install tor
+
+# If you get an error on MacBook Air M1 (Apple Silicon):
+arch -arm64 brew install tor
+
+# Start Tor daemon
+tor &amp;
+
+# Access your Start9 .onion address via Tor proxy
+curl -x socks5h://127.0.0.1:9050 https://abcd1234efgh5678.onion
+</code></pre>
+<blockquote>
+<p><strong>💡 Note for Apple Silicon (M1/M2/M3) Macs:</strong> If you see errors with <code>brew install tor</code>, use <code>arch -arm64 brew install tor</code> to ensure Tor is installed for your Mac’s ARM64 architecture. This avoids compatibility issues and ensures Tor runs natively and efficiently.</p>
+</blockquote>
+<h3 id="step-4-ssh-access-optional"><a class="header" href="#step-4-ssh-access-optional">Step 4: SSH Access (Optional)</a></h3>
+<blockquote>
+<p><strong>🛡️ SSH Security Note:</strong> SSH access to Start9 is not critical for running a Bitcoin node. The web interface provides everything you need. Skip this unless you specifically need command-line access.</p>
+</blockquote>
+<p>If you want command-line access to Start9:</p>
+<ol>
+<li>
+<p>In the Start9 web interface, click on <strong>System</strong> in the sidebar.</p>
+</li>
+<li>
+<p>Go to <strong>Manage</strong>.</p>
+</li>
+<li>
+<p>Click on <strong>SSH</strong>.</p>
+</li>
+<li>
+<p>Click the <strong>+ Add New Key</strong> button to add your SSH public key.</p>
+</li>
+<li>
+<p>Paste your SSH public key and save:</p>
+<ul>
+<li>
+<p>If you do not have an SSH key, generate one on your MacBook by running:</p>
+<pre><code class="language-bash">ssh-keygen -t ed25519 -C "your_email@example.com"
+# or use rsa if needed:
+# ssh-keygen -t rsa -b 4096 -C "your_email@example.com"
+</code></pre>
+</li>
+<li>
+<p>By default, your public key will be in <code>~/.ssh/id_ed25519.pub</code> (or <code>id_rsa.pub</code>).</p>
+</li>
+<li>
+<p>To copy your public key to the clipboard, run:</p>
+<pre><code class="language-bash">pbcopy &lt; ~/.ssh/id_ed25519.pub
+# or for RSA:
+# pbcopy &lt; ~/.ssh/id_rsa.pub
+</code></pre>
+</li>
+<li>
+<p>In the Start9 web interface, paste the copied key into the field provided and click <strong>Submit</strong>.</p>
+</li>
+</ul>
+</li>
+<li>
+<p>From your MacBook, connect using:</p>
+<pre><code class="language-bash">ssh start9@192.168.1.101
+</code></pre>
+</li>
+</ol>
+<blockquote>
+<p>🛑 <strong>Troubleshooting: SSH Host Key Has Changed</strong></p>
+<p>If you see a warning like:</p>
+<pre><code class="language-text">@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+@    WARNING: REMOTE HOST IDENTIFICATION HAS CHANGED!     @
+@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+IT IS POSSIBLE THAT SOMEONE IS DOING SOMETHING NASTY!
+Someone could be eavesdropping on you right now (man-in-the-middle attack)!
+It is also possible that a host key has just been changed.
+Host key verification failed.
+</code></pre>
+<p>This usually happens after reinstalling or resetting your Start9 device. To fix:</p>
+<ol>
+<li>
+<p>If you trust the new key, remove the old key from your known_hosts file:</p>
+<pre><code class="language-bash">ssh-keygen -R 192.168.1.101
+</code></pre>
+</li>
+<li>
+<p>Try connecting again:</p>
+<pre><code class="language-bash">ssh start9@192.168.1.101
+</code></pre>
+<p>Accept the new host key when prompted.</p>
+</li>
+</ol>
+</blockquote>
+<h3 id="step-5-network-configuration"><a class="header" href="#step-5-network-configuration">Step 5: Network Configuration</a></h3>
+<blockquote>
+<p>🗄️ <strong>Proxmox VM Only:</strong> This step is only for Proxmox VM users. Skip if running native Start9.</p>
+</blockquote>
+<p>If running Start9 as a Proxmox VM, verify the VM network:</p>
+<ol>
+<li>
+<p>In Proxmox web interface, select your <strong>Start9 VM</strong></p>
+</li>
+<li>
+<p>Go to <strong>Hardware</strong> → <strong>Network Device</strong></p>
+</li>
+<li>
+<p>Verify:</p>
+<ul>
+<li><strong>Bridge</strong>: vmbr0 (or your bridge name)</li>
+<li><strong>Model</strong>: VirtIO (fastest)</li>
+<li><strong>MAC Address</strong>: Should be assigned by DHC</li>
+</ul>
+</li>
+</ol>
+<h3 id="step-6-verify-internet-connectivity-final-check"><a class="header" href="#step-6-verify-internet-connectivity-final-check">Step 6: Verify Internet Connectivity (Final Check)</a></h3>
+<blockquote>
+<p>🌐 <strong>Network Requirement:</strong> This step is informational only. Start9 needs internet access to sync the Bitcoin blockchain and reach peers.</p>
+</blockquote>
+<p>Before installing Bitcoin Core, verify:</p>
+<ol>
+<li>
+<p><strong>Test from MacBook</strong>:</p>
+<pre><code class="language-bash"># Ping Start9 IP
+ping 192.168.1.101
+
+# Or by hostname if using mDNS
+ping xxx-yyy.local
+</code></pre>
+</li>
+<li>
+<p><strong>Check Start9 web interface</strong>: Load https://192.168.1.101 - if it loads, internet works</p>
+</li>
+</ol>
+<p><strong>If connectivity fails:</strong></p>
+<ul>
+<li>Check Proxmox VM network settings</li>
+<li>Verify DHCP lease on router</li>
+<li>Restart the VM</li>
+<li>Check cable connections (if native hardware)</li>
+</ul>
+<h3 id="step-7-document-your-configuration"><a class="header" href="#step-7-document-your-configuration">Step 7: Document Your Configuration</a></h3>
+<p>Create a secure document with:</p>
+<pre><code class="language-markdown">## Start9 Configuration Reference
+
+**Access Information:**
+
+-  URL: https://xxx-yyy.local
+-  IP Address: 192.168.1.101
+-  Master Password: [STORED SECURELY]
+-  Tor Address: [your-onion-address].onion
+
+**Backup Information:**
+
+-  Backup Location: [where backups are stored]
+-  Backup Frequency: Daily
+-  Last Successful Backup: [date]
+
+**Network Information:**
+
+-  Router IP: 192.168.1.254
+-  Start9 IP: 192.168.1.101
+-  Proxmox Host IP: 192.168.1.100 (if using virtualization)
+
+**Important Dates:**
+
+-  Start9 Installation Date: [date]
+-  Last System Update: [date]
+-  Last Password Change: [date]
+</code></pre>
+<p>Store this document in an encrypted password manager or safe.</p>
+<hr>
+<h3 id="accessing-start9-web-interface-via-tor-on-ios"><a class="header" href="#accessing-start9-web-interface-via-tor-on-ios">Accessing Start9 Web Interface via Tor on iOS</a></h3>
+<p>You can securely access your Start9 web interface from your iPhone or iPad using the Tor Browser app. This is useful for remote administration or when you want to use your .onion address for privacy.</p>
+<ol>
+<li>
+<p><strong>Install Tor Browser</strong></p>
+<ul>
+<li>Download the recommended Tor browser app for iOS: <strong>Onion Browser</strong> by Mike Tigas, available for free on the iOS App Store. This is the most widely used and trusted Tor browser for iPhone and iPad, endorsed by the Tor Project.</li>
+<li>In the App Store, search for “Onion Browser” (developer: Mike Tigas) and verify it is the official app. Avoid unofficial clones or apps with few reviews.</li>
+<li>Open Onion Browser and complete any initial setup prompts.</li>
+</ul>
+</li>
+<li>
+<p><strong>Get Your Start9 .onion Address</strong></p>
+<ul>
+<li>In the Start9 web interface (from a trusted device), go to <strong>System → About</strong>.</li>
+<li>Under <strong>Web Addresses</strong>, copy your Tor’s .onion address (e.g., <code>abcdefg123456789.onion</code>).</li>
+</ul>
+</li>
+<li>
+<p><strong>Open the .onion Address in Tor Browser</strong></p>
+<ul>
+<li>Open the Tor Browser app on your iOS device.</li>
+<li>Paste your Start9 .onion address into the address bar and press Go.</li>
+<li>Log in with your Start9 credentials as usual.</li>
+</ul>
+</li>
+</ol>
+<blockquote>
+<p><strong>📱 Tor Mobile Tips:</strong></p>
+<ul>
+<li>For best security, always use the Tor Browser app for .onion addresses.</li>
+<li>You can bookmark your Start9 .onion address in the app for quick access.</li>
+<li>If you have trouble connecting, check that Tor is enabled on your Start9 device and your mobile device has internet access.</li>
+</ul>
+</blockquote>
+<hr>
+<h3 id="how-to-set-up-an-smb-samba-or-nfs-share-on-proxmox-ve"><a class="header" href="#how-to-set-up-an-smb-samba-or-nfs-share-on-proxmox-ve">How to Set Up an SMB (Samba) or NFS Share on Proxmox VE</a></h3>
+<h4 id="smb-samba-vs-nfs-pros-and-cons"><a class="header" href="#smb-samba-vs-nfs-pros-and-cons">SMB (Samba) vs NFS: Pros and Cons</a></h4>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th>Feature</th><th>SMB (Samba)</th><th>NFS</th></tr>
+</thead>
+<tbody>
+<tr><td><strong>Compatibility</strong></td><td>Works on Windows, macOS, Linux</td><td>Best for Linux/Unix, limited Windows support</td></tr>
+<tr><td><strong>Performance</strong></td><td>Slightly slower on Linux, good on Windows</td><td>Generally faster on Linux</td></tr>
+<tr><td><strong>Authentication</strong></td><td>User/password, supports granular permissions</td><td>Host-based, simpler but less granular</td></tr>
+<tr><td><strong>Ease of Setup</strong></td><td>More config steps, more options</td><td>Simpler for Linux hosts and clients</td></tr>
+<tr><td><strong>Security</strong></td><td>Supports encryption, user auth</td><td>No built-in encryption, relies on network</td></tr>
+<tr><td><strong>Use Case</strong></td><td>Mixed-OS networks, Windows/macOS clients</td><td>Linux-to-Linux sharing, VM environments</td></tr>
+<tr><td><strong>Firewall Ports</strong></td><td>445, 139 (SMB/CIFS)</td><td>2049 (NFS)</td></tr>
+<tr><td><strong>Stability</strong></td><td>Very stable, mature protocol</td><td>Very stable, mature protocol</td></tr>
+</tbody>
+</table>
+</div>
+<p><strong>Summary:</strong></p>
+<ul>
+<li>Use <strong>SMB (Samba)</strong> if you need compatibility with Windows or macOS, or want user-based access control.</li>
+<li>Use <strong>NFS</strong> for Linux-only environments or when you want simpler, faster file sharing between Linux systems (like Proxmox and Linux VMs).</li>
+</ul>
+<h4 id="to-set-up-an-smb-samba-share-used-in-this-guide"><a class="header" href="#to-set-up-an-smb-samba-share-used-in-this-guide">To set up an SMB (Samba) share (used in this guide)</a></h4>
+<ol>
+<li>
+<p>Check that the <code>start9</code> user and group exist and have the correct UID and GID:</p>
+<pre><code class="language-bash">id start9
+getent group 1001
+</code></pre>
+</li>
+<li>
+<p>Check the ownership of the backup directory:</p>
+<pre><code class="language-bash">ls -ld /mnt/start9-backups
+</code></pre>
+</li>
+<li>
+<p>Install Samba if not already installed:</p>
+<pre><code class="language-bash">sudo apt update
+sudo apt install samba
+</code></pre>
+</li>
+<li>
+<p>Edit the Samba configuration file:</p>
+<pre><code class="language-bash">sudo nano /etc/samba/smb.conf
+</code></pre>
+</li>
+<li>
+<p>Add a section for your backup share at the end of the file:</p>
+<pre><code class="language-ini">[start9-backups]
+path = /mnt/start9-backups
+browseable = yes
+read only = no
+guest ok = no
+valid users = start9
+force user = start9
+force group = start9
+create mask = 0660
+directory mask = 0770
+</code></pre>
+</li>
+<li>
+<p>Set a Samba password for the <code>start9</code> user:</p>
+<pre><code class="language-bash">sudo smbpasswd -a start9
+</code></pre>
+</li>
+<li>
+<p>Restart Samba:</p>
+<pre><code class="language-bash">sudo systemctl restart smbd
+</code></pre>
+</li>
+<li>
+<p>Ensure your firewall allows SMB/CIFS (port 445; port 139 is only needed for legacy systems).</p>
+</li>
+</ol>
+<blockquote>
+<p>🛡️ <strong>Firewall Troubleshooting:</strong></p>
+<p>If you have trouble connecting to your Samba share, the issue is usually with the firewall on your Proxmox Datacenter or the Start9 VM itself—not your AT&amp;T or home router. By default, most home routers allow local LAN traffic, so no changes are needed there.</p>
+<p><strong>Where to check:</strong></p>
+<ul>
+<li><strong>Proxmox Datacenter:</strong> Check the firewall settings in the Proxmox web UI under Datacenter → Firewall and on the specific node or VM. Enable TCP port 445 (both IN and OUT) for SMB/CIFS.</li>
+<li><strong>Proxmox PVE Node:</strong> Also check the firewall settings for the Proxmox PVE node itself (Node → Firewall) to ensure TCP port 445 is allowed for SMB/CIFS traffic between the node and VMs.</li>
+<li><strong>Start9 VM:</strong> If the firewall is enabled for the Start9 VM via the Proxmox web UI (VM → Firewall), ensure it allows inbound SMB/CIFS traffic on TCP port 445.</li>
+<li><strong>Client device:</strong> If your Mac, Linux, or Windows client has a firewall, ensure it allows outbound connections to these ports.</li>
+</ul>
+<p><strong>Testing connectivity:</strong></p>
+<ul>
+<li>On Linux/macOS: <code>nc -zv &lt;proxmox-ip&gt; 445</code></li>
+<li>On Windows: <code>telnet &lt;proxmox-ip&gt; 445</code></li>
+<li>Successful connection means port 445 is open and reachable.</li>
+</ul>
+<p>For most home networks, no router changes are required. Only adjust router settings if you have custom LAN firewall rules. Never open SMB/CIFS ports to the internet for security reasons.</p>
+</blockquote>
+<h4 id="to-set-up-an-nfs-share"><a class="header" href="#to-set-up-an-nfs-share">To set up an NFS share</a></h4>
+<p>NFS shares are not used or covered in this mdbook. If you require an NFS share for your environment, please refer to the official Proxmox or Linux documentation for up-to-date instructions:</p>
+<ul>
+<li><a href="https://pve.proxmox.com/wiki/Storage:_NFS">Proxmox: How to add an NFS share</a></li>
+<li><a href="https://ubuntu.com/server/docs/service-nfs">Ubuntu: NFS server setup</a></li>
+</ul>
+<p>NFS is generally recommended only for advanced Linux-to-Linux sharing scenarios. For most users, SMB (Samba) is preferred for compatibility and ease of use.</p>
+<hr>
+<p>👈 Prev: <a href="./setup_software.html">Setting up Bitcoin Node and Self-Sovereignty Software</a></p>
+<p>👉 Next: <a href="./installing_bitcoin_core.html">Installing Bitcoin Core</a></p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="../bitcoin_node/setup_software.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
+                            </a>
+
+                            <a rel="next prefetch" href="../bitcoin_node/installing_bitcoin_core.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="../bitcoin_node/setup_software.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
+                    </a>
+
+                    <a rel="next prefetch" href="../bitcoin_node/installing_bitcoin_core.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
+                    </a>
+            </nav>
+
+        </div>
+
+        <template id=fa-eye><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M288 32c-80.8 0-145.5 36.8-192.6 80.6C48.6 156 17.3 208 2.5 243.7c-3.3 7.9-3.3 16.7 0 24.6C17.3 304 48.6 356 95.4 399.4C142.5 443.2 207.2 480 288 480s145.5-36.8 192.6-80.6c46.8-43.5 78.1-95.4 93-131.1c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C433.5 68.8 368.8 32 288 32zM432 256c0 79.5-64.5 144-144 144s-144-64.5-144-144s64.5-144 144-144s144 64.5 144 144zM288 192c0 35.3-28.7 64-64 64c-11.5 0-22.3-3-31.6-8.4c-.2 2.8-.4 5.5-.4 8.4c0 53 43 96 96 96s96-43 96-96s-43-96-96-96c-2.8 0-5.6 .1-8.4 .4c5.3 9.3 8.4 20.1 8.4 31.6z"/></svg></span></template>
+        <template id=fa-eye-slash><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M38.8 5.1C28.4-3.1 13.3-1.2 5.1 9.2S-1.2 34.7 9.2 42.9l592 464c10.4 8.2 25.5 6.3 33.7-4.1s6.3-25.5-4.1-33.7L525.6 386.7c39.6-40.6 66.4-86.1 79.9-118.4c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C465.5 68.8 400.8 32 320 32c-68.2 0-125 26.3-169.3 60.8L38.8 5.1zM223.1 149.5C248.6 126.2 282.7 112 320 112c79.5 0 144 64.5 144 144c0 24.9-6.3 48.3-17.4 68.7L408 294.5c5.2-11.8 8-24.8 8-38.5c0-53-43-96-96-96c-2.8 0-5.6 .1-8.4 .4c5.3 9.3 8.4 20.1 8.4 31.6c0 10.2-2.4 19.8-6.6 28.3l-90.3-70.8zm223.1 298L373 389.9c-16.4 6.5-34.3 10.1-53 10.1c-79.5 0-144-64.5-144-144c0-6.9 .5-13.6 1.4-20.2L83.1 161.5C60.3 191.2 44 220.8 34.5 243.7c-3.3 7.9-3.3 16.7 0 24.6c14.9 35.7 46.2 87.7 93 131.1C174.5 443.2 239.2 480 320 480c47.8 0 89.9-12.9 126.2-32.5z"/></svg></span></template>
+        <template id=fa-copy><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M502.6 70.63l-61.25-61.25C435.4 3.371 427.2 0 418.7 0H255.1c-35.35 0-64 28.66-64 64l.0195 256C192 355.4 220.7 384 256 384h192c35.2 0 64-28.8 64-64V93.25C512 84.77 508.6 76.63 502.6 70.63zM464 320c0 8.836-7.164 16-16 16H255.1c-8.838 0-16-7.164-16-16L239.1 64.13c0-8.836 7.164-16 16-16h128L384 96c0 17.67 14.33 32 32 32h47.1V320zM272 448c0 8.836-7.164 16-16 16H63.1c-8.838 0-16-7.164-16-16L47.98 192.1c0-8.836 7.164-16 16-16H160V128H63.99c-35.35 0-64 28.65-64 64l.0098 256C.002 483.3 28.66 512 64 512h192c35.2 0 64-28.8 64-64v-32h-47.1L272 448z"/></svg></span></template>
+        <template id=fa-play><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M73 39c-14.8-9.1-33.4-9.4-48.5-.9S0 62.6 0 80V432c0 17.4 9.4 33.4 24.5 41.9s33.7 8.1 48.5-.9L361 297c14.3-8.7 23-24.2 23-41s-8.7-32.2-23-41L73 39z"/></svg></span></template>
+        <template id=fa-clock-rotate-left><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M75 75L41 41C25.9 25.9 0 36.6 0 57.9V168c0 13.3 10.7 24 24 24H134.1c21.4 0 32.1-25.9 17-41l-30.8-30.8C155 85.5 203 64 256 64c106 0 192 86 192 192s-86 192-192 192c-40.8 0-78.6-12.7-109.7-34.4c-14.5-10.1-34.4-6.6-44.6 7.9s-6.6 34.4 7.9 44.6C151.2 495 201.7 512 256 512c141.4 0 256-114.6 256-256S397.4 0 256 0C185.3 0 121.3 28.7 75 75zm181 53c-13.3 0-24 10.7-24 24V256c0 6.4 2.5 12.5 7 17l72 72c9.4 9.4 24.6 9.4 33.9 0s9.4-24.6 0-33.9l-65-65V152c0-13.3-10.7-24-24-24z"/></svg></span></template>
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="../elasticlunr-ef4e11c1.min.js"></script>
+        <script src="../mark-09e88c2c.min.js"></script>
+        <script src="../searcher-09f2665d.js"></script>
+
+        <script src="../clipboard-1626706a.min.js"></script>
+        <script src="../highlight-abc7f01d.js"></script>
+        <script src="../book-c22b7243.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+
+    </div>
+    </body>
+</html>

@@ -1,0 +1,551 @@
+<!DOCTYPE HTML>
+<html lang="en" class="light sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Securing AT&amp;T BGW320 Router - Rustacean X Bitcoiner Journey</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="A study and practice guide for Bitcoin and Rust from a journey of Rustacean X Bitcoiner guy">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="../favicon-de23e50b.svg">
+        <link rel="shortcut icon" href="../favicon-8114d1fc.png">
+        <link rel="stylesheet" href="../css/variables-8adf115d.css">
+        <link rel="stylesheet" href="../css/general-0392ca55.css">
+        <link rel="stylesheet" href="../css/chrome-fc474251.css">
+        <link rel="stylesheet" href="../css/print-9e4910d8.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../fonts/fonts-9644e21d.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="mdbook-highlight-css" href="../highlight-493f70e1.css">
+        <link rel="stylesheet" id="mdbook-tomorrow-night-css" href="../tomorrow-night-4c0ae647.css">
+        <link rel="stylesheet" id="mdbook-ayu-highlight-css" href="../ayu-highlight-3fdfc3ac.css">
+
+        <!-- Custom theme stylesheets -->
+
+
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "../";
+            const default_light_theme = "light";
+            const default_dark_theme = "coal";
+            window.path_to_searchindex_js = "../searchindex-190b9119.js";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="../toc-7e248055.js"></script>
+    </head>
+    <body>
+    <div id="mdbook-help-container">
+        <div id="mdbook-help-popup">
+            <h2 class="mdbook-help-title">Keyboard shortcuts</h2>
+            <div>
+                <p>Press <kbd>←</kbd> or <kbd>→</kbd> to navigate between chapters</p>
+                <p>Press <kbd>S</kbd> or <kbd>/</kbd> to search in the book</p>
+                <p>Press <kbd>?</kbd> to show this help</p>
+                <p>Press <kbd>Esc</kbd> to hide this help</p>
+            </div>
+        </div>
+    </div>
+    <div id="mdbook-body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="mdbook-sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("mdbook-sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+                sidebar_toggle.checked = false;
+            }
+            if (sidebar === 'visible') {
+                sidebar_toggle.checked = true;
+            } else {
+                html.classList.remove('sidebar-visible');
+            }
+        </script>
+
+        <nav id="mdbook-sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="../toc.html"></iframe>
+            </noscript>
+            <div id="mdbook-sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="mdbook-page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="mdbook-menu-bar-hover-placeholder"></div>
+                <div id="mdbook-menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="mdbook-sidebar-toggle" class="icon-button" for="mdbook-sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="mdbook-sidebar">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M0 96C0 78.3 14.3 64 32 64H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32C14.3 128 0 113.7 0 96zM0 256c0-17.7 14.3-32 32-32H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32c-17.7 0-32-14.3-32-32zM448 416c0 17.7-14.3 32-32 32H32c-17.7 0-32-14.3-32-32s14.3-32 32-32H416c17.7 0 32 14.3 32 32z"/></svg></span>
+                        </label>
+                        <button id="mdbook-theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="mdbook-theme-list">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M371.3 367.1c27.3-3.9 51.9-19.4 67.2-42.9L600.2 74.1c12.6-19.5 9.4-45.3-7.6-61.2S549.7-4.4 531.1 9.6L294.4 187.2c-24 18-38.2 46.1-38.4 76.1L371.3 367.1zm-19.6 25.4l-116-104.4C175.9 290.3 128 339.6 128 400c0 3.9 .2 7.8 .6 11.6c1.8 17.5-10.2 36.4-27.8 36.4H96c-17.7 0-32 14.3-32 32s14.3 32 32 32H240c61.9 0 112-50.1 112-112c0-2.5-.1-5-.2-7.5z"/></svg></span>
+                        </button>
+                        <ul id="mdbook-theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-ayu">Ayu</button></li>
+                        </ul>
+                        <button id="mdbook-search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="mdbook-searchbar">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M416 208c0 45.9-14.9 88.3-40 122.7L502.6 457.4c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L330.7 376c-34.4 25.2-76.8 40-122.7 40C93.1 416 0 322.9 0 208S93.1 0 208 0S416 93.1 416 208zM208 352c79.5 0 144-64.5 144-144s-64.5-144-144-144S64 128.5 64 208s64.5 144 144 144z"/></svg></span>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">Rustacean X Bitcoiner Journey</h1>
+
+                    <div class="right-buttons">
+                        <a href="../print.html" title="Print this book" aria-label="Print this book">
+                            <span class=fa-svg id="print-button"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M128 0C92.7 0 64 28.7 64 64v96h64V64H354.7L384 93.3V160h64V93.3c0-17-6.7-33.3-18.7-45.3L400 18.7C388 6.7 371.7 0 354.7 0H128zM384 352v32 64H128V384 368 352H384zm64 32h32c17.7 0 32-14.3 32-32V256c0-35.3-28.7-64-64-64H64c-35.3 0-64 28.7-64 64v96c0 17.7 14.3 32 32 32H64v64c0 35.3 28.7 64 64 64H384c35.3 0 64-28.7 64-64V384zm-16-88c-13.3 0-24-10.7-24-24s10.7-24 24-24s24 10.7 24 24s-10.7 24-24 24z"/></svg></span>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="mdbook-search-wrapper" class="hidden">
+                    <form id="mdbook-searchbar-outer" class="searchbar-outer">
+                        <div class="search-wrapper">
+                            <input type="search" id="mdbook-searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="mdbook-searchresults-outer" aria-describedby="searchresults-header">
+                            <div class="spinner-wrapper">
+                                <span class=fa-svg id="fa-spin"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M304 48c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zm0 416c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zM48 304c26.5 0 48-21.5 48-48s-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48zm464-48c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zM142.9 437c18.7-18.7 18.7-49.1 0-67.9s-49.1-18.7-67.9 0s-18.7 49.1 0 67.9s49.1 18.7 67.9 0zm0-294.2c18.7-18.7 18.7-49.1 0-67.9S93.7 56.2 75 75s-18.7 49.1 0 67.9s49.1 18.7 67.9 0zM369.1 437c18.7 18.7 49.1 18.7 67.9 0s18.7-49.1 0-67.9s-49.1-18.7-67.9 0s-18.7 49.1 0 67.9z"/></svg></span>
+                            </div>
+                        </div>
+                    </form>
+                    <div id="mdbook-searchresults-outer" class="searchresults-outer hidden">
+                        <div id="mdbook-searchresults-header" class="searchresults-header"></div>
+                        <ul id="mdbook-searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('mdbook-sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('mdbook-sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#mdbook-sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="mdbook-content" class="content">
+                    <main>
+                        <h1 id="securing-att-bgw320-router"><a class="header" href="#securing-att-bgw320-router">Securing AT&amp;T BGW320 Router</a></h1>
+<p>This guide provides step-by-step instructions to secure your AT&amp;T BGW320 router for use with Proxmox VE, Start9 OS, and Bitcoin node applications. Following these steps will help protect your infrastructure from unauthorized access and network threats.</p>
+<p><strong>In this guide, you will:</strong></p>
+<ul>
+<li>Change default admin credentials</li>
+<li>Enable firewall and secure access controls</li>
+<li>Configure static IP reservations (for Proxmox and Start9)</li>
+<li>Disable unnecessary services (UPnP, remote management)</li>
+<li>Set up port forwarding (only when needed for Bitcoin node)</li>
+<li>Configure guest network isolation (optional)</li>
+</ul>
+<hr>
+<h2 id="pre-requisites"><a class="header" href="#pre-requisites">Pre-requisites</a></h2>
+<h3 id="preparation"><a class="header" href="#preparation">Preparation</a></h3>
+<ul>
+<li>Ensure you have physical access to your AT&amp;T BGW320 router and its admin label.</li>
+<li>Gather admin credentials (Access Code, Wi-Fi name, Wi-Fi password).</li>
+<li>Confirm you have access to a device (laptop/desktop) connected to the router’s network.</li>
+</ul>
+<h3 id="hardware"><a class="header" href="#hardware">Hardware</a></h3>
+<ul>
+<li>AT&amp;T BGW320 router (with admin access)</li>
+<li>Minisforum X1-255 (or similar x86_64 hardware) for Proxmox VE</li>
+</ul>
+<h3 id="software"><a class="header" href="#software">Software</a></h3>
+<ul>
+<li>Proxmox VE installed on your hardware</li>
+<li>Start9 OS running (either natively or as a VM)</li>
+</ul>
+<h3 id="references"><a class="header" href="#references">References</a></h3>
+<ul>
+<li><a href="https://www.att.com/support/article/u-verse-high-speed-internet/KM1394673">AT&amp;T BGW320 Manual</a></li>
+<li><a href="https://bitcoin.org/en/full-node#port-forwarding">Bitcoin Core Port Forwarding</a></li>
+<li><a href="https://www.nist.gov/cyberframework">Network Security Best Practices (NIST)</a></li>
+</ul>
+<hr>
+<h2 id="step-by-step-instructions"><a class="header" href="#step-by-step-instructions">Step-by-Step Instructions</a></h2>
+<h3 id="step-1-review-router-label-credentials"><a class="header" href="#step-1-review-router-label-credentials">Step 1: Review Router Label Credentials</a></h3>
+<p>Your AT&amp;T BGW320 router label contains three important credentials:</p>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th>Credential</th><th>Purpose</th><th>Security Recommendation</th></tr>
+</thead>
+<tbody>
+<tr><td><strong>Access Code</strong></td><td>Router admin interface login</td><td>✅ Keep default (random, unique per router) if physically secure</td></tr>
+<tr><td><strong>Wi-Fi Name</strong></td><td>Wireless network SSID</td><td>⚠️ Change (default name reveals router model and AT&amp;T customer)</td></tr>
+<tr><td><strong>Wi-Fi Password</strong></td><td>Wireless network password</td><td>⚠️ Change (default may be shorter and less secure)</td></tr>
+</tbody>
+</table>
+</div>
+<blockquote>
+<p><strong>🔒 Physical Security:</strong> If your router is in a locked cabinet/room with no visitor access, the default credentials are reasonably secure. If service technicians, guests, or roommates have access, change all credentials.</p>
+</blockquote>
+<h3 id="step-2-access-router-admin-interface"><a class="header" href="#step-2-access-router-admin-interface">Step 2: Access Router Admin Interface</a></h3>
+<ol>
+<li>Open your web browser</li>
+<li>Navigate to <code>http://192.168.1.254</code> (default gateway)</li>
+</ol>
+<blockquote>
+<p><strong>🌐 Admin Page Access Tip:</strong> Make sure you are connected to the local network (not cellular/mobile data). If you cannot access the admin page, try the alternate gateway address <code>http://192.168.1.1</code>, reset your browser cache or use incognito mode, and check your Ethernet connection to the router.</p>
+</blockquote>
+<ol start="3">
+<li>The router home page loads without requiring authentication</li>
+</ol>
+<blockquote>
+<p><strong>🔑 Access Control:</strong> The AT&amp;T BGW320 allows browsing basic status pages without authentication, but certain settings require the Access Code (from the router label) to modify. This provides reasonable security while allowing easy monitoring.</p>
+</blockquote>
+<h3 id="step-3-change-access-code"><a class="header" href="#step-3-change-access-code">Step 3: Change Access Code</a></h3>
+<p><strong>Should you change the default Access Code?</strong></p>
+<p>The printed Access Code on your AT&amp;T BGW320 is randomly generated and unique to your router, making it reasonably secure if:</p>
+<ul>
+<li>Your router is physically secured in your home</li>
+<li>You trust household members and visitors won’t access the label</li>
+<li>You haven’t shared the code publicly</li>
+</ul>
+<p><strong>Consider changing it if:</strong></p>
+<ul>
+<li>You’ve shared photos of your router online (showing the label)</li>
+<li>You have concerns about physical access by service technicians or guests</li>
+<li>You prefer rotating credentials as a security best practice</li>
+</ul>
+<p><strong>To change the Access Code</strong> (if already set):</p>
+<ol>
+<li>Go to <strong>Device</strong> → <strong>Access Code</strong></li>
+<li>Enter current Access Code</li>
+<li>Enter a new Access Code:
+<ul>
+<li>At least 10-16 characters</li>
+<li>Mix of uppercase, lowercase, numbers, and symbols</li>
+<li>Use a password manager to generate and store it</li>
+</ul>
+</li>
+<li>Click <strong>Save</strong></li>
+</ol>
+<blockquote>
+<p><strong>🔑 Access Code Security &amp; Recovery:</strong> Store your Access Code securely. If you lose or forget it, you must factory reset the router (hold the reset button for 10+ seconds) and reconfigure all settings from this guide. This will disconnect all devices and require you to set up your network again.</p>
+</blockquote>
+<h3 id="step-4-configure-static-ip-reservations"><a class="header" href="#step-4-configure-static-ip-reservations">Step 4: Configure Static IP Reservations</a></h3>
+<blockquote>
+<p><strong>📡 Static IPs:</strong> Ensures your Proxmox host and Start9 node always get the same IP addresses.</p>
+</blockquote>
+<p>On the AT&amp;T BGW320, you can only reserve IP addresses for devices within the DHCP range (<code>192.168.1.64</code> to <code>192.168.1.253</code>). Static IPs outside this range cannot be assigned via the web interface.</p>
+<ol>
+<li>Go to <strong>Device</strong> → <strong>Status</strong></li>
+<li>Find your <strong>Proxmox host</strong> (Minisforum) and <strong>Start9 VM</strong> in the device list</li>
+<li>Note its MAC address and current IP</li>
+<li>Go to <strong>Home Network</strong> → <strong>IP Allocation</strong></li>
+<li>Click <strong>Add</strong> or <strong>Allocate</strong></li>
+<li>Configure Proxmox reserved IP:
+<ul>
+<li><strong>Device Name</strong>: <code>proxmox-minisforum</code></li>
+<li><strong>MAC Address</strong>: (copied from device list)</li>
+<li><strong>IP Address</strong>: <code>192.168.1.100</code> (choose from <code>192.168.1.64</code> to <code>192.168.1.253</code>)</li>
+<li>Click <strong>Save</strong></li>
+</ul>
+</li>
+<li>Repeat for <strong>Start9 VM</strong>:
+<ul>
+<li><strong>Device Name</strong>: <code>start9-bitcoin-node</code></li>
+<li><strong>MAC Address</strong>: (find VM in device list)</li>
+<li><strong>IP Address</strong>: <code>192.168.1.101</code> (choose from <code>192.168.1.64</code> to <code>192.168.1.253</code>)</li>
+<li>Click <strong>Save</strong></li>
+</ul>
+</li>
+</ol>
+<blockquote>
+<p><strong>📡 BGW320 DHCP Reservation Tips:</strong></p>
+<ul>
+<li>The BGW320 only allows IP reservations within the DHCP range (<code>192.168.1.64</code> to <code>192.168.1.253</code>). Pick an address in this range for each device you want to reserve.</li>
+<li>Reserved addresses: <code>192.168.1.1</code> (router), <code>192.168.1.254</code> (gateway), <code>192.168.1.255</code> (broadcast)</li>
+<li>Double-check that the device MAC address matches the reservation.</li>
+<li>After reserving, reboot the device to obtain a new DHCP lease.</li>
+<li>Do not assign duplicate IPs or use reserved addresses for other devices.</li>
+<li>If you need a static IP outside the DHCP range, set it manually on the device and ensure it does not conflict with any reserved or DHCP-assigned addresses.</li>
+</ul>
+</blockquote>
+<h3 id="step-5-enable-firewall-and-access-controls"><a class="header" href="#step-5-enable-firewall-and-access-controls">Step 5: Enable Firewall and Access Controls</a></h3>
+<blockquote>
+<p><strong>🛡️ Firewall Protection:</strong> Protects your network from unauthorized access and attacks.</p>
+</blockquote>
+<p>Based on your AT&amp;T BGW320, verify these firewall settings:</p>
+<ol>
+<li>Go to <strong>Firewall</strong> tab at the top navigation</li>
+<li>Click <strong>Status</strong> to view current firewall configuration</li>
+<li>Verify the following are enabled:
+<ul>
+<li><strong>Packet Filter</strong>: <code>On</code> (should already be on)</li>
+<li><strong>Firewall Advanced</strong>: <code>On</code> (recommended)</li>
+<li><strong>NAT Default Server</strong>: <code>Off</code> (unless you need DMZ - not recommended)</li>
+<li><strong>IP Passthrough</strong>: <code>Off</code> (unless specifically needed)</li>
+</ul>
+</li>
+</ol>
+<figure style="margin:1.5em 0;text-align:center;max-width:100%;">
+   <img src="../images/att_firewall_status.png" alt="AT&amp;T BGW320 Firewall Status" style="width:100%;max-width:480px;height:auto;border-radius:12px;box-shadow:0 2px 8px rgba(0,0,0,0.08);object-fit:cover;" loading="lazy" decoding="async" sizes="(max-width: 600px) 95vw, 480px">
+   <figcaption style="font-size:0.98em;color:#555;margin-top:0.5em;">AT&amp;T BGW320 Firewall Status.</figcaption>
+</figure>
+<blockquote>
+<p><strong>🛡️ Default Protection:</strong> For standard home and node use, also leave the following sub-menus at their default settings (usually “Off” or “Disabled”) unless you have a specific need: Packet Filter, NAT/Gaming, Public Subnet Hosts, IP Passthrough, Firewall Advanced, and Security Options. Changing these options is not recommended for most users and can reduce security.</p>
+</blockquote>
+<h4 id="configure-advanced-firewall-rules-optional"><a class="header" href="#configure-advanced-firewall-rules-optional">Configure Advanced Firewall Rules (Optional)</a></h4>
+<p>If you need custom firewall rules:</p>
+<ol>
+<li>Go to <strong>Firewall</strong> → <strong>Firewall Advanced</strong></li>
+<li>Suggested secure defaults:
+<ul>
+<li><strong>Drop incoming ICMP Echo requests to LAN</strong>: <code>Off</code> (keep local ping working; turn <code>On</code> if you want to drop WAN-originated pings to LAN)</li>
+<li><strong>Drop incoming ICMP Echo requests to Device LAN Address</strong>: <code>On</code> (blocks ping to the router LAN IP from WAN/IPv6)</li>
+<li><strong>Drop incoming ICMP Echo requests to Device WAN Address</strong>: <code>On</code> (blocks ping to the router WAN IP)</li>
+<li><strong>Reflexive ACL</strong>: <code>On</code> (stateful inspection; keep enabled)</li>
+<li><strong>ESP ALG</strong>: <code>Off</code> (enable only if you run IPsec passthrough)</li>
+<li><strong>SIP ALG</strong>: <code>On</code> (default; generally safe, but if VoIP issues arise, try turning this Off)</li>
+</ul>
+</li>
+</ol>
+<figure style="margin:1.5em 0;text-align:center;max-width:100%;">
+   <img src="../images/att_firewall_advanced.png" alt="AT&amp;T BGW320 Firewall Advanced settings" style="width:100%;max-width:480px;height:auto;border-radius:12px;box-shadow:0 2px 8px rgba(0,0,0,0.08);object-fit:cover;" loading="lazy" decoding="async" sizes="(max-width: 600px) 95vw, 480px">
+   <figcaption style="font-size:0.98em;color:#555;margin-top:0.5em;">AT&amp;T BGW320 Firewall Advanced settings.</figcaption>
+</figure>
+<h3 id="step-6-change-wi-fi-network-name-and-password"><a class="header" href="#step-6-change-wi-fi-network-name-and-password">Step 6: Change Wi-Fi Network Name and Password</a></h3>
+<blockquote>
+<p><strong>📶 Wi-Fi Security:</strong> Default Wi-Fi credentials reveal your router model and may be less secure.</p>
+</blockquote>
+<ol>
+<li>Go to <strong>Home Network</strong> → <strong>Wi-Fi</strong> (or <strong>2.4 GHz Settings</strong> / <strong>5 GHz Settings</strong>)</li>
+<li>Change the <strong>Network Name (SSID)</strong>:
+<ul>
+<li>Choose a unique name that doesn’t reveal personal information</li>
+<li>Avoid using your name, address, or “ATT” in the SSID</li>
+<li>Example: <code>HomeNetwork2025</code> instead of <code>ATT-Wi-Fi-ABCD</code></li>
+</ul>
+</li>
+<li>Change the <strong>Wi-Fi Password</strong>:
+<ul>
+<li>Create a strong passphrase (20+ characters recommended)</li>
+<li>Mix of uppercase, lowercase, numbers, and symbols</li>
+<li>Use a password manager to generate and store it</li>
+<li>Example: <code>Correct-Horse-Battery-Staple-2025!</code></li>
+</ul>
+</li>
+<li>Verify <strong>Security</strong> settings:
+<ul>
+<li><strong>Security</strong>: <code>WPA</code> (default)</li>
+<li><strong>WPA Version</strong>: <code>WPA-2</code> (default; sufficient security for most users)</li>
+</ul>
+</li>
+</ol>
+<blockquote>
+<p><strong>🔐 Wi-Fi Encryption:</strong> WPA-3 may not be available on BGW320. WPA-2 is secure when using a strong password (20+ characters)</p>
+</blockquote>
+<ol start="5">
+<li><strong>SSID Broadcast</strong>: Keep enabled (disabling doesn’t significantly improve security)</li>
+<li>Click <strong>Save</strong></li>
+<li>Repeat for both 2.4 GHz and 5 GHz networks if configured separately</li>
+</ol>
+<blockquote>
+<p><strong>🔄 Reconnect Devices:</strong> After changing Wi-Fi credentials, you’ll need to reconnect all devices (phones, laptops, smart home devices) with the new password.</p>
+</blockquote>
+<h3 id="step-7-set-up-guest-network"><a class="header" href="#step-7-set-up-guest-network">Step 7: Set Up Guest Network</a></h3>
+<blockquote>
+<p><strong>🧑‍💻 Guest Network:</strong> Isolates untrusted devices from your Bitcoin infrastructure.</p>
+</blockquote>
+<ol>
+<li>Go to <strong>Home Network</strong> → <strong>Wi-Fi</strong> → <strong>Guest Network</strong></li>
+<li>Enable guest network</li>
+<li>Configure:
+<ul>
+<li><strong>SSID</strong>: <code>ATT-Guest</code> (or custom name)</li>
+<li><strong>Network Access</strong>: <code>Internet Only</code> (isolates guests from your home LAN)</li>
+<li><strong>Security</strong>: <code>WPA</code> with <strong>WPA Version</strong>: <code>WPA-2</code></li>
+<li><strong>Password</strong>: Strong unique password</li>
+</ul>
+</li>
+<li>Click <strong>Save</strong></li>
+</ol>
+<blockquote>
+<p><strong>📱 Guest Use Case:</strong> Connect phones, IoT devices, or visitor devices to guest network.</p>
+</blockquote>
+<h3 id="step-8-review-connected-devices-regularly"><a class="header" href="#step-8-review-connected-devices-regularly">Step 8: Review Connected Devices Regularly</a></h3>
+<blockquote>
+<p><strong>🕵️‍♂️ Device Monitoring:</strong> Detects unauthorized devices on your network.</p>
+</blockquote>
+<ol>
+<li>Go to <strong>Device</strong> → <strong>Status</strong></li>
+<li>Review all connected devices</li>
+<li>Verify each device is recognized:
+<ul>
+<li>Proxmox host (Minisforum)</li>
+<li>Start9 VM (e.g., <code>xxx-yyy</code>)</li>
+<li>Your laptop/MacBook</li>
+<li>Any other authorized devices</li>
+</ul>
+</li>
+<li>If unknown device found:
+<ul>
+<li>Note its MAC address</li>
+<li>Go to <strong>Firewall</strong> → <strong>MAC Filtering</strong></li>
+<li>Add to block list</li>
+</ul>
+</li>
+</ol>
+<h3 id="step-9-firmware-updates"><a class="header" href="#step-9-firmware-updates">Step 9: Firmware Updates</a></h3>
+<blockquote>
+<p><strong>🔄 Auto Firmware Updates:</strong> The AT&amp;T BGW320 firmware updates are managed automatically by AT&amp;T. There is no user-accessible menu in the web interface to manually configure or trigger firmware updates. AT&amp;T pushes updates to the gateway automatically when new firmware is available.</p>
+</blockquote>
+<p>Keeps router secure with latest security patches. You can verify your current firmware version:</p>
+<ol>
+<li>Go to <strong>Device</strong> → <strong>System Information</strong></li>
+<li>Look for <strong>Software Version</strong> in the device information</li>
+</ol>
+<p>The router will automatically download and install firmware updates from AT&amp;T. No manual configuration is required.</p>
+<p>For best practice, document and securely store your device and network details—see the <a href="#ip-address-reference">IP Address Reference</a> section for a template.</p>
+<p>For ongoing protection, see <a href="#maintenance-schedule">Maintenance Schedule</a>.</p>
+<hr>
+<h2 id="ip-address-reference"><a class="header" href="#ip-address-reference">IP Address Reference</a></h2>
+<p>Document your network layout for future reference:</p>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th>Device</th><th>IP Address</th><th>MAC Address</th><th>Notes</th></tr>
+</thead>
+<tbody>
+<tr><td>AT&amp;T Router</td><td>192.168.1.254</td><td>-</td><td>Gateway</td></tr>
+<tr><td>Proxmox Host</td><td>192.168.1.100</td><td>XX:XX:XX:XX:XX:XX</td><td>Minisforum X1-255</td></tr>
+<tr><td>Start9 VM</td><td>192.168.1.101</td><td>XX:XX:XX:XX:XX:XX</td><td>Bitcoin node</td></tr>
+<tr><td>MacBook</td><td>DHCP</td><td>XX:XX:XX:XX:XX:XX</td><td>Admin device</td></tr>
+</tbody>
+</table>
+</div>
+<blockquote>
+<p><strong>🗄️ Document Storage:</strong> Store this document securely (password manager or encrypted file).</p>
+</blockquote>
+<hr>
+<h2 id="maintenance-schedule"><a class="header" href="#maintenance-schedule">Maintenance Schedule</a></h2>
+<p>Regular maintenance ensures ongoing security:</p>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th>Task</th><th>Frequency</th><th>Notes</th></tr>
+</thead>
+<tbody>
+<tr><td>Review connected devices</td><td>Weekly</td><td>Check for unauthorized devices</td></tr>
+<tr><td>Check router logs</td><td>Monthly</td><td>Look for suspicious activity</td></tr>
+<tr><td>Update admin password</td><td>Quarterly</td><td>Use password manager rotation</td></tr>
+<tr><td>Review firewall rules</td><td>Quarterly</td><td>Remove unused port forwards</td></tr>
+<tr><td>Backup router config</td><td>Monthly</td><td>Export settings if available</td></tr>
+<tr><td>Check for firmware updates</td><td>Monthly</td><td>Or enable auto-updates</td></tr>
+</tbody>
+</table>
+</div>
+<blockquote>
+<p><strong>🔒 Security is an ongoing process—review these settings periodically and stay informed about new threats and best practices.</strong></p>
+</blockquote>
+<hr>
+<p>👈 Prev: <a href="./securing_start9_vm_firewall.html">Securing the Start9 VM with Proxmox Firewall Rules</a></p>
+<p>👉 Next: <a href="./setup_software.html">Setting up Bitcoin Node and Self-Sovereignty Software</a></p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="../bitcoin_node/securing_start9_vm_firewall.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
+                            </a>
+
+                            <a rel="next prefetch" href="../bitcoin_node/setup_software.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="../bitcoin_node/securing_start9_vm_firewall.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
+                    </a>
+
+                    <a rel="next prefetch" href="../bitcoin_node/setup_software.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
+                    </a>
+            </nav>
+
+        </div>
+
+        <template id=fa-eye><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M288 32c-80.8 0-145.5 36.8-192.6 80.6C48.6 156 17.3 208 2.5 243.7c-3.3 7.9-3.3 16.7 0 24.6C17.3 304 48.6 356 95.4 399.4C142.5 443.2 207.2 480 288 480s145.5-36.8 192.6-80.6c46.8-43.5 78.1-95.4 93-131.1c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C433.5 68.8 368.8 32 288 32zM432 256c0 79.5-64.5 144-144 144s-144-64.5-144-144s64.5-144 144-144s144 64.5 144 144zM288 192c0 35.3-28.7 64-64 64c-11.5 0-22.3-3-31.6-8.4c-.2 2.8-.4 5.5-.4 8.4c0 53 43 96 96 96s96-43 96-96s-43-96-96-96c-2.8 0-5.6 .1-8.4 .4c5.3 9.3 8.4 20.1 8.4 31.6z"/></svg></span></template>
+        <template id=fa-eye-slash><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M38.8 5.1C28.4-3.1 13.3-1.2 5.1 9.2S-1.2 34.7 9.2 42.9l592 464c10.4 8.2 25.5 6.3 33.7-4.1s6.3-25.5-4.1-33.7L525.6 386.7c39.6-40.6 66.4-86.1 79.9-118.4c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C465.5 68.8 400.8 32 320 32c-68.2 0-125 26.3-169.3 60.8L38.8 5.1zM223.1 149.5C248.6 126.2 282.7 112 320 112c79.5 0 144 64.5 144 144c0 24.9-6.3 48.3-17.4 68.7L408 294.5c5.2-11.8 8-24.8 8-38.5c0-53-43-96-96-96c-2.8 0-5.6 .1-8.4 .4c5.3 9.3 8.4 20.1 8.4 31.6c0 10.2-2.4 19.8-6.6 28.3l-90.3-70.8zm223.1 298L373 389.9c-16.4 6.5-34.3 10.1-53 10.1c-79.5 0-144-64.5-144-144c0-6.9 .5-13.6 1.4-20.2L83.1 161.5C60.3 191.2 44 220.8 34.5 243.7c-3.3 7.9-3.3 16.7 0 24.6c14.9 35.7 46.2 87.7 93 131.1C174.5 443.2 239.2 480 320 480c47.8 0 89.9-12.9 126.2-32.5z"/></svg></span></template>
+        <template id=fa-copy><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M502.6 70.63l-61.25-61.25C435.4 3.371 427.2 0 418.7 0H255.1c-35.35 0-64 28.66-64 64l.0195 256C192 355.4 220.7 384 256 384h192c35.2 0 64-28.8 64-64V93.25C512 84.77 508.6 76.63 502.6 70.63zM464 320c0 8.836-7.164 16-16 16H255.1c-8.838 0-16-7.164-16-16L239.1 64.13c0-8.836 7.164-16 16-16h128L384 96c0 17.67 14.33 32 32 32h47.1V320zM272 448c0 8.836-7.164 16-16 16H63.1c-8.838 0-16-7.164-16-16L47.98 192.1c0-8.836 7.164-16 16-16H160V128H63.99c-35.35 0-64 28.65-64 64l.0098 256C.002 483.3 28.66 512 64 512h192c35.2 0 64-28.8 64-64v-32h-47.1L272 448z"/></svg></span></template>
+        <template id=fa-play><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M73 39c-14.8-9.1-33.4-9.4-48.5-.9S0 62.6 0 80V432c0 17.4 9.4 33.4 24.5 41.9s33.7 8.1 48.5-.9L361 297c14.3-8.7 23-24.2 23-41s-8.7-32.2-23-41L73 39z"/></svg></span></template>
+        <template id=fa-clock-rotate-left><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M75 75L41 41C25.9 25.9 0 36.6 0 57.9V168c0 13.3 10.7 24 24 24H134.1c21.4 0 32.1-25.9 17-41l-30.8-30.8C155 85.5 203 64 256 64c106 0 192 86 192 192s-86 192-192 192c-40.8 0-78.6-12.7-109.7-34.4c-14.5-10.1-34.4-6.6-44.6 7.9s-6.6 34.4 7.9 44.6C151.2 495 201.7 512 256 512c141.4 0 256-114.6 256-256S397.4 0 256 0C185.3 0 121.3 28.7 75 75zm181 53c-13.3 0-24 10.7-24 24V256c0 6.4 2.5 12.5 7 17l72 72c9.4 9.4 24.6 9.4 33.9 0s9.4-24.6 0-33.9l-65-65V152c0-13.3-10.7-24-24-24z"/></svg></span></template>
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="../elasticlunr-ef4e11c1.min.js"></script>
+        <script src="../mark-09e88c2c.min.js"></script>
+        <script src="../searcher-09f2665d.js"></script>
+
+        <script src="../clipboard-1626706a.min.js"></script>
+        <script src="../highlight-abc7f01d.js"></script>
+        <script src="../book-c22b7243.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+
+    </div>
+    </body>
+</html>

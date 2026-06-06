@@ -1,0 +1,583 @@
+<!DOCTYPE HTML>
+<html lang="en" class="light sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Provisioning the AI VM on Proxmox - Rustacean X Bitcoiner Journey</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="A study and practice guide for Bitcoin and Rust from a journey of Rustacean X Bitcoiner guy">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="../favicon-de23e50b.svg">
+        <link rel="shortcut icon" href="../favicon-8114d1fc.png">
+        <link rel="stylesheet" href="../css/variables-8adf115d.css">
+        <link rel="stylesheet" href="../css/general-0392ca55.css">
+        <link rel="stylesheet" href="../css/chrome-fc474251.css">
+        <link rel="stylesheet" href="../css/print-9e4910d8.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../fonts/fonts-9644e21d.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="mdbook-highlight-css" href="../highlight-493f70e1.css">
+        <link rel="stylesheet" id="mdbook-tomorrow-night-css" href="../tomorrow-night-4c0ae647.css">
+        <link rel="stylesheet" id="mdbook-ayu-highlight-css" href="../ayu-highlight-3fdfc3ac.css">
+
+        <!-- Custom theme stylesheets -->
+
+
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "../";
+            const default_light_theme = "light";
+            const default_dark_theme = "coal";
+            window.path_to_searchindex_js = "../searchindex-190b9119.js";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="../toc-7e248055.js"></script>
+    </head>
+    <body>
+    <div id="mdbook-help-container">
+        <div id="mdbook-help-popup">
+            <h2 class="mdbook-help-title">Keyboard shortcuts</h2>
+            <div>
+                <p>Press <kbd>←</kbd> or <kbd>→</kbd> to navigate between chapters</p>
+                <p>Press <kbd>S</kbd> or <kbd>/</kbd> to search in the book</p>
+                <p>Press <kbd>?</kbd> to show this help</p>
+                <p>Press <kbd>Esc</kbd> to hide this help</p>
+            </div>
+        </div>
+    </div>
+    <div id="mdbook-body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="mdbook-sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("mdbook-sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+                sidebar_toggle.checked = false;
+            }
+            if (sidebar === 'visible') {
+                sidebar_toggle.checked = true;
+            } else {
+                html.classList.remove('sidebar-visible');
+            }
+        </script>
+
+        <nav id="mdbook-sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="../toc.html"></iframe>
+            </noscript>
+            <div id="mdbook-sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="mdbook-page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="mdbook-menu-bar-hover-placeholder"></div>
+                <div id="mdbook-menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="mdbook-sidebar-toggle" class="icon-button" for="mdbook-sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="mdbook-sidebar">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M0 96C0 78.3 14.3 64 32 64H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32C14.3 128 0 113.7 0 96zM0 256c0-17.7 14.3-32 32-32H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32c-17.7 0-32-14.3-32-32zM448 416c0 17.7-14.3 32-32 32H32c-17.7 0-32-14.3-32-32s14.3-32 32-32H416c17.7 0 32 14.3 32 32z"/></svg></span>
+                        </label>
+                        <button id="mdbook-theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="mdbook-theme-list">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M371.3 367.1c27.3-3.9 51.9-19.4 67.2-42.9L600.2 74.1c12.6-19.5 9.4-45.3-7.6-61.2S549.7-4.4 531.1 9.6L294.4 187.2c-24 18-38.2 46.1-38.4 76.1L371.3 367.1zm-19.6 25.4l-116-104.4C175.9 290.3 128 339.6 128 400c0 3.9 .2 7.8 .6 11.6c1.8 17.5-10.2 36.4-27.8 36.4H96c-17.7 0-32 14.3-32 32s14.3 32 32 32H240c61.9 0 112-50.1 112-112c0-2.5-.1-5-.2-7.5z"/></svg></span>
+                        </button>
+                        <ul id="mdbook-theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-ayu">Ayu</button></li>
+                        </ul>
+                        <button id="mdbook-search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="mdbook-searchbar">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M416 208c0 45.9-14.9 88.3-40 122.7L502.6 457.4c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L330.7 376c-34.4 25.2-76.8 40-122.7 40C93.1 416 0 322.9 0 208S93.1 0 208 0S416 93.1 416 208zM208 352c79.5 0 144-64.5 144-144s-64.5-144-144-144S64 128.5 64 208s64.5 144 144 144z"/></svg></span>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">Rustacean X Bitcoiner Journey</h1>
+
+                    <div class="right-buttons">
+                        <a href="../print.html" title="Print this book" aria-label="Print this book">
+                            <span class=fa-svg id="print-button"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M128 0C92.7 0 64 28.7 64 64v96h64V64H354.7L384 93.3V160h64V93.3c0-17-6.7-33.3-18.7-45.3L400 18.7C388 6.7 371.7 0 354.7 0H128zM384 352v32 64H128V384 368 352H384zm64 32h32c17.7 0 32-14.3 32-32V256c0-35.3-28.7-64-64-64H64c-35.3 0-64 28.7-64 64v96c0 17.7 14.3 32 32 32H64v64c0 35.3 28.7 64 64 64H384c35.3 0 64-28.7 64-64V384zm-16-88c-13.3 0-24-10.7-24-24s10.7-24 24-24s24 10.7 24 24s-10.7 24-24 24z"/></svg></span>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="mdbook-search-wrapper" class="hidden">
+                    <form id="mdbook-searchbar-outer" class="searchbar-outer">
+                        <div class="search-wrapper">
+                            <input type="search" id="mdbook-searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="mdbook-searchresults-outer" aria-describedby="searchresults-header">
+                            <div class="spinner-wrapper">
+                                <span class=fa-svg id="fa-spin"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M304 48c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zm0 416c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zM48 304c26.5 0 48-21.5 48-48s-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48zm464-48c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zM142.9 437c18.7-18.7 18.7-49.1 0-67.9s-49.1-18.7-67.9 0s-18.7 49.1 0 67.9s49.1 18.7 67.9 0zm0-294.2c18.7-18.7 18.7-49.1 0-67.9S93.7 56.2 75 75s-18.7 49.1 0 67.9s49.1 18.7 67.9 0zM369.1 437c18.7 18.7 49.1 18.7 67.9 0s18.7-49.1 0-67.9s-49.1-18.7-67.9 0s-18.7 49.1 0 67.9z"/></svg></span>
+                            </div>
+                        </div>
+                    </form>
+                    <div id="mdbook-searchresults-outer" class="searchresults-outer hidden">
+                        <div id="mdbook-searchresults-header" class="searchresults-header"></div>
+                        <ul id="mdbook-searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('mdbook-sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('mdbook-sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#mdbook-sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="mdbook-content" class="content">
+                    <main>
+                        <h1 id="provisioning-the-ai-vm-on-proxmox"><a class="header" href="#provisioning-the-ai-vm-on-proxmox">Provisioning the AI VM on Proxmox</a></h1>
+<p>The AI agents VM runs on the same Minisforum hardware as the Bitcoin node — but in a separate Proxmox virtual machine with firewall rules that block it from reaching the Bitcoin node VM, the router admin interface, or any other LAN device. The MacBook is the only machine explicitly allowed to connect to it.</p>
+<p>This separation enforces the principle that AI agents have no implicit access to my infrastructure. Access must be granted deliberately, one rule at a time.</p>
+<p><strong>In this guide, you will:</strong></p>
+<ul>
+<li>Create a new Ubuntu 24.04 LTS VM in Proxmox with resources sized for Ollama inference</li>
+<li>Complete Ubuntu installation and configure SSH access from your MacBook</li>
+<li>Apply Proxmox VM-level firewall rules to isolate the VM from the rest of your LAN</li>
+<li>Verify the isolation is working before proceeding to install Ollama</li>
+</ul>
+<hr>
+<h2 id="pre-requisites"><a class="header" href="#pre-requisites">Pre-requisites</a></h2>
+<h3 id="preparation"><a class="header" href="#preparation">Preparation</a></h3>
+<ul>
+<li>Proxmox VE running and accessible at <code>https://192.168.1.100:8006</code></li>
+<li>SSH key already set up on your MacBook (created during <a href="./securing_proxmox_ve.html">Securing Proxmox VE</a>)</li>
+<li>Ubuntu 24.04 LTS ISO uploaded to Proxmox local storage, or internet access to upload it now</li>
+<li>Your MacBook’s LAN IP address (check with <code>ipconfig getifaddr en0</code> in Terminal)</li>
+</ul>
+<h3 id="hardware"><a class="header" href="#hardware">Hardware</a></h3>
+<ul>
+<li>Minisforum X1-255 running Proxmox VE with at least 16 GB free RAM</li>
+<li>The Bitcoin node Start9 VM running normally (you will verify isolation against it)</li>
+</ul>
+<h3 id="software"><a class="header" href="#software">Software</a></h3>
+<ul>
+<li>Proxmox VE web interface (Safari, Chrome, or Firefox)</li>
+<li>Ubuntu Server 24.04 LTS ISO (<a href="https://ubuntu.com/download/server">ubuntu.com/download/server</a>)</li>
+<li>SSH client (Terminal on macOS)</li>
+</ul>
+<h3 id="references"><a class="header" href="#references">References</a></h3>
+<ul>
+<li><a href="https://ubuntu.com/server/docs">Ubuntu Server 24.04 LTS Release Notes</a></li>
+<li><a href="https://pve.proxmox.com/wiki/Firewall">Proxmox VE Firewall Documentation</a></li>
+</ul>
+<hr>
+<h2 id="step-by-step-instructions"><a class="header" href="#step-by-step-instructions">Step-by-Step Instructions</a></h2>
+<h3 id="step-1-upload-ubuntu-server-iso-to-proxmox"><a class="header" href="#step-1-upload-ubuntu-server-iso-to-proxmox">Step 1: Upload Ubuntu Server ISO to Proxmox</a></h3>
+<p>If you already have a Ubuntu Server ISO in Proxmox local storage, skip to Step 2.</p>
+<ol>
+<li>
+<p>Download Ubuntu Server 24.04 LTS ISO on your MacBook:</p>
+<ul>
+<li>Visit <a href="https://ubuntu.com/download/server">ubuntu.com/download/server</a></li>
+<li>Download the latest Ubuntu Server 24.04 LTS ISO</li>
+<li>File will be saved to <code>~/Downloads/ubuntu-24.04.x-live-server-amd64.iso</code></li>
+</ul>
+</li>
+<li>
+<p>Log in to the Proxmox web interface: <code>https://192.168.1.100:8006</code></p>
+</li>
+<li>
+<p>Navigate to <strong>Datacenter</strong> → <strong>pve</strong> (your node) → <strong>local</strong> storage → <strong>ISO Images</strong> tab</p>
+</li>
+<li>
+<p>Click <strong>Upload</strong>, select the Ubuntu ISO, and wait for the upload to complete (~3–5 minutes)</p>
+</li>
+</ol>
+<h3 id="step-2-create-the-ai-agents-vm"><a class="header" href="#step-2-create-the-ai-agents-vm">Step 2: Create the AI Agents VM</a></h3>
+<ol>
+<li>
+<p>Click <strong>Create VM</strong> in the top right of the Proxmox web interface</p>
+</li>
+<li>
+<p><strong>General tab</strong> — set VM identity:</p>
+<ul>
+<li><strong>VM ID</strong>: <code>101</code> (or next available; Start9 VM is typically 100)</li>
+<li><strong>Name</strong>: <code>ai-agents</code></li>
+<li>Leave <strong>Resource Pool</strong> and <strong>Start after created</strong> at defaults for now</li>
+</ul>
+</li>
+<li>
+<p><strong>OS tab</strong> — select the Ubuntu ISO:</p>
+<ul>
+<li><strong>Use CD/DVD disc image file (iso)</strong></li>
+<li><strong>Storage</strong>: local</li>
+<li><strong>ISO image</strong>: select <code>ubuntu-24.04.x-live-server-amd64.iso</code></li>
+<li><strong>Guest OS Type</strong>: Linux</li>
+<li><strong>Version</strong>: 6.x - 2.6 Kernel (or latest available)</li>
+</ul>
+</li>
+<li>
+<p><strong>System tab</strong> — leave all defaults:</p>
+<ul>
+<li>Graphic card, Machine, BIOS, and SCSI Controller at defaults</li>
+<li>Leave <strong>Qemu Agent</strong> unchecked (install it later if desired)</li>
+</ul>
+</li>
+<li>
+<p><strong>CPU tab</strong> — allocate CPU cores:</p>
+<ul>
+<li><strong>Sockets</strong>: 1</li>
+<li><strong>Cores</strong>: 8</li>
+<li><strong>Type</strong>: host (enables CPU-specific optimizations, important for llama.cpp SIMD performance)</li>
+</ul>
+<blockquote>
+<p><strong>🖥️ Core Allocation:</strong> The Minisforum X1-255 has 10 CPU cores. The Start9 VM uses 4, and Proxmox host reserves ~1–2. Allocating 8 cores to the AI VM is safe for most workloads; Proxmox overcommits CPU time so actual contention is low when the Bitcoin VM is idle.</p>
+</blockquote>
+</li>
+<li>
+<p><strong>Memory tab</strong> — allocate RAM:</p>
+<ul>
+<li><strong>Memory (MiB)</strong>: <code>16384</code> (16 GB)</li>
+<li>Leave <strong>Minimum memory</strong> blank (no ballooning needed; Ollama needs stable RAM)</li>
+</ul>
+<blockquote>
+<p><strong>💾 RAM Allocation:</strong> Start9 VM uses 6 GB, Proxmox host uses ~2 GB. With 32 GB total, allocating 16 GB to the AI VM leaves 8 GB of headroom — sufficient buffer for the host and future VMs.</p>
+</blockquote>
+</li>
+<li>
+<p><strong>Disks tab</strong> — set up storage:</p>
+<ul>
+<li><strong>Bus/Device</strong>: SCSI 0</li>
+<li><strong>Storage</strong>: local-lvm</li>
+<li><strong>Disk size (GiB)</strong>: <code>100</code></li>
+<li><strong>Cache</strong>: Default</li>
+<li><strong>SSD emulation</strong>: enable (check the box)</li>
+<li><strong>I/O thread</strong>: enable</li>
+</ul>
+<blockquote>
+<p><strong>💽 Disk Sizing:</strong> 100 GB accommodates Ubuntu (~10 GB), several 7B Ollama models (~5–10 GB each), and working space. Each additional model you pull consumes 4–10 GB of disk.</p>
+</blockquote>
+</li>
+<li>
+<p><strong>Network tab</strong> — connect to the main bridge:</p>
+<ul>
+<li><strong>Bridge</strong>: vmbr0 (same LAN bridge as the Start9 VM)</li>
+<li><strong>Model</strong>: VirtIO</li>
+<li><strong>Firewall</strong>: checked (enables Proxmox VM-level firewall — required for isolation steps below)</li>
+<li>Leave MAC address as auto-generated</li>
+</ul>
+</li>
+<li>
+<p><strong>Confirm tab</strong> — review, then click <strong>Finish</strong></p>
+<p>Do <strong>not</strong> check “Start after created” yet — complete the ISO boot and install first by starting it manually from the VM view.</p>
+</li>
+</ol>
+<h3 id="step-3-install-ubuntu-server"><a class="header" href="#step-3-install-ubuntu-server">Step 3: Install Ubuntu Server</a></h3>
+<ol>
+<li>
+<p>In the Proxmox left sidebar, select your new <strong>ai-agents</strong> VM → click <strong>Console</strong> tab</p>
+</li>
+<li>
+<p>Click <strong>Start</strong> (▶) to power on the VM</p>
+</li>
+<li>
+<p>In the Console, you will see the Ubuntu Server installer boot menu:</p>
+<ul>
+<li>Select <strong>Try or Install Ubuntu Server</strong> (first option, highlighted by default)</li>
+<li>Press <strong>Enter</strong></li>
+</ul>
+</li>
+<li>
+<p>Work through the Ubuntu Server installation wizard:</p>
+<p><strong>Language</strong>: Select English (or your preference)</p>
+<p><strong>Installer update</strong>: Choose <strong>Continue without updating</strong> (you will update after install)</p>
+<p><strong>Keyboard</strong>: Select your layout</p>
+<p><strong>Installation type</strong>: Select <strong>Ubuntu Server</strong> (not minimized)</p>
+<p><strong>Network</strong>: DHCP is fine — Ubuntu will get an IP from your router automatically</p>
+<p><strong>Proxy</strong>: Leave blank unless you use a proxy</p>
+<p><strong>Ubuntu archive mirror</strong>: Leave as default (archive.ubuntu.com)</p>
+<p><strong>Guided storage configuration</strong>:</p>
+<ul>
+<li>Select <strong>Use an entire disk</strong></li>
+<li>Select the 100 GB virtual disk (the only available disk)</li>
+<li>Leave <strong>Set up this disk as an LVM group</strong> checked</li>
+<li>Proceed through the storage summary and confirm</li>
+</ul>
+<p><strong>Profile setup</strong> — set your Ubuntu user:</p>
+<ul>
+<li><strong>Your name</strong>: (your name)</li>
+<li><strong>Server name</strong>: <code>ai-agents</code></li>
+<li><strong>Username</strong>: <code>ai</code> (or your preferred username)</li>
+<li><strong>Password</strong>: strong password (20+ characters; store in your password manager)</li>
+</ul>
+<p><strong>Ubuntu Pro</strong>: Skip (select <strong>Skip for now</strong>)</p>
+<p><strong>SSH setup</strong>:</p>
+<ul>
+<li>Check <strong>Install OpenSSH server</strong></li>
+<li>Leave <strong>Import SSH identity</strong> blank (you will copy your key manually)</li>
+</ul>
+<p><strong>Featured server snaps</strong>: Deselect all (you will install only what you need)</p>
+</li>
+<li>
+<p>Installation runs for ~5–10 minutes. When complete, select <strong>Reboot Now</strong></p>
+</li>
+<li>
+<p>When prompted, press <strong>Enter</strong> to eject the virtual CD (Proxmox handles this automatically for VMs)</p>
+</li>
+<li>
+<p>Ubuntu boots to a login prompt in the Console</p>
+</li>
+</ol>
+<h3 id="step-4-copy-your-ssh-key-to-the-ai-vm"><a class="header" href="#step-4-copy-your-ssh-key-to-the-ai-vm">Step 4: Copy Your SSH Key to the AI VM</a></h3>
+<ol>
+<li>
+<p>Find the AI VM’s IP address:</p>
+<ul>
+<li>In Proxmox, select <strong>ai-agents</strong> → <strong>Summary</strong> tab → look for the IP under <strong>IPs</strong></li>
+<li>Or check your router’s DHCP leases</li>
+</ul>
+</li>
+<li>
+<p>From your MacBook Terminal, copy your existing SSH key:</p>
+<pre><code class="language-bash"># Use the same key you set up for Proxmox access
+ssh-copy-id -i ~/.ssh/id_ed25519.pub ai@192.168.1.XXX
+# Replace XXX with the AI VM's IP
+</code></pre>
+<p>Enter the Ubuntu password you set during installation when prompted.</p>
+</li>
+<li>
+<p>Test key-based login:</p>
+<pre><code class="language-bash">ssh ai@192.168.1.XXX
+# Should log in without a password prompt
+</code></pre>
+</li>
+<li>
+<p>Assign a static IP via your router’s DHCP reservation for the AI VM’s MAC address. This prevents the IP from changing on reboot and ensures your VS Code and firewall rules stay valid.</p>
+<ul>
+<li>Find the MAC address: from the Console or Proxmox <strong>ai-agents</strong> → <strong>Network</strong> tab</li>
+<li>In your router admin interface, add a DHCP reservation for this MAC → assign a fixed IP (e.g., <code>192.168.1.101</code>)</li>
+<li>Reboot the AI VM and confirm it gets the reserved IP: <code>ssh ai@192.168.1.101</code></li>
+</ul>
+</li>
+</ol>
+<blockquote>
+<p><strong>🌐 Static IP Tip:</strong> Your router (AT&amp;T BGW320) supports DHCP reservations under <strong>Home Network</strong> → <strong>IP Allocation</strong>. Pinning the AI VM to a fixed LAN IP is important: firewall rules and VS Code provider settings reference this IP by address, so it must not change.</p>
+</blockquote>
+<h3 id="step-5-configure-vm-level-firewall-in-proxmox"><a class="header" href="#step-5-configure-vm-level-firewall-in-proxmox">Step 5: Configure VM-Level Firewall in Proxmox</a></h3>
+<p>This step applies firewall rules to the <code>ai-agents</code> VM itself — separate from the Datacenter-level firewall that protects Proxmox. These rules control what traffic the AI VM can send and receive.</p>
+<p><strong>Goal:</strong> The AI VM can be reached from your MacBook (for SSH and Ollama API) and can reach the internet (to pull models). It cannot reach the Bitcoin node VM, the router admin interface, or any other LAN device.</p>
+<ol>
+<li>
+<p>In Proxmox, select <strong>ai-agents</strong> VM → <strong>Firewall</strong> tab → <strong>Options</strong></p>
+</li>
+<li>
+<p>Double-click <strong>Firewall</strong> and set it to <strong>Yes</strong> to enable the VM-level firewall</p>
+</li>
+<li>
+<p>Set the default policies:</p>
+<ul>
+<li>Double-click <strong>Input policy</strong> → set to <strong>DROP</strong></li>
+<li>Double-click <strong>Output policy</strong> → set to <strong>ACCEPT</strong> initially (you will restrict outbound next)</li>
+</ul>
+</li>
+<li>
+<p>Click <strong>Add</strong> to create inbound rules. Add these rules in order:</p>
+<pre><code class="language-text">Rule 1 — SSH from MacBook:
+- Enable: ☑
+- Direction: in
+- Action: ACCEPT
+- Protocol: tcp
+- Source: 192.168.1.XXX   ← your MacBook's static/reserved LAN IP
+- Dest. port: 22
+- Comment: SSH from MacBook
+</code></pre>
+<pre><code class="language-text">Rule 2 — Ollama API from MacBook:
+- Enable: ☑
+- Direction: in
+- Action: ACCEPT
+- Protocol: tcp
+- Source: 192.168.1.XXX   ← your MacBook's LAN IP
+- Dest. port: 11434
+- Comment: Ollama REST API from MacBook
+</code></pre>
+</li>
+<li>
+<p>Test that SSH still works from your MacBook after enabling the firewall:</p>
+<pre><code class="language-bash">ssh ai@192.168.1.101
+# Must succeed — if not, double-check the Source IP in Rule 1
+</code></pre>
+</li>
+<li>
+<p>Now restrict outbound traffic to prevent the AI VM from reaching other LAN devices:</p>
+<p>Change <strong>Output policy</strong> to <strong>DROP</strong>, then add these outbound ACCEPT rules:</p>
+<pre><code class="language-text">Rule 3 — DNS (required for model downloads):
+- Enable: ☑
+- Direction: out
+- Action: ACCEPT
+- Protocol: udp
+- Dest. port: 53
+- Comment: DNS resolution
+</code></pre>
+<pre><code class="language-text">Rule 4 — Block HTTP/HTTPS to LAN (isolation):
+- Enable: ☑
+- Direction: out
+- Action: DROP
+- Protocol: tcp
+- Destination: 192.168.1.0/24
+- Dest. port: 80,443
+- Comment: Block HTTP/HTTPS to LAN — prevents AI VM reaching Start9 or router admin
+</code></pre>
+<pre><code class="language-text">Rule 5 — HTTP/HTTPS (required for Ollama model downloads):
+- Enable: ☑
+- Direction: out
+- Action: ACCEPT
+- Protocol: tcp
+- Dest. port: 80,443
+- Comment: Internet HTTP/HTTPS for model downloads
+</code></pre>
+<pre><code class="language-text">Rule 6 — NTP (required for clock sync):
+- Enable: ☑
+- Direction: out
+- Action: ACCEPT
+- Protocol: udp
+- Dest. port: 123
+- Comment: NTP time sync
+</code></pre>
+<blockquote>
+<p><strong>🛡️ Outbound Restriction:</strong> With Output policy DROP, Rule 4 explicitly drops TCP 80/443 to the entire LAN subnet (<code>192.168.1.0/24</code>) — this blocks the AI VM from reaching the Start9 Bitcoin node VM or the router admin page over HTTP/HTTPS. Rules 5 and 6 then allow those same ports to internet destinations, so Ollama can still pull models. Rule ordering matters: Proxmox evaluates rules top-to-bottom, first match wins, so the LAN DROP must appear before the broad internet ACCEPT.</p>
+</blockquote>
+</li>
+<li>
+<p>Verify isolation — from inside the AI VM, these should all fail:</p>
+<pre><code class="language-bash"># Attempt to reach the Bitcoin node VM (Start9)
+# Replace 192.168.1.102 with your Start9 VM's actual IP
+ping 192.168.1.102
+# Expected: no response (packets dropped)
+
+curl http://192.168.1.102:80
+# Expected: connection timed out (blocked by Rule 4)
+
+# Verify internet still works (needed for model downloads)
+curl -s https://ollama.com | head -5
+# Expected: HTML content returned
+</code></pre>
+</li>
+</ol>
+<hr>
+<h2 id="troubleshooting"><a class="header" href="#troubleshooting">Troubleshooting</a></h2>
+<p><strong>SSH connection refused after enabling firewall:</strong></p>
+<ul>
+<li>The Input policy is DROP and Rule 1 may not be matching. Check: Enable is ☑, the Source IP exactly matches your MacBook’s LAN IP, and port is 22. Temporarily disable the firewall in Options → Firewall → No, fix the rule, re-enable.</li>
+</ul>
+<p><strong>Ollama API unreachable from VS Code:</strong></p>
+<ul>
+<li>Check Rule 2 is present and enabled. Verify the Source IP matches your MacBook. Confirm Ollama is actually listening on 0.0.0.0:11434 (covered in the next guide).</li>
+</ul>
+<p><strong>AI VM cannot pull models after outbound DROP policy:</strong></p>
+<ul>
+<li>Verify Rules 3 and 4 are present and enabled. Test with <code>curl https://ollama.com</code> from inside the VM. If DNS fails, check Rule 3 (port 53 UDP).</li>
+</ul>
+<p><strong>IP address changed after reboot:</strong></p>
+<ul>
+<li>Set up a DHCP reservation in your router for the AI VM’s MAC address as described in Step 4.</li>
+</ul>
+<hr>
+<p>👈 Prev: <a href="./choosing_ai_stack.html">Choosing the AI Stack</a></p>
+<p>👉 Next: <a href="./installing_ollama.html">Installing Ollama and Models</a></p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="../local_ai_agents/choosing_ai_stack.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
+                            </a>
+
+                            <a rel="next prefetch" href="../local_ai_agents/installing_ollama.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="../local_ai_agents/choosing_ai_stack.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
+                    </a>
+
+                    <a rel="next prefetch" href="../local_ai_agents/installing_ollama.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
+                    </a>
+            </nav>
+
+        </div>
+
+        <template id=fa-eye><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M288 32c-80.8 0-145.5 36.8-192.6 80.6C48.6 156 17.3 208 2.5 243.7c-3.3 7.9-3.3 16.7 0 24.6C17.3 304 48.6 356 95.4 399.4C142.5 443.2 207.2 480 288 480s145.5-36.8 192.6-80.6c46.8-43.5 78.1-95.4 93-131.1c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C433.5 68.8 368.8 32 288 32zM432 256c0 79.5-64.5 144-144 144s-144-64.5-144-144s64.5-144 144-144s144 64.5 144 144zM288 192c0 35.3-28.7 64-64 64c-11.5 0-22.3-3-31.6-8.4c-.2 2.8-.4 5.5-.4 8.4c0 53 43 96 96 96s96-43 96-96s-43-96-96-96c-2.8 0-5.6 .1-8.4 .4c5.3 9.3 8.4 20.1 8.4 31.6z"/></svg></span></template>
+        <template id=fa-eye-slash><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M38.8 5.1C28.4-3.1 13.3-1.2 5.1 9.2S-1.2 34.7 9.2 42.9l592 464c10.4 8.2 25.5 6.3 33.7-4.1s6.3-25.5-4.1-33.7L525.6 386.7c39.6-40.6 66.4-86.1 79.9-118.4c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C465.5 68.8 400.8 32 320 32c-68.2 0-125 26.3-169.3 60.8L38.8 5.1zM223.1 149.5C248.6 126.2 282.7 112 320 112c79.5 0 144 64.5 144 144c0 24.9-6.3 48.3-17.4 68.7L408 294.5c5.2-11.8 8-24.8 8-38.5c0-53-43-96-96-96c-2.8 0-5.6 .1-8.4 .4c5.3 9.3 8.4 20.1 8.4 31.6c0 10.2-2.4 19.8-6.6 28.3l-90.3-70.8zm223.1 298L373 389.9c-16.4 6.5-34.3 10.1-53 10.1c-79.5 0-144-64.5-144-144c0-6.9 .5-13.6 1.4-20.2L83.1 161.5C60.3 191.2 44 220.8 34.5 243.7c-3.3 7.9-3.3 16.7 0 24.6c14.9 35.7 46.2 87.7 93 131.1C174.5 443.2 239.2 480 320 480c47.8 0 89.9-12.9 126.2-32.5z"/></svg></span></template>
+        <template id=fa-copy><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M502.6 70.63l-61.25-61.25C435.4 3.371 427.2 0 418.7 0H255.1c-35.35 0-64 28.66-64 64l.0195 256C192 355.4 220.7 384 256 384h192c35.2 0 64-28.8 64-64V93.25C512 84.77 508.6 76.63 502.6 70.63zM464 320c0 8.836-7.164 16-16 16H255.1c-8.838 0-16-7.164-16-16L239.1 64.13c0-8.836 7.164-16 16-16h128L384 96c0 17.67 14.33 32 32 32h47.1V320zM272 448c0 8.836-7.164 16-16 16H63.1c-8.838 0-16-7.164-16-16L47.98 192.1c0-8.836 7.164-16 16-16H160V128H63.99c-35.35 0-64 28.65-64 64l.0098 256C.002 483.3 28.66 512 64 512h192c35.2 0 64-28.8 64-64v-32h-47.1L272 448z"/></svg></span></template>
+        <template id=fa-play><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M73 39c-14.8-9.1-33.4-9.4-48.5-.9S0 62.6 0 80V432c0 17.4 9.4 33.4 24.5 41.9s33.7 8.1 48.5-.9L361 297c14.3-8.7 23-24.2 23-41s-8.7-32.2-23-41L73 39z"/></svg></span></template>
+        <template id=fa-clock-rotate-left><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M75 75L41 41C25.9 25.9 0 36.6 0 57.9V168c0 13.3 10.7 24 24 24H134.1c21.4 0 32.1-25.9 17-41l-30.8-30.8C155 85.5 203 64 256 64c106 0 192 86 192 192s-86 192-192 192c-40.8 0-78.6-12.7-109.7-34.4c-14.5-10.1-34.4-6.6-44.6 7.9s-6.6 34.4 7.9 44.6C151.2 495 201.7 512 256 512c141.4 0 256-114.6 256-256S397.4 0 256 0C185.3 0 121.3 28.7 75 75zm181 53c-13.3 0-24 10.7-24 24V256c0 6.4 2.5 12.5 7 17l72 72c9.4 9.4 24.6 9.4 33.9 0s9.4-24.6 0-33.9l-65-65V152c0-13.3-10.7-24-24-24z"/></svg></span></template>
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="../elasticlunr-ef4e11c1.min.js"></script>
+        <script src="../mark-09e88c2c.min.js"></script>
+        <script src="../searcher-09f2665d.js"></script>
+
+        <script src="../clipboard-1626706a.min.js"></script>
+        <script src="../highlight-abc7f01d.js"></script>
+        <script src="../book-c22b7243.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+
+    </div>
+    </body>
+</html>

@@ -1,0 +1,761 @@
+<!DOCTYPE HTML>
+<html lang="en" class="light sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Virtualized Start9 OS Setup (Advanced) - Rustacean X Bitcoiner Journey</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="A study and practice guide for Bitcoin and Rust from a journey of Rustacean X Bitcoiner guy">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="../favicon-de23e50b.svg">
+        <link rel="shortcut icon" href="../favicon-8114d1fc.png">
+        <link rel="stylesheet" href="../css/variables-8adf115d.css">
+        <link rel="stylesheet" href="../css/general-0392ca55.css">
+        <link rel="stylesheet" href="../css/chrome-fc474251.css">
+        <link rel="stylesheet" href="../css/print-9e4910d8.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../fonts/fonts-9644e21d.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="mdbook-highlight-css" href="../highlight-493f70e1.css">
+        <link rel="stylesheet" id="mdbook-tomorrow-night-css" href="../tomorrow-night-4c0ae647.css">
+        <link rel="stylesheet" id="mdbook-ayu-highlight-css" href="../ayu-highlight-3fdfc3ac.css">
+
+        <!-- Custom theme stylesheets -->
+
+
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "../";
+            const default_light_theme = "light";
+            const default_dark_theme = "coal";
+            window.path_to_searchindex_js = "../searchindex-190b9119.js";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="../toc-7e248055.js"></script>
+    </head>
+    <body>
+    <div id="mdbook-help-container">
+        <div id="mdbook-help-popup">
+            <h2 class="mdbook-help-title">Keyboard shortcuts</h2>
+            <div>
+                <p>Press <kbd>←</kbd> or <kbd>→</kbd> to navigate between chapters</p>
+                <p>Press <kbd>S</kbd> or <kbd>/</kbd> to search in the book</p>
+                <p>Press <kbd>?</kbd> to show this help</p>
+                <p>Press <kbd>Esc</kbd> to hide this help</p>
+            </div>
+        </div>
+    </div>
+    <div id="mdbook-body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="mdbook-sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("mdbook-sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+                sidebar_toggle.checked = false;
+            }
+            if (sidebar === 'visible') {
+                sidebar_toggle.checked = true;
+            } else {
+                html.classList.remove('sidebar-visible');
+            }
+        </script>
+
+        <nav id="mdbook-sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="../toc.html"></iframe>
+            </noscript>
+            <div id="mdbook-sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="mdbook-page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="mdbook-menu-bar-hover-placeholder"></div>
+                <div id="mdbook-menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="mdbook-sidebar-toggle" class="icon-button" for="mdbook-sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="mdbook-sidebar">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M0 96C0 78.3 14.3 64 32 64H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32C14.3 128 0 113.7 0 96zM0 256c0-17.7 14.3-32 32-32H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32c-17.7 0-32-14.3-32-32zM448 416c0 17.7-14.3 32-32 32H32c-17.7 0-32-14.3-32-32s14.3-32 32-32H416c17.7 0 32 14.3 32 32z"/></svg></span>
+                        </label>
+                        <button id="mdbook-theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="mdbook-theme-list">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M371.3 367.1c27.3-3.9 51.9-19.4 67.2-42.9L600.2 74.1c12.6-19.5 9.4-45.3-7.6-61.2S549.7-4.4 531.1 9.6L294.4 187.2c-24 18-38.2 46.1-38.4 76.1L371.3 367.1zm-19.6 25.4l-116-104.4C175.9 290.3 128 339.6 128 400c0 3.9 .2 7.8 .6 11.6c1.8 17.5-10.2 36.4-27.8 36.4H96c-17.7 0-32 14.3-32 32s14.3 32 32 32H240c61.9 0 112-50.1 112-112c0-2.5-.1-5-.2-7.5z"/></svg></span>
+                        </button>
+                        <ul id="mdbook-theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-ayu">Ayu</button></li>
+                        </ul>
+                        <button id="mdbook-search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="mdbook-searchbar">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M416 208c0 45.9-14.9 88.3-40 122.7L502.6 457.4c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L330.7 376c-34.4 25.2-76.8 40-122.7 40C93.1 416 0 322.9 0 208S93.1 0 208 0S416 93.1 416 208zM208 352c79.5 0 144-64.5 144-144s-64.5-144-144-144S64 128.5 64 208s64.5 144 144 144z"/></svg></span>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">Rustacean X Bitcoiner Journey</h1>
+
+                    <div class="right-buttons">
+                        <a href="../print.html" title="Print this book" aria-label="Print this book">
+                            <span class=fa-svg id="print-button"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M128 0C92.7 0 64 28.7 64 64v96h64V64H354.7L384 93.3V160h64V93.3c0-17-6.7-33.3-18.7-45.3L400 18.7C388 6.7 371.7 0 354.7 0H128zM384 352v32 64H128V384 368 352H384zm64 32h32c17.7 0 32-14.3 32-32V256c0-35.3-28.7-64-64-64H64c-35.3 0-64 28.7-64 64v96c0 17.7 14.3 32 32 32H64v64c0 35.3 28.7 64 64 64H384c35.3 0 64-28.7 64-64V384zm-16-88c-13.3 0-24-10.7-24-24s10.7-24 24-24s24 10.7 24 24s-10.7 24-24 24z"/></svg></span>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="mdbook-search-wrapper" class="hidden">
+                    <form id="mdbook-searchbar-outer" class="searchbar-outer">
+                        <div class="search-wrapper">
+                            <input type="search" id="mdbook-searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="mdbook-searchresults-outer" aria-describedby="searchresults-header">
+                            <div class="spinner-wrapper">
+                                <span class=fa-svg id="fa-spin"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M304 48c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zm0 416c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zM48 304c26.5 0 48-21.5 48-48s-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48zm464-48c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zM142.9 437c18.7-18.7 18.7-49.1 0-67.9s-49.1-18.7-67.9 0s-18.7 49.1 0 67.9s49.1 18.7 67.9 0zm0-294.2c18.7-18.7 18.7-49.1 0-67.9S93.7 56.2 75 75s-18.7 49.1 0 67.9s49.1 18.7 67.9 0zM369.1 437c18.7 18.7 49.1 18.7 67.9 0s18.7-49.1 0-67.9s-49.1-18.7-67.9 0s-18.7 49.1 0 67.9z"/></svg></span>
+                            </div>
+                        </div>
+                    </form>
+                    <div id="mdbook-searchresults-outer" class="searchresults-outer hidden">
+                        <div id="mdbook-searchresults-header" class="searchresults-header"></div>
+                        <ul id="mdbook-searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('mdbook-sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('mdbook-sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#mdbook-sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="mdbook-content" class="content">
+                    <main>
+                        <h1 id="virtualized-start9-os-setup-guide-advanced"><a class="header" href="#virtualized-start9-os-setup-guide-advanced">Virtualized Start9 OS Setup Guide (Advanced)</a></h1>
+<p>This guide covers running Start9 OS as a virtual machine (VM) on a Linux host. Use this method if your hardware is incompatible with native Start9 OS installation, or if you want to run multiple services on one machine.</p>
+<p><strong>In this guide, you will:</strong></p>
+<ul>
+<li>Set up a <a href="#step-by-step-instructions---option-a-proxmox-virtual-environment">Proxmox VE (Option A)</a> or <a href="#high-level-guidance---option-b-kvm-qemu-on-ubuntu-debian">KVM/QEMU (Option B)</a> host for Start9 OS</li>
+<li>Configure VM resources and storage</li>
+<li>Install and launch Start9 OS as a VM</li>
+<li>Troubleshoot common virtualization issues</li>
+</ul>
+<hr>
+<h2 id="pre-requisites"><a class="header" href="#pre-requisites">Pre-requisites</a></h2>
+<h3 id="preparation"><a class="header" href="#preparation">Preparation</a></h3>
+<ul>
+<li>Mini PC or server connected to router and power</li>
+<li>Basic familiarity with Linux/web interfaces</li>
+<li>SSH access capability</li>
+</ul>
+<h3 id="hardware"><a class="header" href="#hardware">Hardware</a></h3>
+<ul>
+<li><strong>Recommended:</strong> MINISFORUM X1-255 Mini PC (32GB RAM, 1TB SSD)</li>
+<li>Wired Ethernet connection (e.g., UGREEN Cat 8 cable)</li>
+<li>Monitor and keyboard (for initial setup)</li>
+<li>Laptop/desktop for downloads and web access</li>
+<li>USB drive (64GB+) for flashing ISOs</li>
+</ul>
+<h3 id="software-choose-one"><a class="header" href="#software-choose-one">Software (Choose One)</a></h3>
+<ul>
+<li><strong>Option A: Proxmox VE (Used in this guide)</strong>
+<ul>
+<li>Proxmox Virtual Environment 9.1 (web UI + CLI, free community edition)</li>
+</ul>
+</li>
+<li><strong>Option B: Manual KVM/QEMU on Linux</strong>
+<ul>
+<li>Ubuntu Server 24.04 LTS or Debian 12</li>
+<li>KVM/QEMU with libvirt (command-line management)</li>
+</ul>
+</li>
+<li>Web browser (Safari, Chrome, or Firefox)</li>
+</ul>
+<h3 id="references"><a class="header" href="#references">References</a></h3>
+<ul>
+<li><a href="https://www.proxmox.com/en/proxmox-ve">Proxmox VE Documentation</a></li>
+<li><a href="https://docs.start9.com/">Start9 OS Documentation</a></li>
+</ul>
+<hr>
+<h2 id="step-by-step-instructions---option-a-proxmox-virtual-environment"><a class="header" href="#step-by-step-instructions---option-a-proxmox-virtual-environment">Step-by-Step Instructions -&gt; Option A: Proxmox Virtual Environment</a></h2>
+<p>Proxmox VE is Start9’s recommended hypervisor for running Start9 OS. It provides an enterprise-grade web interface, built-in backup/restore, and is fully open-source.</p>
+<h3 id="step-1-download-proxmox-iso"><a class="header" href="#step-1-download-proxmox-iso">Step 1: Download Proxmox ISO</a></h3>
+<ol>
+<li>
+<p>On your MacBook, download Proxmox VE 9.1:</p>
+<p><strong>Option 1: Using your browser (Recommended for macOS)</strong></p>
+<ul>
+<li>Visit the <a href="https://www.proxmox.com/en/downloads">Proxmox VE Downloads page</a></li>
+<li>Click on “Proxmox VE 9.1 ISO Installer”</li>
+<li>Click “Download” button</li>
+<li>File will be saved to <code>~/Downloads/proxmox-ve_9.1-1.iso</code></li>
+</ul>
+<figure style="margin:1.5em 0;text-align:center;max-width:100%;">
+   <img src="../images/proxmox_ve_9_1_iso_installer_download.png" alt="Proxmox VE 9.1 ISO installer download page" style="width:100%;max-width:480px;height:auto;border-radius:12px;box-shadow:0 2px 8px rgba(0,0,0,0.08);object-fit:cover;" loading="lazy" decoding="async" sizes="(max-width: 600px) 95vw, 480px">
+   <figcaption style="font-size:0.98em;color:#555;margin-top:0.5em;">Proxmox VE 9.1 ISO Installer download page showing download link.</figcaption>
+</figure>
+<p><strong>Option 2: Using curl (macOS command line)</strong></p>
+</li>
+</ol>
+<pre><code class="language-bash"># Download Proxmox VE (ISO)
+cd ~/Downloads
+curl -O https://enterprise.proxmox.com/iso/proxmox-ve_9.1-1.iso
+
+# Verify download
+ls -lh proxmox-ve_9.1-1.iso
+# Expected size: ~1.83 GB
+</code></pre>
+<ol start="2">
+<li><em>(Optional)</em> Verify the SHA256 checksum of the downloaded ISO:</li>
+</ol>
+<pre><code class="language-bash">shasum -a 256 proxmox-ve_9.1-1.iso
+# Should match: 6d8f5afc78c0c66812d7272cde7c8b98be7eb54401ceb045400db05eb5ae6d22
+</code></pre>
+<h3 id="step-2-flash-proxmox-iso-to-usb"><a class="header" href="#step-2-flash-proxmox-iso-to-usb">Step 2: Flash Proxmox ISO to USB</a></h3>
+<ol>
+<li>
+<p>Flash to USB using Balena Etcher (installed from <a href="./flashing_start9.html">Flashing Start9 OS</a>):</p>
+<ul>
+<li>Open <strong>Balena Etcher</strong> application</li>
+<li>Click <strong>“Flash from file”</strong> and select <code>proxmox-ve_9.1-1.iso</code></li>
+<li>Click <strong>“Select target”</strong> and choose your USB drive
+<ul>
+<li><strong>Warning</strong>: This will erase the Start9 OS currently on the USB</li>
+<li>Use the same USB drive from earlier, or use a different USB if you want to keep both ISOs</li>
+</ul>
+</li>
+<li>Click <strong>“Flash!”</strong> to begin writing Proxmox ISO to USB</li>
+<li>Wait for flashing to complete (~5-10 minutes)</li>
+<li>Balena Etcher will verify the flash automatically</li>
+</ul>
+</li>
+</ol>
+<h3 id="step-3-install-proxmox-on-minisforum"><a class="header" href="#step-3-install-proxmox-on-minisforum">Step 3: Install Proxmox on Minisforum</a></h3>
+<ol>
+<li>
+<p>Insert Proxmox USB into Minisforum</p>
+</li>
+<li>
+<p>Power on the Minisforum</p>
+</li>
+<li>
+<p><strong>Enter BIOS setup</strong>:</p>
+<ul>
+<li>Press <strong>DEL</strong> key immediately after power on (before Minisforum logo appears)</li>
+<li>Look for <strong>“Boot” or “Boot Options”</strong> menu</li>
+<li>Set USB as the <strong>first boot device</strong> (if not already set)</li>
+<li>Save and exit BIOS</li>
+</ul>
+</li>
+<li>
+<p>Power off, then power on again - the system will boot from the Proxmox USB</p>
+</li>
+<li>
+<p>The Proxmox installer boot menu should appear with several options:</p>
+<ul>
+<li><strong>Install Proxmox VE (Graphical)</strong> - Recommended for first-time users (interactive graphical installer; selected and used in this guide)</li>
+<li>Install Proxmox VE (Terminal UI) - Text-based installer with similar options</li>
+<li>Advanced Options - For custom partitioning and other settings</li>
+</ul>
+</li>
+</ol>
+<figure style="margin:1.5em 0;text-align:center;max-width:100%;">
+   <img src="../images/proxmox_ve_9_1_installer_options.jpg" alt="Proxmox VE 9.1 installer boot menu with installation options" style="width:100%;max-width:480px;height:auto;border-radius:12px;box-shadow:0 2px 8px rgba(0,0,0,0.08);object-fit:cover;" loading="lazy" decoding="async" sizes="(max-width: 600px) 95vw, 480px">
+   <figcaption style="font-size:0.98em;color:#555;margin-top:0.5em;">Proxmox VE 9.1 installer boot menu showing installation options.</figcaption>
+</figure>
+<ol start="6">
+<li>
+<p>Select <strong>“Install Proxmox VE (Graphical)”</strong> (first option) - this opens the interactive installer</p>
+</li>
+<li>
+<p>Select the target disk and filesystem</p>
+<ul>
+<li>Choose the internal SSD as the target harddisk (this will erase all data on it).</li>
+<li>For <strong>Filesystem</strong>, select <strong>ext4</strong> (recommended for single disk setups).</li>
+<li>Leave storage and advanced parameters at their default values unless you have specific needs.</li>
+<li>See below for <strong>Filesystem Options:</strong>
+<ul>
+<li><strong>ext4</strong> - Simple, low overhead, no RAID (best for single disk)</li>
+<li><strong>xfs</strong> - High performance, supports RAID0/1/10</li>
+<li><strong>zfs</strong> - Advanced, supports RAID0/1/10/Z1/Z2/Z3</li>
+<li><strong>btrfs</strong> - Modern, supports RAID0/1/10</li>
+</ul>
+</li>
+</ul>
+</li>
+</ol>
+<figure style="margin:1.5em 0;text-align:center;max-width:100%;">
+   <img src="../images/proxmox_ve_9_1_installer_harddisk_options.jpg" alt="Proxmox VE 9.1 installer showing target harddisk and filesystem/RAID options." style="width:100%;max-width:480px;height:auto;border-radius:12px;box-shadow:0 2px 8px rgba(0,0,0,0.08);object-fit:cover;" loading="lazy" decoding="async" sizes="(max-width: 600px) 95vw, 480px">
+   <figcaption style="font-size:0.98em;color:#555;margin-top:0.5em;">Proxmox VE 9.1 installer showing target harddisk and filesystem/RAID options.</figcaption>
+</figure>
+<blockquote>
+<p><strong>🖲️ For Your Current Setup (1x 1TB SSD):</strong> Select <strong>ext4</strong> filesystem for simplest option with lowest resource overhead. No RAID complexity needed for a single SSD.</p>
+</blockquote>
+<!-- markdownlint-disable-next-line MD028 -->
+<blockquote>
+<p><strong>🛤️ Future Upgrade Paths:</strong></p>
+<ul>
+<li>Adding 2nd SSD: Use <strong>btrfs with RAID1</strong> (mirroring for redundancy)</li>
+<li>3+ SSDs at 2TB+: Use <strong>ZFS with Z2</strong> (RAID6-like protection with superior data integrity)</li>
+</ul>
+<p>Proxmox supports live storage migration (<code>pvmove</code>) if you need to change configurations later.</p>
+</blockquote>
+<ol start="8">
+<li>
+<p>Set location, time zone, and keyboard layout</p>
+<ul>
+<li>Select your country, time zone, and keyboard layout as appropriate for your region.</li>
+</ul>
+</li>
+</ol>
+<figure style="margin:1.5em 0;text-align:center;max-width:100%;">
+   <img src="../images/proxmox_ve_9_1_installer_location_time_zone_selection.jpg" alt="Proxmox VE 9.1 installer location and time zone selection screen" style="width:100%;max-width:480px;height:auto;border-radius:12px;box-shadow:0 2px 8px rgba(0,0,0,0.08);object-fit:cover;" loading="lazy" decoding="async" sizes="(max-width: 600px) 95vw, 480px">
+   <figcaption style="font-size:0.98em;color:#555;margin-top:0.5em;">Proxmox VE 9.1 installer showing Location, Time Zone, and Keyboard Layout configuration.</figcaption>
+</figure>
+<ol start="9">
+<li>
+<p>Set the administrator password and email address</p>
+<ul>
+<li>Enter your email address (used for notifications and system alerts).</li>
+<li>Create a strong password for the root account and confirm it.</li>
+</ul>
+</li>
+</ol>
+<blockquote>
+<p><strong>🔑 Password Requirements:</strong></p>
+<ul>
+<li>Use at least 12 characters</li>
+<li>Mix uppercase, lowercase, numbers, and symbols</li>
+<li>Avoid common words or easy patterns</li>
+<li>Store securely (you’ll need this to access Proxmox web console)</li>
+</ul>
+</blockquote>
+<ol start="10">
+<li>
+<p>Configure the management network</p>
+<ul>
+<li>Select the management interface (<strong>nic0</strong> is usually the Ethernet port with the cable connected from your router).</li>
+<li>Enter a hostname (FQDN), e.g., <code>pve.local</code>.</li>
+<li>Enter a static IPv4 address (e.g., <code>192.168.1.100/24</code>) or choose DHCP.</li>
+<li>Enter the gateway (usually your router’s IP, e.g., <code>192.168.1.254</code>).</li>
+<li>Enter DNS servers (use defaults or specify custom DNS if desired).</li>
+</ul>
+</li>
+</ol>
+<blockquote>
+<p><strong>🌐 Network Configuration Tips:</strong></p>
+<ul>
+<li>The installer may show an IPv6 default; change to IPv4 to match your gateway.</li>
+<li>For static IP, pick an unused address in your LAN’s range (e.g., <code>192.168.1.100/24</code>).</li>
+<li>Default gateway for AT&amp;T BGW320 is <code>192.168.1.254</code>.</li>
+<li>Default DNS is pre-filled from AT&amp;T; you can use these or specify your own.</li>
+<li>See the guide for more details on network configuration and troubleshooting.</li>
+</ul>
+</blockquote>
+<ol start="11">
+<li>
+<p>Review the summary and start installation</p>
+<ul>
+<li>Review all configuration values on the summary screen.</li>
+<li>Confirm that all entries (disk, region, network, etc.) are correct.</li>
+<li>When ready, click <strong>Install</strong>. Optionally, leave “Automatically reboot after successful installation” enabled.</li>
+</ul>
+</li>
+<li>
+<p>Installation takes ~10-15 minutes</p>
+</li>
+<li>
+<p>System reboots; <strong>remove USB drive</strong></p>
+<p>Proxmox VE is now installed on the Minisforum’s internal SSD. The USB drive is no longer needed for booting and can be reused to flash the Start9 OS ISO in the next step.</p>
+</li>
+<li>
+<p>Reset BIOS boot sequence (optional but recommended)</p>
+<p>To prevent accidental USB boot in the future, set the boot order back to NVMe first:</p>
+<ul>
+<li>Power off the Minisforum</li>
+<li>Power on and press <strong>DEL</strong> immediately to enter BIOS</li>
+<li>Go to <strong>Boot</strong> or <strong>Boot Options</strong></li>
+<li>Set <strong>NVMe (Proxmox disk)</strong> as the first boot device</li>
+<li>Set <strong>USB</strong> as second (if you want USB fallback)</li>
+<li>Save and exit BIOS</li>
+<li>System will boot directly from Proxmox</li>
+</ul>
+</li>
+<li>
+<p>Access Proxmox web console:</p>
+<p>From your MacBook browser, navigate to Proxmox Web Console using <code>https://192.168.1.100:8006</code> or use the hostname <code>https://pve.local:8006</code></p>
+<p>Login credentials:</p>
+<ul>
+<li><strong>Username</strong>: <code>root</code></li>
+<li><strong>Password</strong>: The password you created during installation as Proxmox administration password</li>
+</ul>
+</li>
+</ol>
+<blockquote>
+<p><strong>🌐 Access Tip:</strong> You can use the hostname (e.g., <code>https://pve.local:8006</code>) or use IP address (e.g., <code>https://192.168.1.100:8006</code>) you configured for Proxmox earlier. If you used DHCP, check your router’s DHCP leases to find the assigned IP.</p>
+</blockquote>
+<h3 id="step-4-enable-proxmox-ve-no-subscription-repository-free-updates"><a class="header" href="#step-4-enable-proxmox-ve-no-subscription-repository-free-updates">Step 4: Enable Proxmox VE No-Subscription Repository (Free Updates)</a></h3>
+<p>By default, Proxmox VE shows a subscription warning and only enables the enterprise repository. To receive updates without a paid subscription, enable the no-subscription repository using the GUI method:</p>
+<ol>
+<li>
+<p>Log in to the Proxmox web interface</p>
+</li>
+<li>
+<p>In the left sidebar, select <strong>Datacenter</strong>, then your node, then <strong>Repositories</strong></p>
+</li>
+<li>
+<p><strong>Disable</strong> the enterprise repository (select the <code>pve-enterprise</code> line and click <strong>Disable</strong>)</p>
+</li>
+<li>
+<p>Click <strong>Add</strong></p>
+</li>
+<li>
+<p>Select <strong>No-Subscription</strong> from the dropdown menu</p>
+<ul>
+<li>All fields (URIs, Suites, Components) will populate automatically</li>
+</ul>
+</li>
+<li>
+<p>Click <strong>Add</strong> to confirm</p>
+</li>
+<li>
+<p>Go to <strong>Updates</strong> in the sidebar and click <strong>Refresh</strong></p>
+</li>
+<li>
+<p>Click <strong>Upgrade</strong> to update from the free repository</p>
+<p>You now have access to free Proxmox VE updates without a paid subscription.</p>
+</li>
+</ol>
+<figure style="margin:1.5em 0;text-align:center;max-width:100%;">
+   <img src="../images/proxmox_datacenter_node_updates_repositories.png" alt="Proxmox Datacenter → Node → Updates → Repositories view showing no-subscription selection" style="width:100%;max-width:480px;height:auto;border-radius:12px;box-shadow:0 2px 8px rgba(0,0,0,0.08);object-fit:cover;" loading="lazy" decoding="async" sizes="(max-width: 600px) 95vw, 480px">
+   <figcaption style="font-size:0.98em;color:#555;margin-top:0.5em;">Proxmox Datacenter → Node → Updates → Repositories — no-subscription selected and repository list updated.</figcaption>
+</figure>
+<blockquote>
+<p><strong>🛠️ Alternative Methods:</strong></p>
+<ul>
+<li><strong>CLI Method</strong>: Use SSH or terminal to edit repository files directly (<code>/etc/apt/sources.list.d/</code>)</li>
+<li><strong>Manual Edit</strong>: Edit repository files via web shell under node → Shell</li>
+<li>See <a href="https://pve.proxmox.com/wiki/Package_Repositories">Proxmox Package Repositories documentation</a> for details</li>
+</ul>
+</blockquote>
+<h3 id="step-5-upload-start9-os-iso-to-proxmox"><a class="header" href="#step-5-upload-start9-os-iso-to-proxmox">Step 5: Upload Start9 OS ISO to Proxmox</a></h3>
+<ol>
+<li>
+<p>Download Start9 OS stable release ISO:</p>
+<ul>
+<li>Visit the <a href="https://github.com/Start9Labs/start-os/releases">Start9 OS GitHub Releases page</a></li>
+<li>Download latest stable ISO to your <strong>MacBook</strong> (e.g., <code>startos-0.3.5.1-39de098_x86_64.iso</code>)</li>
+</ul>
+</li>
+<li>
+<p>In Proxmox web interface, navigate to <strong>Datacenter</strong> → <strong>pve</strong> (your node) → <strong>local</strong> storage</p>
+</li>
+<li>
+<p>Click <strong>ISO Images</strong> tab</p>
+</li>
+<li>
+<p>Click <strong>Upload</strong> button</p>
+</li>
+<li>
+<p>Select your Start9 stable ISO file and click <strong>Upload</strong></p>
+<ul>
+<li><strong>Hash algorithm</strong>: Leave as <strong>None</strong> (optional integrity verification; not required for this upload)</li>
+<li>Wait for upload to complete (~3-5 minutes depending on connection speed)</li>
+</ul>
+</li>
+</ol>
+<figure style="margin:1.5em 0;text-align:center;max-width:100%;">
+   <img src="../images/proxmox_datacenter_node_local_storage_iso_images.png" alt="Proxmox Node → local (pve) → ISO Images tab showing Start9 OS ISO after upload" style="width:100%;max-width:480px;height:auto;border-radius:12px;box-shadow:0 2px 8px rgba(0,0,0,0.08);object-fit:cover;" loading="lazy" decoding="async" sizes="(max-width: 600px) 95vw, 480px">
+   <figcaption style="font-size:0.98em;color:#555;margin-top:0.5em;">Proxmox Node → local (pve) → ISO Images — Start9 OS ISO visible after successful upload.</figcaption>
+</figure>
+<blockquote>
+<p><strong>🔄 USB Transfer Option:</strong> Alternatively, flash ISO to USB drive (using your MacBook) and insert USB into <strong>Minisforum device</strong> running Proxmox to transfer the file</p>
+</blockquote>
+<h3 id="step-6-create-the-virtual-machine"><a class="header" href="#step-6-create-the-virtual-machine">Step 6: Create the Virtual Machine</a></h3>
+<ol>
+<li>In the Proxmox web interface, click <strong>Create VM</strong> (top right) to start the virtual machine creation wizard.</li>
+<li>Enter general information for your VM:
+<ul>
+<li>Set <strong>Node</strong> to your Proxmox server (e.g., <code>pve</code>).</li>
+<li>Choose a <strong>VM ID</strong> (default is 100, or pick another if needed).</li>
+<li>Enter a <strong>Name</strong> for your VM (e.g., <code>start9-bitcoin-node</code>).</li>
+<li>Leave <strong>Resource Pool</strong> empty (not needed for a single VM).</li>
+<li>Leave <strong>Add to HA</strong> unchecked (not needed unless you have a cluster).</li>
+</ul>
+</li>
+<li>Select the Start9 OS ISO and operating system type:
+<ul>
+<li>In the <strong>OS</strong> tab, select <strong>Use CD/DVD disc image file (iso)</strong>.</li>
+<li>Set <strong>Storage</strong> to local.</li>
+<li>Choose the <strong>ISO image</strong> you uploaded earlier (e.g., <code>startos-0.3.5.1-39de098_x86_64.iso</code>).</li>
+<li>For <strong>Guest OS</strong>, set <strong>Type</strong> to Linux and <strong>Version</strong> to 6.x - 2.6 Kernel (or latest available).</li>
+</ul>
+</li>
+<li>Configure the system hardware for the VM:
+<ul>
+<li>In the <strong>System</strong> tab, leave <strong>Graphic card</strong>, <strong>Machine</strong>, <strong>BIOS</strong>, and <strong>SCSI Controller</strong> at their defaults.</li>
+<li>Leave <strong>Qemu Agent</strong> unchecked.</li>
+<li>No changes needed for other options unless you have specific requirements.</li>
+</ul>
+</li>
+<li>Allocate CPU resources for the VM:
+<ul>
+<li>In the <strong>CPU</strong> tab, set <strong>Sockets</strong> to 1 and <strong>Cores</strong> to 4 (recommended for a Bitcoin node).</li>
+<li>Set <strong>Type</strong> to host to fully utilize your CPU features.</li>
+<li>Leave <strong>Bandwidth</strong> at default (unlimited).</li>
+</ul>
+</li>
+<li>Allocate memory for the VM:
+<ul>
+<li>In the <strong>Memory</strong> tab, set <strong>Memory (MiB)</strong> to 6144 (6 GB for Start9 OS).</li>
+<li>Optionally set <strong>Minimum memory</strong> to 2048 for ballooning.</li>
+</ul>
+</li>
+<li>Set up the VM’s virtual disk:
+<ul>
+<li>In the <strong>Disks</strong> tab, set <strong>Bus/Device</strong> to SCSI 0 (default).</li>
+<li>Choose <strong>Storage</strong> as local-lvm (or your storage pool).</li>
+<li>Set <strong>Disk size (GiB)</strong> to 1000 (1TB recommended; minimum 750GB if space is limited).</li>
+<li>Set <strong>Cache</strong> to Default (or write through for safety).</li>
+<li>Leave <strong>Discard</strong> unchecked.</li>
+<li>Enable <strong>SSD emulation</strong> if using an SSD (recommended).</li>
+<li>Keep <strong>I/O thread</strong> checked for better performance.</li>
+<li>Leave <strong>Bandwidth</strong> at default.</li>
+</ul>
+</li>
+<li>Configure the VM’s network connection:
+<ul>
+<li>In the <strong>Network</strong> tab, set <strong>Bridge</strong> to vmbr0 (default).</li>
+<li>Set <strong>Model</strong> to VirtIO for best performance.</li>
+<li>Leave <strong>MAC address</strong> as auto-generated.</li>
+<li>Ensure <strong>No network device</strong> is unchecked (you need network access).</li>
+<li>Leave <strong>VLAN tag</strong> empty.</li>
+<li>Keep <strong>Firewall</strong> checked for basic security.</li>
+</ul>
+</li>
+<li>Review and finalize the VM setup:
+<ul>
+<li>In the <strong>Confirm</strong> tab, review all your settings.</li>
+<li>Check <strong>Start after created</strong> to boot the VM immediately after creation.</li>
+</ul>
+</li>
+<li>Click <strong>Finish</strong> to create the VM.</li>
+</ol>
+<h3 id="step-7-install-start9-os"><a class="header" href="#step-7-install-start9-os">Step 7: Install Start9 OS</a></h3>
+<ol>
+<li>
+<p>VM will automatically start and boot from the ISO</p>
+</li>
+<li>
+<p>Click <strong>Console</strong> tab to view the VM screen</p>
+<ul>
+<li>You’ll see “Guest not running” message initially</li>
+<li>Click <strong>Start now</strong> button to power on the VM</li>
+</ul>
+</li>
+<li>
+<p>Follow Start9 OS installation wizard (first stage):</p>
+<ul>
+<li>Select the installation disk (the virtual disk matching your Disks tab allocation, e.g., 1TB)</li>
+<li>Select <strong>Install StartOS</strong> as the installation type (not “Start Fresh”)</li>
+<li>The system will display unmounting messages (normal during Live ISO eject phase)</li>
+<li>Press <strong>ENTER</strong> to continue when prompted</li>
+</ul>
+</li>
+<li>
+<p>System will automatically reboot after installation (into Start9 Setup):</p>
+<ul>
+<li>Wait for reboot to complete (~2-3 minutes)</li>
+</ul>
+</li>
+<li>
+<p>Complete Start9 OS Setup (second stage):</p>
+<ul>
+<li>On the Start9 OS Setup screen, choose <strong>Start Fresh</strong> (Recover only if restoring from backup)</li>
+<li>Select the installation disk again if prompted (same virtual disk as above)</li>
+<li>Set your master password (enter and re-type to confirm)</li>
+<li>Continue following the setup wizard prompts</li>
+</ul>
+</li>
+<li>
+<p>After Start9 OS setup completes:</p>
+<ul>
+<li>Click <strong>Continue to Login</strong> when prompted.</li>
+<li>Log in with the master password you just set.</li>
+</ul>
+</li>
+<li>
+<p><strong>Remove the ISO:</strong></p>
+<ul>
+<li>In Proxmox, select your VM (<code>start9-bitcoin-node</code>).</li>
+<li>Click <strong>Hardware</strong> tab.</li>
+<li>Select the <strong>CD/DVD Drive</strong>.</li>
+<li>Click <strong>Edit</strong>.</li>
+<li>Select <strong>Do not use any media</strong>.</li>
+<li>Click <strong>OK</strong>.</li>
+<li>Why: Prevents the VM from booting the installer ISO again on future restarts and avoids keeping the live ISO mounted.</li>
+</ul>
+</li>
+<li>
+<p>Start9 OS is now running on the VM. You can restart the VM later if needed.</p>
+</li>
+</ol>
+<figure style="margin:1.5em 0;text-align:center;max-width:100%;">
+   <img src="../images/proxmox_datacenter_node_vm_summary.png" alt="Proxmox Node → start9-bitcoin-node → Summary tab showing VM status after installation and ISO removal" style="width:100%;max-width:480px;height:auto;border-radius:12px;box-shadow:0 2px 8px rgba(0,0,0,0.08);object-fit:cover;" loading="lazy" decoding="async" sizes="(max-width: 600px) 95vw, 480px">
+   <figcaption style="font-size:0.98em;color:#555;margin-top:0.5em;">Proxmox Node → start9-bitcoin-node → Summary — VM running after installation and ISO removal.</figcaption>
+</figure>
+<blockquote>
+<p><strong>💽 VM Data Persistence:</strong> Start9 OS data persists in the VM disk; the VM can be stopped/restarted without data loss.</p>
+</blockquote>
+<h3 id="step-8-access-start9-os-web-interface"><a class="header" href="#step-8-access-start9-os-web-interface">Step 8: Access Start9 OS Web Interface</a></h3>
+<p><strong>Quick Access Summary for Proxmox VM:</strong></p>
+<p>The VM automatically obtains an IP from your router via DHCP. You can access Start9 OS in two ways:</p>
+<ol>
+<li><strong>Via local hostname</strong> (easiest): Navigate to <code>https://xxx-yyy.local</code> from any device on your network (replace with your device’s hostname)</li>
+<li><strong>Via direct IP</strong>: Find the VM’s IP in Proxmox Summary tab, then navigate to <code>https://192.168.1.101</code> (for example, if your Start9 OS VM is assigned <code>192.168.1.101</code>)</li>
+</ol>
+<p>For ongoing maintenance and best practices, see the <a href="#ongoing-management---for-proxmox-option-a">Ongoing Management → For Proxmox (Option A)</a> section below.</p>
+<hr>
+<h2 id="high-level-guidance---option-b-kvm-qemu-on-ubuntu-debian"><a class="header" href="#high-level-guidance---option-b-kvm-qemu-on-ubuntu-debian">High-Level Guidance -&gt; Option B: KVM QEMU on Ubuntu Debian</a></h2>
+<blockquote>
+<p><strong>🖥️ Virtualization Approach:</strong> This guide focuses on Proxmox VE (Option A) as the chosen approach. KVM/QEMU on Ubuntu/Debian is an alternative for users who prefer traditional Linux distributions as the host OS.</p>
+</blockquote>
+<p><strong>Considerations for KVM/QEMU approach:</strong></p>
+<ul>
+<li><strong>Host OS</strong>: Requires Ubuntu Server 24.04 LTS or Debian 12 installation</li>
+<li><strong>Virtualization Stack</strong>: Uses KVM/QEMU with libvirt for VM management</li>
+<li><strong>Management</strong>: Primarily CLI-based using <code>virsh</code> commands (less user-friendly than Proxmox web UI)</li>
+<li><strong>Networking</strong>: Requires manual bridge configuration for direct LAN access</li>
+<li><strong>Resource Overhead</strong>: Similar to Proxmox (~2GB for host OS, 6-8GB for Start9 VM)</li>
+<li><strong>Pros</strong>: More familiar for existing Ubuntu/Debian users; native Linux tools</li>
+<li><strong>Cons</strong>: No built-in web UI; requires more manual configuration; less optimized for virtualization</li>
+</ul>
+<p>If you prefer this approach, refer to Ubuntu/Debian KVM documentation:</p>
+<ul>
+<li><a href="https://ubuntu.com/server/docs/virtualization-libvirt">Ubuntu KVM Installation Guide</a></li>
+<li><a href="https://wiki.debian.org/KVM">Debian KVM Guide</a></li>
+</ul>
+<hr>
+<h2 id="ongoing-management---for-proxmox-option-a"><a class="header" href="#ongoing-management---for-proxmox-option-a">Ongoing Management -&gt; For Proxmox (Option A)</a></h2>
+<h3 id="proxmox-ongoing-management-future"><a class="header" href="#proxmox-ongoing-management-future">Proxmox Ongoing Management (Future)</a></h3>
+<ul>
+<li><strong>Snapshots:</strong> Use Proxmox snapshots to safely test configuration changes and revert if needed. Take one before upgrades; keep only a few; prune old ones.</li>
+<li><strong>Backups:</strong> Use Proxmox web UI or <code>vzdump</code> command for automated backups. Schedule periodic VM backups to external storage (USB/NAS).</li>
+<li><strong>Updates:</strong> Keep Proxmox and Start9 OS up to date via their UIs.</li>
+<li><strong>Monitoring:</strong> Watch CPU, RAM, and disk; adjust VM resources as needed.</li>
+<li><strong>Security:</strong> Review firewall rules and user permissions on the node.</li>
+</ul>
+<blockquote>
+<p><strong>🌐 Host Services:</strong> The Proxmox host can still run other services (firewall, DNS, backup scripts, etc.).</p>
+</blockquote>
+<h3 id="storage-upgrade-path-future"><a class="header" href="#storage-upgrade-path-future">Storage Upgrade Path (Future)</a></h3>
+<p>When you’re ready to add redundancy or expand storage:</p>
+<ul>
+<li>Start with two SSDs in btrfs RAID1 for redundancy and low overhead.</li>
+<li>Use live storage migration (<code>pvmove</code>) when replacing/expanding disks; consult Proxmox docs.</li>
+<li>At 3+ SSDs, consider ZFS (Z2) for stronger integrity; budget extra RAM.</li>
+</ul>
+<hr>
+<p>👈 Prev: <a href="./booting_start9.html">Booting Start9 OS</a></p>
+<p>👉 Next: <a href="./configuring_network.html">Configuring Network Settings</a></p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="../bitcoin_node/booting_start9.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
+                            </a>
+
+                            <a rel="next prefetch" href="../bitcoin_node/configuring_network.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="../bitcoin_node/booting_start9.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
+                    </a>
+
+                    <a rel="next prefetch" href="../bitcoin_node/configuring_network.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
+                    </a>
+            </nav>
+
+        </div>
+
+        <template id=fa-eye><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M288 32c-80.8 0-145.5 36.8-192.6 80.6C48.6 156 17.3 208 2.5 243.7c-3.3 7.9-3.3 16.7 0 24.6C17.3 304 48.6 356 95.4 399.4C142.5 443.2 207.2 480 288 480s145.5-36.8 192.6-80.6c46.8-43.5 78.1-95.4 93-131.1c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C433.5 68.8 368.8 32 288 32zM432 256c0 79.5-64.5 144-144 144s-144-64.5-144-144s64.5-144 144-144s144 64.5 144 144zM288 192c0 35.3-28.7 64-64 64c-11.5 0-22.3-3-31.6-8.4c-.2 2.8-.4 5.5-.4 8.4c0 53 43 96 96 96s96-43 96-96s-43-96-96-96c-2.8 0-5.6 .1-8.4 .4c5.3 9.3 8.4 20.1 8.4 31.6z"/></svg></span></template>
+        <template id=fa-eye-slash><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M38.8 5.1C28.4-3.1 13.3-1.2 5.1 9.2S-1.2 34.7 9.2 42.9l592 464c10.4 8.2 25.5 6.3 33.7-4.1s6.3-25.5-4.1-33.7L525.6 386.7c39.6-40.6 66.4-86.1 79.9-118.4c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C465.5 68.8 400.8 32 320 32c-68.2 0-125 26.3-169.3 60.8L38.8 5.1zM223.1 149.5C248.6 126.2 282.7 112 320 112c79.5 0 144 64.5 144 144c0 24.9-6.3 48.3-17.4 68.7L408 294.5c5.2-11.8 8-24.8 8-38.5c0-53-43-96-96-96c-2.8 0-5.6 .1-8.4 .4c5.3 9.3 8.4 20.1 8.4 31.6c0 10.2-2.4 19.8-6.6 28.3l-90.3-70.8zm223.1 298L373 389.9c-16.4 6.5-34.3 10.1-53 10.1c-79.5 0-144-64.5-144-144c0-6.9 .5-13.6 1.4-20.2L83.1 161.5C60.3 191.2 44 220.8 34.5 243.7c-3.3 7.9-3.3 16.7 0 24.6c14.9 35.7 46.2 87.7 93 131.1C174.5 443.2 239.2 480 320 480c47.8 0 89.9-12.9 126.2-32.5z"/></svg></span></template>
+        <template id=fa-copy><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M502.6 70.63l-61.25-61.25C435.4 3.371 427.2 0 418.7 0H255.1c-35.35 0-64 28.66-64 64l.0195 256C192 355.4 220.7 384 256 384h192c35.2 0 64-28.8 64-64V93.25C512 84.77 508.6 76.63 502.6 70.63zM464 320c0 8.836-7.164 16-16 16H255.1c-8.838 0-16-7.164-16-16L239.1 64.13c0-8.836 7.164-16 16-16h128L384 96c0 17.67 14.33 32 32 32h47.1V320zM272 448c0 8.836-7.164 16-16 16H63.1c-8.838 0-16-7.164-16-16L47.98 192.1c0-8.836 7.164-16 16-16H160V128H63.99c-35.35 0-64 28.65-64 64l.0098 256C.002 483.3 28.66 512 64 512h192c35.2 0 64-28.8 64-64v-32h-47.1L272 448z"/></svg></span></template>
+        <template id=fa-play><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M73 39c-14.8-9.1-33.4-9.4-48.5-.9S0 62.6 0 80V432c0 17.4 9.4 33.4 24.5 41.9s33.7 8.1 48.5-.9L361 297c14.3-8.7 23-24.2 23-41s-8.7-32.2-23-41L73 39z"/></svg></span></template>
+        <template id=fa-clock-rotate-left><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M75 75L41 41C25.9 25.9 0 36.6 0 57.9V168c0 13.3 10.7 24 24 24H134.1c21.4 0 32.1-25.9 17-41l-30.8-30.8C155 85.5 203 64 256 64c106 0 192 86 192 192s-86 192-192 192c-40.8 0-78.6-12.7-109.7-34.4c-14.5-10.1-34.4-6.6-44.6 7.9s-6.6 34.4 7.9 44.6C151.2 495 201.7 512 256 512c141.4 0 256-114.6 256-256S397.4 0 256 0C185.3 0 121.3 28.7 75 75zm181 53c-13.3 0-24 10.7-24 24V256c0 6.4 2.5 12.5 7 17l72 72c9.4 9.4 24.6 9.4 33.9 0s9.4-24.6 0-33.9l-65-65V152c0-13.3-10.7-24-24-24z"/></svg></span></template>
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="../elasticlunr-ef4e11c1.min.js"></script>
+        <script src="../mark-09e88c2c.min.js"></script>
+        <script src="../searcher-09f2665d.js"></script>
+
+        <script src="../clipboard-1626706a.min.js"></script>
+        <script src="../highlight-abc7f01d.js"></script>
+        <script src="../book-c22b7243.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+
+    </div>
+    </body>
+</html>

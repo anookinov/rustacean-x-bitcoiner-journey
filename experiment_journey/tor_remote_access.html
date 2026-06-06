@@ -1,0 +1,1065 @@
+<!DOCTYPE HTML>
+<html lang="en" class="light sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Remote Claude Code Access from iPhone via Tor - Rustacean X Bitcoiner Journey</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="A study and practice guide for Bitcoin and Rust from a journey of Rustacean X Bitcoiner guy">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="../favicon-de23e50b.svg">
+        <link rel="shortcut icon" href="../favicon-8114d1fc.png">
+        <link rel="stylesheet" href="../css/variables-8adf115d.css">
+        <link rel="stylesheet" href="../css/general-0392ca55.css">
+        <link rel="stylesheet" href="../css/chrome-fc474251.css">
+        <link rel="stylesheet" href="../css/print-9e4910d8.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../fonts/fonts-9644e21d.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="mdbook-highlight-css" href="../highlight-493f70e1.css">
+        <link rel="stylesheet" id="mdbook-tomorrow-night-css" href="../tomorrow-night-4c0ae647.css">
+        <link rel="stylesheet" id="mdbook-ayu-highlight-css" href="../ayu-highlight-3fdfc3ac.css">
+
+        <!-- Custom theme stylesheets -->
+
+
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "../";
+            const default_light_theme = "light";
+            const default_dark_theme = "coal";
+            window.path_to_searchindex_js = "../searchindex-190b9119.js";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="../toc-7e248055.js"></script>
+    </head>
+    <body>
+    <div id="mdbook-help-container">
+        <div id="mdbook-help-popup">
+            <h2 class="mdbook-help-title">Keyboard shortcuts</h2>
+            <div>
+                <p>Press <kbd>←</kbd> or <kbd>→</kbd> to navigate between chapters</p>
+                <p>Press <kbd>S</kbd> or <kbd>/</kbd> to search in the book</p>
+                <p>Press <kbd>?</kbd> to show this help</p>
+                <p>Press <kbd>Esc</kbd> to hide this help</p>
+            </div>
+        </div>
+    </div>
+    <div id="mdbook-body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="mdbook-sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("mdbook-sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+                sidebar_toggle.checked = false;
+            }
+            if (sidebar === 'visible') {
+                sidebar_toggle.checked = true;
+            } else {
+                html.classList.remove('sidebar-visible');
+            }
+        </script>
+
+        <nav id="mdbook-sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="../toc.html"></iframe>
+            </noscript>
+            <div id="mdbook-sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="mdbook-page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="mdbook-menu-bar-hover-placeholder"></div>
+                <div id="mdbook-menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="mdbook-sidebar-toggle" class="icon-button" for="mdbook-sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="mdbook-sidebar">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M0 96C0 78.3 14.3 64 32 64H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32C14.3 128 0 113.7 0 96zM0 256c0-17.7 14.3-32 32-32H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32c-17.7 0-32-14.3-32-32zM448 416c0 17.7-14.3 32-32 32H32c-17.7 0-32-14.3-32-32s14.3-32 32-32H416c17.7 0 32 14.3 32 32z"/></svg></span>
+                        </label>
+                        <button id="mdbook-theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="mdbook-theme-list">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M371.3 367.1c27.3-3.9 51.9-19.4 67.2-42.9L600.2 74.1c12.6-19.5 9.4-45.3-7.6-61.2S549.7-4.4 531.1 9.6L294.4 187.2c-24 18-38.2 46.1-38.4 76.1L371.3 367.1zm-19.6 25.4l-116-104.4C175.9 290.3 128 339.6 128 400c0 3.9 .2 7.8 .6 11.6c1.8 17.5-10.2 36.4-27.8 36.4H96c-17.7 0-32 14.3-32 32s14.3 32 32 32H240c61.9 0 112-50.1 112-112c0-2.5-.1-5-.2-7.5z"/></svg></span>
+                        </button>
+                        <ul id="mdbook-theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-ayu">Ayu</button></li>
+                        </ul>
+                        <button id="mdbook-search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="mdbook-searchbar">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M416 208c0 45.9-14.9 88.3-40 122.7L502.6 457.4c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L330.7 376c-34.4 25.2-76.8 40-122.7 40C93.1 416 0 322.9 0 208S93.1 0 208 0S416 93.1 416 208zM208 352c79.5 0 144-64.5 144-144s-64.5-144-144-144S64 128.5 64 208s64.5 144 144 144z"/></svg></span>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">Rustacean X Bitcoiner Journey</h1>
+
+                    <div class="right-buttons">
+                        <a href="../print.html" title="Print this book" aria-label="Print this book">
+                            <span class=fa-svg id="print-button"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M128 0C92.7 0 64 28.7 64 64v96h64V64H354.7L384 93.3V160h64V93.3c0-17-6.7-33.3-18.7-45.3L400 18.7C388 6.7 371.7 0 354.7 0H128zM384 352v32 64H128V384 368 352H384zm64 32h32c17.7 0 32-14.3 32-32V256c0-35.3-28.7-64-64-64H64c-35.3 0-64 28.7-64 64v96c0 17.7 14.3 32 32 32H64v64c0 35.3 28.7 64 64 64H384c35.3 0 64-28.7 64-64V384zm-16-88c-13.3 0-24-10.7-24-24s10.7-24 24-24s24 10.7 24 24s-10.7 24-24 24z"/></svg></span>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="mdbook-search-wrapper" class="hidden">
+                    <form id="mdbook-searchbar-outer" class="searchbar-outer">
+                        <div class="search-wrapper">
+                            <input type="search" id="mdbook-searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="mdbook-searchresults-outer" aria-describedby="searchresults-header">
+                            <div class="spinner-wrapper">
+                                <span class=fa-svg id="fa-spin"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M304 48c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zm0 416c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zM48 304c26.5 0 48-21.5 48-48s-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48zm464-48c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zM142.9 437c18.7-18.7 18.7-49.1 0-67.9s-49.1-18.7-67.9 0s-18.7 49.1 0 67.9s49.1 18.7 67.9 0zm0-294.2c18.7-18.7 18.7-49.1 0-67.9S93.7 56.2 75 75s-18.7 49.1 0 67.9s49.1 18.7 67.9 0zM369.1 437c18.7 18.7 49.1 18.7 67.9 0s18.7-49.1 0-67.9s-49.1-18.7-67.9 0s-18.7 49.1 0 67.9z"/></svg></span>
+                            </div>
+                        </div>
+                    </form>
+                    <div id="mdbook-searchresults-outer" class="searchresults-outer hidden">
+                        <div id="mdbook-searchresults-header" class="searchresults-header"></div>
+                        <ul id="mdbook-searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('mdbook-sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('mdbook-sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#mdbook-sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="mdbook-content" class="content">
+                    <main>
+                        <h1 id="remote-claude-code-access-from-iphone-via-tor"><a class="header" href="#remote-claude-code-access-from-iphone-via-tor">Remote Claude Code Access from iPhone via Tor</a></h1>
+<p>After building a full Bitcoin node stack, the natural next experiment is: <strong>can I manage my Claude Code AI agents on the MacBook from my iPhone, from anywhere, without opening any port to the internet or using any cloud service?</strong></p>
+<p>The answer is yes — using a hardened Tor hidden service on the MacBook. The MacBook exposes its SSH port as a <code>.onion</code> address through the Tor network, protected by Tor v3 client authorization and SSH public-key-only authentication. The iPhone connects via Orbot (iOS Tor proxy) and Termius (SSH client). No port forwarding, no VPN subscription, no cloud server.</p>
+<p><strong>Security model:</strong></p>
+<ul>
+<li>SSH is restricted to <code>127.0.0.1</code> — unreachable from the LAN or internet without Tor</li>
+<li>Tor v3 client authorization means only your iPhone can reach the hidden service at all</li>
+<li>Password authentication is completely disabled — only Ed25519 public key accepted</li>
+<li>The <code>.onion</code> address itself is unknown to anyone who does not hold the client auth private key</li>
+</ul>
+<p><strong>In this guide, you will:</strong></p>
+<ul>
+<li>Install Tor on MacBook via Homebrew</li>
+<li>Configure a Tor v3 hidden service for SSH</li>
+<li>Generate a Tor v3 client authorization keypair (only your iPhone can connect to the <code>.onion</code> address)</li>
+<li>Harden <code>sshd_config</code> to disable password auth and restrict SSH to localhost only</li>
+<li>Generate an Ed25519 SSH key pair and install the public key</li>
+<li>Enable SSH (Remote Login) on MacBook after hardening is in place</li>
+<li>Install tmux on MacBook for persistent Claude Code sessions</li>
+<li>Install VS Code and the Claude Code extension on MacBook</li>
+<li>Install Orbot on iPhone and import the Tor client auth key</li>
+<li>Install Termius on iPhone and connect using the Ed25519 key</li>
+<li>Install ntfy on iPhone for push notifications from Claude Code</li>
+<li>Configure Claude Code hooks to send real-time notifications to iPhone</li>
+<li>Test the complete end-to-end workflow</li>
+</ul>
+<hr>
+<h2 id="pre-requisites"><a class="header" href="#pre-requisites">Pre-requisites</a></h2>
+<h3 id="preparation"><a class="header" href="#preparation">Preparation</a></h3>
+<ul>
+<li>MacBook with macOS and Homebrew installed</li>
+<li>iPhone with App Store access</li>
+<li>SSH (Remote Login) will be enabled <strong>after</strong> hardening — do not enable it before Step 8</li>
+<li>MacBook must be <strong>awake and at home</strong> — it is the Tor hidden service endpoint</li>
+</ul>
+<h3 id="hardware"><a class="header" href="#hardware">Hardware</a></h3>
+<ul>
+<li>MacBook (running VS Code and Claude Code agents)</li>
+<li>iPhone (your remote control device)</li>
+</ul>
+<h3 id="software"><a class="header" href="#software">Software</a></h3>
+<ul>
+<li>
+<p>Homebrew on MacBook — install if missing:</p>
+<pre><code class="language-bash">/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+</code></pre>
+</li>
+</ul>
+<h3 id="references"><a class="header" href="#references">References</a></h3>
+<ul>
+<li><a href="https://support.torproject.org/glossary/onion-services/">Tor Project — Onion Services</a></li>
+<li><a href="https://community.torproject.org/onion-services/advanced/client-auth/">Tor Project — Client Authorization</a></li>
+<li><a href="https://apps.apple.com/us/app/orbot/id1609461599">Orbot iOS App Store</a></li>
+<li><a href="https://docs.anthropic.com/en/docs/claude-code/">Claude Code Documentation</a></li>
+<li><a href="https://ntfy.sh/docs/">ntfy Documentation</a></li>
+<li><a href="https://github.com/tmux/tmux">tmux GitHub</a></li>
+</ul>
+<hr>
+<h2 id="step-by-step-instructions"><a class="header" href="#step-by-step-instructions">Step-by-Step Instructions</a></h2>
+<h3 id="step-1-install-tor-on-macbook"><a class="header" href="#step-1-install-tor-on-macbook">Step 1: Install Tor on MacBook</a></h3>
+<ol>
+<li>
+<p>Open <strong>Terminal</strong> on your MacBook</p>
+</li>
+<li>
+<p>Install Tor via Homebrew:</p>
+<pre><code class="language-bash">brew install tor
+</code></pre>
+</li>
+<li>
+<p>Confirm the Homebrew prefix (differs between Intel and Apple Silicon):</p>
+<pre><code class="language-bash">brew --prefix
+</code></pre>
+<ul>
+<li><strong>Apple Silicon (M1/M2/M3/M4)</strong>: <code>/opt/homebrew</code></li>
+<li><strong>Intel Mac</strong>: <code>/usr/local</code></li>
+</ul>
+<p>The steps below use <code>$(brew --prefix)</code> so they work on both architectures automatically.</p>
+</li>
+</ol>
+<h3 id="step-2-configure-tor-hidden-service-for-ssh"><a class="header" href="#step-2-configure-tor-hidden-service-for-ssh">Step 2: Configure Tor Hidden Service for SSH</a></h3>
+<ol>
+<li>
+<p>Create a permanent directory to store the hidden service keys, hostname, and client authorization:</p>
+<pre><code class="language-bash">mkdir -p ~/.tor/ssh_hidden_service/authorized_clients
+chmod 700 ~/.tor/ssh_hidden_service
+chmod 700 ~/.tor/ssh_hidden_service/authorized_clients
+</code></pre>
+</li>
+<li>
+<p>Confirm your macOS username:</p>
+<pre><code class="language-bash">whoami
+</code></pre>
+</li>
+<li>
+<p>Open the Tor configuration file (Homebrew does <strong>not</strong> create this file by default — nano will open a blank new file, which is expected):</p>
+<pre><code class="language-bash">nano $(brew --prefix)/etc/tor/torrc
+</code></pre>
+</li>
+<li>
+<p>The file will be blank. Type these lines (replace <code>yourusername</code> with your macOS username from the previous step):</p>
+<pre><code class="language-text">HiddenServiceDir /Users/yourusername/.tor/ssh_hidden_service
+HiddenServiceVersion 3
+HiddenServicePort 22 127.0.0.1:22
+</code></pre>
+</li>
+<li>
+<p>Save the file (<code>Ctrl+X</code>, <code>Y</code>, <code>Enter</code>)</p>
+</li>
+</ol>
+<blockquote>
+<p><strong>📁 What these lines do:</strong></p>
+<p><code>HiddenServiceVersion 3</code> explicitly selects v3 onion addresses (56-character, Ed25519-based). V3 is the current standard — stronger cryptography and longer addresses than legacy v2.</p>
+<p><code>HiddenServiceDir</code> tells Tor where to store the hidden service keys and the <code>hostname</code> file. Using a permanent path means your <code>.onion</code> address survives reboots.</p>
+<p><code>HiddenServicePort 22 127.0.0.1:22</code> maps <code>.onion</code> port 22 to the MacBook’s local SSH daemon — only reachable through Tor.</p>
+</blockquote>
+<h3 id="step-3-generate-tor-v3-client-authorization-keypair"><a class="header" href="#step-3-generate-tor-v3-client-authorization-keypair">Step 3: Generate Tor v3 Client Authorization Keypair</a></h3>
+<p>Tor v3 client authorization means your hidden service rejects all connection attempts from anyone who does not hold the matching private key — including anyone who discovers your <code>.onion</code> address. This is the outermost layer of security.</p>
+<ol>
+<li>
+<p>Install <code>coreutils</code> via Homebrew (provides <code>gbase32</code> for base32 encoding):</p>
+<pre><code class="language-bash">brew install coreutils
+</code></pre>
+</li>
+<li>
+<p>Generate an X25519 keypair using OpenSSL (built into macOS):</p>
+<pre><code class="language-bash">openssl genpkey -algorithm x25519 -out ~/.tor/client_auth.priv.pem
+openssl pkey -in ~/.tor/client_auth.priv.pem -pubout -out ~/.tor/client_auth.pub.pem
+</code></pre>
+</li>
+<li>
+<p>Extract the base32-encoded private key (you will give this to Orbot on iPhone):</p>
+<pre><code class="language-bash">openssl pkey -in ~/.tor/client_auth.priv.pem -outform DER | tail -c 32 | gbase32 | tr -d '='
+</code></pre>
+<p>Save this output — it is your <strong>client private key</strong> (base32). You will use it in Step 11.</p>
+</li>
+<li>
+<p>Extract the base32-encoded public key (you will install this on MacBook):</p>
+<pre><code class="language-bash">openssl pkey -pubin -in ~/.tor/client_auth.pub.pem -pubout -outform DER | tail -c 32 | gbase32 | tr -d '='
+</code></pre>
+<p>Save this output — it is your <strong>client public key</strong> (base32).</p>
+</li>
+</ol>
+<blockquote>
+<p><strong>🔑 Key security property:</strong> The X25519 public key is installed on the MacBook. Tor uses it to encrypt hidden service descriptor data so only the holder of the matching private key can even discover that the service exists. Your <code>.onion</code> address is useless to anyone else.</p>
+</blockquote>
+<h3 id="step-4-install-client-authorization-on-macbook"><a class="header" href="#step-4-install-client-authorization-on-macbook">Step 4: Install Client Authorization on MacBook</a></h3>
+<ol>
+<li>
+<p>Create the server-side authorization file (replace <code>&lt;PUBLIC_KEY_BASE32&gt;</code> with the public key from Step 3):</p>
+<pre><code class="language-bash">echo "descriptor:x25519:&lt;PUBLIC_KEY_BASE32&gt;" &gt; ~/.tor/ssh_hidden_service/authorized_clients/iphone.auth
+chmod 600 ~/.tor/ssh_hidden_service/authorized_clients/iphone.auth
+</code></pre>
+<p>Example (your key will differ):</p>
+<pre><code class="language-text">descriptor:x25519:AAAAAABBBBBBCCCCCCDDDDDDEEEEEEFFFFFFFFGGGGGGHHHHHHIIIIIIJJJJJJ
+</code></pre>
+</li>
+<li>
+<p>Verify the file was created correctly:</p>
+<pre><code class="language-bash">cat ~/.tor/ssh_hidden_service/authorized_clients/iphone.auth
+</code></pre>
+</li>
+</ol>
+<h3 id="step-5-start-tor-and-retrieve-the-onion-address"><a class="header" href="#step-5-start-tor-and-retrieve-the-onion-address">Step 5: Start Tor and Retrieve the .onion Address</a></h3>
+<ol>
+<li>
+<p>Start Tor as a background service (auto-restarts on login):</p>
+<pre><code class="language-bash">brew services start tor
+</code></pre>
+</li>
+<li>
+<p>Wait 15–20 seconds for Tor to bootstrap and generate the hidden service keys</p>
+</li>
+<li>
+<p>Retrieve your MacBook’s <code>.onion</code> address:</p>
+<pre><code class="language-bash">cat ~/.tor/ssh_hidden_service/hostname
+</code></pre>
+<p>You will see something like:</p>
+<pre><code class="language-text">abc123xyz456def789ghi012jkl345mno678pqr901stu234vwx567yz89.onion
+</code></pre>
+</li>
+<li>
+<p><strong>Copy and save this address</strong> — you will enter it into Termius on your iPhone</p>
+</li>
+</ol>
+<blockquote>
+<p><strong>✅ Verify Tor is running:</strong></p>
+<pre><code class="language-bash">brew services list | grep tor
+</code></pre>
+<p>Status should show <code>started</code>. If it shows <code>error</code>, check logs:</p>
+<pre><code class="language-bash">cat $(brew --prefix)/var/log/tor.log
+</code></pre>
+</blockquote>
+<h3 id="step-6-harden-ssh-configuration-required"><a class="header" href="#step-6-harden-ssh-configuration-required">Step 6: Harden SSH Configuration (Required)</a></h3>
+<blockquote>
+<p><strong>⚠️ This step is required before enabling SSH.</strong> The default macOS SSH configuration accepts password authentication. Enabling Remote Login without hardening first would expose your MacBook to brute-force attacks via the Tor network.</p>
+</blockquote>
+<ol>
+<li>
+<p>Open the SSH daemon configuration file:</p>
+<pre><code class="language-bash">sudo nano /etc/ssh/sshd_config
+</code></pre>
+</li>
+<li>
+<p>Find and set (or add) these directives — comment out any conflicting existing entries with <code>#</code>:</p>
+<pre><code class="language-text">ListenAddress 127.0.0.1
+PermitRootLogin no
+PasswordAuthentication no
+ChallengeResponseAuthentication no
+PubkeyAuthentication yes
+AuthenticationMethods publickey
+MaxAuthTries 3
+LoginGraceTime 20
+X11Forwarding no
+AllowTcpForwarding no
+</code></pre>
+</li>
+<li>
+<p>Save the file (<code>Ctrl+X</code>, <code>Y</code>, <code>Enter</code>)</p>
+</li>
+</ol>
+<blockquote>
+<p><strong>🔒 What each directive does:</strong></p>
+<p><code>ListenAddress 127.0.0.1</code> — SSH only binds to localhost. The port is invisible on the LAN and internet. Only Tor (which connects internally via <code>127.0.0.1:22</code>) can reach it.</p>
+<p><code>PasswordAuthentication no</code> and <code>ChallengeResponseAuthentication no</code> — completely disables password login. Only public key authentication is accepted.</p>
+<p><code>AuthenticationMethods publickey</code> — redundant confirmation; only public key accepted.</p>
+<p><code>MaxAuthTries 3</code> — disconnects after 3 failed attempts.</p>
+<p><code>LoginGraceTime 20</code> — closes unauthenticated connections after 20 seconds.</p>
+<p><code>X11Forwarding no</code> and <code>AllowTcpForwarding no</code> — minimal attack surface; no tunnelling capabilities.</p>
+</blockquote>
+<h3 id="step-7-generate-ed25519-ssh-key-pair"><a class="header" href="#step-7-generate-ed25519-ssh-key-pair">Step 7: Generate Ed25519 SSH Key Pair</a></h3>
+<p>Ed25519 is the recommended SSH key type — faster and more resistant to side-channel attacks than RSA.</p>
+<ol>
+<li>
+<p>Generate the key pair (on MacBook — this key pair belongs to your iPhone):</p>
+<pre><code class="language-bash">ssh-keygen -t ed25519 -C "iphone-termius" -f ~/.ssh/iphone_ed25519
+</code></pre>
+<p>When prompted for a passphrase, <strong>enter a strong passphrase</strong> — this protects the private key if your iPhone is lost.</p>
+</li>
+<li>
+<p>Install the public key in the authorized keys file:</p>
+<pre><code class="language-bash">cat ~/.ssh/iphone_ed25519.pub &gt;&gt; ~/.ssh/authorized_keys
+chmod 600 ~/.ssh/authorized_keys
+chmod 700 ~/.ssh
+</code></pre>
+</li>
+<li>
+<p>Display the private key for transfer to iPhone (you will copy this into Termius in Step 12):</p>
+<pre><code class="language-bash">cat ~/.ssh/iphone_ed25519
+</code></pre>
+<p>The output starts with <code>-----BEGIN OPENSSH PRIVATE KEY-----</code>. Copy the entire block including the header and footer lines.</p>
+</li>
+</ol>
+<blockquote>
+<p><strong>⚠️ Private key security:</strong> Transfer the private key to Termius over a local connection (cable, AirDrop on your local network) whenever possible. Delete <code>~/.ssh/iphone_ed25519</code> from MacBook after transferring — the MacBook only needs <code>authorized_keys</code> with the public key, not the private key.</p>
+</blockquote>
+<h3 id="step-8-enable-ssh-on-macbook"><a class="header" href="#step-8-enable-ssh-on-macbook">Step 8: Enable SSH on MacBook</a></h3>
+<p>SSH is now safe to enable because:</p>
+<ul>
+<li><code>sshd_config</code> restricts it to <code>127.0.0.1</code> (Tor-only)</li>
+<li>Password authentication is disabled</li>
+<li>Only the Ed25519 public key from Step 7 is accepted</li>
+</ul>
+<ol>
+<li>
+<p>Open <strong>System Settings</strong> → <strong>General</strong> → <strong>Sharing</strong></p>
+</li>
+<li>
+<p>Toggle <strong>Remote Login</strong> to <strong>On</strong></p>
+</li>
+<li>
+<p>Confirm your user appears in the allowed users list</p>
+</li>
+<li>
+<p>Restart the SSH daemon to apply the hardened configuration:</p>
+<pre><code class="language-bash">sudo launchctl stop com.openssh.sshd
+sudo launchctl start com.openssh.sshd
+</code></pre>
+</li>
+<li>
+<p>Verify SSH is only listening on localhost (not <code>0.0.0.0</code>):</p>
+<pre><code class="language-bash">sudo lsof -i :22
+</code></pre>
+<p>You should see <code>sshd</code> bound to <code>127.0.0.1:ssh</code> only. If you see <code>*:ssh</code> or <code>0.0.0.0:ssh</code>, the <code>sshd_config</code> change has not taken effect — restart macOS and re-check.</p>
+</li>
+</ol>
+<h3 id="step-9-install-tmux-on-macbook"><a class="header" href="#step-9-install-tmux-on-macbook">Step 9: Install tmux on MacBook</a></h3>
+<p>tmux keeps your Claude Code session alive when you disconnect from SSH. Without it, closing Termius on your iPhone immediately kills the running Claude Code process.</p>
+<ol>
+<li>
+<p>Install tmux:</p>
+<pre><code class="language-bash">brew install tmux
+</code></pre>
+</li>
+<li>
+<p>Verify installation:</p>
+<pre><code class="language-bash">tmux -V
+</code></pre>
+</li>
+</ol>
+<p><strong>Essential tmux commands for this workflow:</strong></p>
+<ul>
+<li>Start a named session: <code>tmux new -s claude</code></li>
+<li>Detach and leave running: <code>Ctrl+B</code>, then <code>D</code></li>
+<li>Reattach from SSH: <code>tmux attach -t claude</code></li>
+<li>List all sessions: <code>tmux ls</code></li>
+</ul>
+<blockquote>
+<p><strong>⚠️ Critical habit:</strong> Always start Claude Code inside a named tmux session. If Claude Code runs in a plain terminal and the SSH connection drops, the process is killed immediately.</p>
+<p><strong>📍 When to use tmux:</strong> Do not start a tmux session now. These commands are used later —
+after you SSH into your MacBook from your iPhone (Step 12). Once inside that SSH session,
+run <code>tmux new -s claude</code>, then launch Claude Code. You can then detach and close Termius
+without killing the process. For now, close this terminal and continue to Step 10.</p>
+</blockquote>
+<h3 id="step-10-install-vs-code-claude-code-extension-and-claude-code-cli"><a class="header" href="#step-10-install-vs-code-claude-code-extension-and-claude-code-cli">Step 10: Install VS Code, Claude Code Extension, and Claude Code CLI</a></h3>
+<ol>
+<li>
+<p>Download and install <strong>Visual Studio Code</strong> from <a href="https://code.visualstudio.com">code.visualstudio.com</a></p>
+</li>
+<li>
+<p>Open VS Code</p>
+</li>
+<li>
+<p>Press <code>Cmd+Shift+X</code> to open the Extensions panel</p>
+</li>
+<li>
+<p>Search for <strong>Claude Code</strong> and install the official Anthropic extension</p>
+</li>
+<li>
+<p>Follow the setup wizard to authenticate with your Anthropic account</p>
+</li>
+<li>
+<p>Verify it works: <code>Cmd+Shift+P</code> → type <code>Claude: Start Session</code></p>
+</li>
+<li>
+<p>Install the <strong>Claude Code CLI</strong> (needed to run <code>claude</code> in the terminal from your SSH session):</p>
+<pre><code class="language-bash">curl -fsSL https://claude.ai/install.sh | bash
+</code></pre>
+</li>
+<li>
+<p>Verify the CLI is installed:</p>
+<pre><code class="language-bash">claude --version
+</code></pre>
+</li>
+</ol>
+<blockquote>
+<p><strong>Why both?</strong> The VS Code extension gives you the full GUI experience when working locally.
+The CLI (<code>claude</code> command) is what you run inside a tmux session over SSH from your iPhone —
+there is no GUI over a terminal connection.</p>
+</blockquote>
+<h3 id="step-11-install-orbot-on-iphone-and-import-client-auth-key"><a class="header" href="#step-11-install-orbot-on-iphone-and-import-client-auth-key">Step 11: Install Orbot on iPhone and Import Client Auth Key</a></h3>
+<p>Orbot is the official Tor proxy app for iOS. In VPN mode it routes all iPhone traffic through Tor — including Termius SSH connections. You must also import the Tor v3 client authorization private key so Orbot can authenticate to your hidden service.</p>
+<ol>
+<li>
+<p>On your iPhone, open the <strong>App Store</strong></p>
+</li>
+<li>
+<p>Search for and install <strong>Orbot</strong> (free — by Guardian Project / Tor Project)</p>
+</li>
+<li>
+<p>Open Orbot → tap <strong>Start</strong></p>
+</li>
+<li>
+<p>Enable <strong>VPN Mode</strong> (toggle in Orbot’s main screen)</p>
+</li>
+<li>
+<p>Wait for Orbot to show <strong>Connected</strong></p>
+</li>
+<li>
+<p>Import the Tor v3 client authorization key:</p>
+<ul>
+<li>Tap the <strong>gear icon</strong> in the top-right corner of Orbot’s main screen</li>
+<li>In the pop-up menu, tap <strong>Auth Cookies</strong></li>
+<li>Tap <strong>+</strong> to add a new entry</li>
+<li>Enter your MacBook <code>.onion</code> address from Step 5</li>
+<li>Enter the <strong>base32 private key</strong> you saved in Step 3</li>
+<li>Tap <strong>Save</strong></li>
+</ul>
+<blockquote>
+<p><strong>Note:</strong> Older guides show Settings → Onion Services → Client Authorization — that path
+no longer exists. Auth Cookies is now in the gear icon dropdown on the main screen.</p>
+</blockquote>
+</li>
+</ol>
+<blockquote>
+<p><strong>📡 VPN Mode is required:</strong> Without VPN mode, iOS apps cannot resolve <code>.onion</code> domains. With VPN mode active, Orbot intercepts all DNS lookups and routes <code>.onion</code> connections through Tor automatically.</p>
+<p><strong>🔑 Client auth is required:</strong> Without the imported private key, Tor returns an empty descriptor for your <code>.onion</code> address — Termius will time out as if the service does not exist. This is the intended behavior.</p>
+</blockquote>
+<h3 id="step-12-install-termius-on-iphone-and-connect-with-ed25519-key"><a class="header" href="#step-12-install-termius-on-iphone-and-connect-with-ed25519-key">Step 12: Install Termius on iPhone and Connect with Ed25519 Key</a></h3>
+<ol>
+<li>
+<p>On your iPhone, open the <strong>App Store</strong></p>
+</li>
+<li>
+<p>Search for and install <strong>Termius</strong> (free — basic SSH included in the free tier)</p>
+</li>
+<li>
+<p>Confirm <strong>Orbot is running in VPN mode</strong> before attempting to connect</p>
+</li>
+<li>
+<p>Import your Ed25519 private key into Termius:</p>
+<ul>
+<li>Open Termius → <strong>Settings</strong> → <strong>Keychain</strong> → <strong>+</strong> → <strong>New Key</strong></li>
+<li>Paste the full private key content from Step 7 (the <code>-----BEGIN OPENSSH PRIVATE KEY-----</code> block)</li>
+<li>Enter the key passphrase you set in Step 7</li>
+<li>Save as <code>iphone-termius</code></li>
+</ul>
+</li>
+<li>
+<p>Create a new host in Termius → tap <strong>New Host</strong></p>
+</li>
+<li>
+<p>Fill in:</p>
+<ul>
+<li><strong>Hostname</strong>: your MacBook <code>.onion</code> address from Step 5</li>
+<li><strong>Port</strong>: <code>22</code></li>
+<li><strong>Username</strong>: your macOS username</li>
+<li><strong>SSH Key</strong>: select <code>iphone-termius</code> (the key imported above)</li>
+<li><strong>Password</strong>: leave blank — password auth is disabled on the server</li>
+</ul>
+</li>
+<li>
+<p>Tap <strong>Save</strong> → tap the host to connect</p>
+</li>
+</ol>
+<blockquote>
+<p><strong>⏱️ Expected connection time:</strong> 10–20 seconds. Tor v3 circuit setup with client authorization takes longer than a plain connection — Tor is negotiating three relay hops and verifying your client authorization before the SSH handshake begins. Once connected, interactive SSH is responsive enough for approving Claude Code actions.</p>
+</blockquote>
+<h3 id="step-13-install-ntfy-on-iphone"><a class="header" href="#step-13-install-ntfy-on-iphone">Step 13: Install ntfy on iPhone</a></h3>
+<p>ntfy sends push notifications from MacBook to iPhone whenever Claude Code is about to take an action or finishes a session.</p>
+<ol>
+<li>
+<p>On your iPhone, open the <strong>App Store</strong></p>
+</li>
+<li>
+<p>Search for and install <strong>ntfy</strong> (free — by Binwiederhier)</p>
+</li>
+<li>
+<p>Open ntfy → tap <strong>+</strong> → <strong>Subscribe to topic</strong></p>
+</li>
+<li>
+<p>Enter a long, random topic name (e.g., <code>claudecode-j7k2x9m4p3</code>) — this acts as a private channel without needing an account</p>
+</li>
+<li>
+<p>Tap <strong>Subscribe</strong></p>
+</li>
+</ol>
+<blockquote>
+<p><strong>🔒 Topic privacy:</strong> Anyone who knows your topic name can subscribe. Use a long random string (16+ characters) that cannot be guessed. Never reuse a topic name across devices or share it publicly.</p>
+</blockquote>
+<h3 id="step-14-configure-claude-code-hooks-for-notifications"><a class="header" href="#step-14-configure-claude-code-hooks-for-notifications">Step 14: Configure Claude Code Hooks for Notifications</a></h3>
+<ol>
+<li>
+<p>On your MacBook, open Terminal and edit the Claude Code settings file:</p>
+<pre><code class="language-bash">mkdir -p ~/.claude
+nano ~/.claude/settings.json
+</code></pre>
+</li>
+<li>
+<p>Add the following (replace <code>your-topic</code> with your ntfy topic name from Step 13):</p>
+<pre><code class="language-json">{
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Bash|Write|Edit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "curl -s -d \"⚙️ About to run: $CLAUDE_TOOL_NAME\" ntfy.sh/your-topic"
+          }
+        ]
+      }
+    ],
+    "Stop": [
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "curl -s -d \"✅ Claude Code session finished\" ntfy.sh/your-topic"
+          }
+        ]
+      }
+    ]
+  }
+}
+</code></pre>
+</li>
+<li>
+<p>Save (<code>Ctrl+X</code>, <code>Y</code>, <code>Enter</code>) and restart Claude Code for hooks to take effect</p>
+</li>
+</ol>
+<blockquote>
+<p><strong>📱 What you will see on iPhone:</strong> Every time Claude Code is about to run a Bash command, write a file, or edit code, your iPhone buzzes with a notification. When the session finishes, you get a completion ping — your cue to open Termius and give an approval or new instruction.</p>
+</blockquote>
+<h3 id="step-15-end-to-end-test"><a class="header" href="#step-15-end-to-end-test">Step 15: End-to-End Test</a></h3>
+<ol>
+<li>
+<p><strong>On MacBook</strong> — navigate to your project folder, then start Claude Code inside a tmux session:</p>
+<pre><code class="language-bash">cd ~/path/to/your-project
+tmux new -s claude
+claude
+</code></pre>
+<blockquote>
+<p><strong>💡 Tip:</strong> Always <code>cd</code> into your project directory <em>before</em> starting tmux. Claude Code uses the working directory as context — launching from the right folder means it immediately sees your codebase without needing to navigate later.</p>
+</blockquote>
+</li>
+<li>
+<p><strong>Detach</strong> — press <code>Ctrl+B</code>, then <code>D</code>. Claude Code keeps running in the background.</p>
+</li>
+<li>
+<p><strong>On iPhone</strong> — confirm Orbot is connected (VPN badge visible in status bar) and the client auth key is imported (Step 11)</p>
+</li>
+<li>
+<p><strong>Open Termius</strong> → tap your <code>.onion</code> host → wait 10–20 seconds for the Tor connection to establish</p>
+</li>
+<li>
+<p><strong>Reattach to the session:</strong></p>
+<pre><code class="language-bash">tmux attach -t claude
+</code></pre>
+</li>
+<li>
+<p>You are now live in the same Claude Code session from your iPhone</p>
+</li>
+<li>
+<p><strong>Test notifications</strong> — trigger any tool use in Claude Code and verify ntfy fires on your iPhone within seconds</p>
+</li>
+</ol>
+<h3 id="step-16-end-a-session-and-stop-all-services"><a class="header" href="#step-16-end-a-session-and-stop-all-services">Step 16: End a Session and Stop All Services</a></h3>
+<p>When you are done working, stop all services that expose attack surface. Running Tor and SSH
+continuously when not in use is unnecessary risk.</p>
+<p><strong>On iPhone:</strong></p>
+<ol>
+<li>Close the Termius SSH session (Termius needs no special shutdown — closing the connection is enough)</li>
+<li>ntfy needs no action — it is a passive notification receiver and can stay open</li>
+<li>Open Orbot → tap <strong>Stop</strong> to disconnect from Tor</li>
+<li>Disable VPN mode</li>
+</ol>
+<p><strong>On MacBook — stop Tor and SSH:</strong></p>
+<pre><code class="language-bash"># Detach from tmux first if still attached (Ctrl+B, D), then:
+
+# Stop Tor hidden service
+brew services stop tor
+
+# Stop SSH listener
+sudo launchctl stop localhost.ssh
+sudo launchctl unload /Library/LaunchDaemons/localhost-ssh.plist
+</code></pre>
+<p><strong>Verify nothing is listening on port 22:</strong></p>
+<pre><code class="language-bash">sudo lsof -i :22
+</code></pre>
+<p>Expected: no output.</p>
+<p><strong>To start a new session later:</strong></p>
+<p>Follow these steps in order:</p>
+<ol>
+<li>
+<p><strong>On MacBook</strong> — start SSH and Tor:</p>
+<pre><code class="language-bash">sudo launchctl load /Library/LaunchDaemons/localhost-ssh.plist
+brew services start tor
+</code></pre>
+</li>
+<li>
+<p><strong>On iPhone</strong> — open Orbot → tap <strong>Start</strong> → enable VPN mode. Wait until Orbot shows a green connected state.</p>
+</li>
+<li>
+<p><strong>On iPhone</strong> — open ntfy → confirm your topic channel is still subscribed (no action needed beyond verifying it is open).</p>
+</li>
+<li>
+<p><strong>On iPhone</strong> — open Termius → tap your saved host → connect. You should land at the MacBook shell prompt.</p>
+</li>
+<li>
+<p><strong>On iPhone (in Termius)</strong> — reattach to your existing tmux session:</p>
+<pre><code class="language-bash">tmux attach -t claude
+</code></pre>
+<p>Or start a new one if the previous session was closed:</p>
+<pre><code class="language-bash">cd ~/path/to/your-project
+tmux new -s claude
+claude
+</code></pre>
+</li>
+</ol>
+<blockquote>
+<p><strong>⚠️ Reboot behaviour:</strong> After a reboot, neither SSH nor Tor start automatically — you must
+run the start commands above before connecting. Verify with <code>sudo lsof -i :22</code> and
+<code>brew services list | grep tor</code> before attempting to connect from iPhone.</p>
+</blockquote>
+<p><strong>Verify who is connected before ending a session:</strong></p>
+<pre><code class="language-bash"># Show all active SSH sessions — who is logged in and from where
+who
+
+# Show open SSH connections with source address (will show 127.0.0.1 for Tor connections)
+sudo lsof -i :22 -n -P | grep ESTABLISHED
+
+# Full SSH session detail: user, PID, login time, source
+last | head -10
+</code></pre>
+<p>Expected output for a legitimate Tor-only session:</p>
+<ul>
+<li><code>who</code> shows your own username with a <code>pts/</code> or <code>ttys</code> terminal</li>
+<li><code>lsof</code> shows <code>127.0.0.1:22</code> → <code>127.0.0.1:&lt;ephemeral-port&gt;</code> (ESTABLISHED) only while an SSH
+session is actively open — no output means no active remote connection, which is normal</li>
+<li><code>last</code> shows two kinds of entries: logins from <code>127.0.0.1</code> (SSH from iPhone via Tor) and
+logins with no IP address (local Terminal or VS Code sessions on the MacBook itself) —
+both are expected and legitimate</li>
+</ul>
+<blockquote>
+<p><strong>🔍 What to look for:</strong> Since SSH is bound to <code>127.0.0.1</code> and only reachable via the Tor
+hidden service, any ESTABLISHED connection on port 22 originated through Tor. A connection
+from any address other than <code>127.0.0.1</code> would indicate the SSH listener is unexpectedly
+exposed — stop sshd immediately and re-check your launchd plist.</p>
+<p><strong>🔑 Why malicious connections are structurally prevented:</strong> An attacker would need (1) your
+<code>.onion</code> address, (2) the X25519 client auth private key, and (3) the Ed25519 SSH private
+key with its passphrase — all three independently. The Tor client auth layer means the hidden
+service is invisible without the key, so port scanning or address brute-forcing cannot reach
+the SSH layer at all.</p>
+</blockquote>
+<hr>
+<h2 id="summary-complete-app-list"><a class="header" href="#summary-complete-app-list">Summary: Complete App List</a></h2>
+<h3 id="on-macbook"><a class="header" href="#on-macbook">On MacBook</a></h3>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th>Tool / App</th><th>Purpose</th><th>Cost</th></tr>
+</thead>
+<tbody>
+<tr><td>Tor (via Homebrew)</td><td>v3 hidden service with client auth</td><td>Free</td></tr>
+<tr><td>VS Code</td><td>Code editor</td><td>Free</td></tr>
+<tr><td>Claude Code extension</td><td>AI coding agent in VS Code</td><td>Free</td></tr>
+<tr><td>tmux</td><td>Persistent terminal sessions</td><td>Free</td></tr>
+<tr><td>curl (built-in macOS)</td><td>Send ntfy notifications from hooks</td><td>Free</td></tr>
+<tr><td>openssl (built-in)</td><td>Generate X25519 client auth keypair</td><td>Free</td></tr>
+<tr><td>coreutils (Homebrew)</td><td><code>gbase32</code> — base32-encode auth keys</td><td>Free</td></tr>
+</tbody>
+</table>
+</div>
+<h3 id="on-iphone"><a class="header" href="#on-iphone">On iPhone</a></h3>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th>App</th><th>Purpose</th><th>Cost</th></tr>
+</thead>
+<tbody>
+<tr><td>Orbot</td><td>Tor proxy with v3 client auth key storage</td><td>Free</td></tr>
+<tr><td>Termius</td><td>SSH terminal with Ed25519 key auth</td><td>Free</td></tr>
+<tr><td>ntfy</td><td>Push notifications from Claude Code</td><td>Free</td></tr>
+</tbody>
+</table>
+</div>
+<hr>
+<h2 id="troubleshooting"><a class="header" href="#troubleshooting">Troubleshooting</a></h2>
+<h3 id="tor-hidden-service-hostname-file-not-found"><a class="header" href="#tor-hidden-service-hostname-file-not-found">Tor hidden service hostname file not found</a></h3>
+<ul>
+<li>Confirm the <code>HiddenServiceDir</code> path in <code>torrc</code> exactly matches the directory you created</li>
+<li>Confirm permissions: <code>chmod 700 ~/.tor/ssh_hidden_service</code></li>
+<li>Check Tor logs: <code>cat $(brew --prefix)/var/log/tor.log</code></li>
+<li>Restart Tor: <code>brew services restart tor</code></li>
+</ul>
+<h3 id="termius-times-out-connecting-to-onion-address"><a class="header" href="#termius-times-out-connecting-to-onion-address">Termius times out connecting to .onion address</a></h3>
+<ul>
+<li>Confirm Orbot is running in <strong>VPN mode</strong> — the VPN badge must be visible in iPhone status bar</li>
+<li>Confirm the Tor v3 client auth private key is imported in Orbot (Step 11) — without it, the hidden service is invisible</li>
+<li>Allow 10–20 seconds — Tor v3 with client auth has a longer circuit setup time</li>
+<li>Verify Tor is running on MacBook: <code>brew services list | grep tor</code></li>
+</ul>
+<h3 id="termius-reports-connection-reset-by-peer"><a class="header" href="#termius-reports-connection-reset-by-peer">Termius reports “connection reset by peer”</a></h3>
+<p>This error means Tor reached port 22 on the MacBook successfully but the SSH daemon
+immediately dropped the connection. It is distinct from a timeout (Tor/auth issue) and from
+“connection refused” (sshd not running). Work through these checks in order:</p>
+<ol>
+<li>
+<p><strong>Validate sshd_config for syntax errors:</strong></p>
+<pre><code class="language-bash">sudo sshd -t
+</code></pre>
+<p>Any error printed here will cause sshd to reset every incoming connection. Fix the
+reported line, then restart sshd (see Step 8 or reload the custom plist).</p>
+</li>
+<li>
+<p><strong>Confirm SSH host keys exist:</strong></p>
+<pre><code class="language-bash">ls /etc/ssh/ssh_host_*
+</code></pre>
+<p>Expected: files like <code>ssh_host_ed25519_key</code>, <code>ssh_host_rsa_key</code>, etc. If the directory is
+empty, regenerate them:</p>
+<pre><code class="language-bash">sudo ssh-keygen -A
+</code></pre>
+</li>
+<li>
+<p><strong>Check live sshd logs for the reset reason:</strong></p>
+<pre><code class="language-bash">sudo log show --predicate 'process == "sshd"' --last 5m --style compact
+</code></pre>
+<p>Look for lines like <code>error: Bind to port 22</code>, <code>error: Could not load host key</code>, or
+authentication-related messages.</p>
+</li>
+<li>
+<p><strong>Test SSH locally from the MacBook itself:</strong></p>
+<pre><code class="language-bash">ssh -v -i ~/.ssh/iphone_ed25519 localhost
+</code></pre>
+<p>If this succeeds, the problem is on the Tor/iPhone side. If it fails with the same
+“reset” message, the issue is in the local sshd configuration.</p>
+</li>
+<li>
+<p><strong>Verify the custom launchd plist is loaded (if you went through the <code>ListenAddress</code>
+fix):</strong></p>
+<pre><code class="language-bash">sudo launchctl list | grep localhost.ssh
+</code></pre>
+<p>Expected outputs:</p>
+<pre><code class="language-text">12345    0    localhost.ssh   ← running normally (PID, exit code 0)
+-        0    localhost.ssh   ← loaded but idle, this is fine
+-      255    localhost.ssh   ← loaded but sshd crashed on last start
+</code></pre>
+<p>No output at all means the plist is not loaded — reload it:</p>
+<pre><code class="language-bash">sudo launchctl load /Library/LaunchDaemons/localhost-ssh.plist
+</code></pre>
+<p>If you see exit code <strong>255</strong>, sshd launched but crashed immediately. Diagnose in order:</p>
+<pre><code class="language-bash"># 1. Check sshd_config for syntax errors
+sudo sshd -t
+
+# 2. Check if port 22 is already claimed by another process
+sudo lsof -i :22
+
+# 3. Check the crash reason in logs
+sudo log show --predicate 'process == "sshd"' --last 5m --style compact
+</code></pre>
+<p>Fix whatever the log reports (bad config line, port conflict, missing host key), then
+unload and reload the plist:</p>
+<pre><code class="language-bash">sudo launchctl unload /Library/LaunchDaemons/localhost-ssh.plist
+sudo launchctl load /Library/LaunchDaemons/localhost-ssh.plist
+</code></pre>
+</li>
+<li>
+<p><strong>Confirm Remote Login is still enabled</strong> in System Settings → General → Sharing. macOS
+may re-disable it after a system update or preference reset, which stops sshd from being
+managed by launchd at all.</p>
+</li>
+</ol>
+<h3 id="ssh-connection-refused"><a class="header" href="#ssh-connection-refused">SSH connection refused</a></h3>
+<ul>
+<li>Confirm <strong>Remote Login</strong> is enabled: System Settings → General → Sharing → Remote Login</li>
+<li>Check sshd is running: <code>sudo launchctl list | grep ssh</code></li>
+<li>Verify SSH is listening on <code>127.0.0.1</code> (not <code>0.0.0.0</code>): <code>sudo lsof -i :22</code></li>
+</ul>
+<h3 id="ssh-still-listens-on-ssh-after-adding-listenaddress-127001"><a class="header" href="#ssh-still-listens-on-ssh-after-adding-listenaddress-127001">SSH still listens on <code>*:ssh</code> after adding <code>ListenAddress 127.0.0.1</code></a></h3>
+<p>On macOS, launchd binds the SSH socket <strong>before</strong> passing it to sshd, so <code>ListenAddress</code> in
+<code>sshd_config</code> is ignored — launchd wins. The fix is a custom launchd plist that binds to
+<code>127.0.0.1</code> and replaces the system-managed socket.</p>
+<ol>
+<li>
+<p>Create <code>/Library/LaunchDaemons/localhost-ssh.plist</code>:</p>
+<pre><code class="language-bash">sudo tee /Library/LaunchDaemons/localhost-ssh.plist &gt; /dev/null &lt;&lt; 'EOF'
+&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+&lt;!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN"
+  "http://www.apple.com/DTDs/PropertyList-1.0.dtd"&gt;
+&lt;plist version="1.0"&gt;
+&lt;dict&gt;
+  &lt;key&gt;Label&lt;/key&gt;
+  &lt;string&gt;localhost.ssh&lt;/string&gt;
+  &lt;key&gt;ProgramArguments&lt;/key&gt;
+  &lt;array&gt;
+    &lt;string&gt;/usr/sbin/sshd&lt;/string&gt;
+    &lt;string&gt;-i&lt;/string&gt;
+  &lt;/array&gt;
+  &lt;key&gt;Sockets&lt;/key&gt;
+  &lt;dict&gt;
+    &lt;key&gt;Listeners&lt;/key&gt;
+    &lt;dict&gt;
+      &lt;key&gt;SockFamily&lt;/key&gt;
+      &lt;string&gt;IPv4&lt;/string&gt;
+      &lt;key&gt;SockNodeName&lt;/key&gt;
+      &lt;string&gt;127.0.0.1&lt;/string&gt;
+      &lt;key&gt;SockServiceName&lt;/key&gt;
+      &lt;string&gt;ssh&lt;/string&gt;
+      &lt;key&gt;SockType&lt;/key&gt;
+      &lt;string&gt;stream&lt;/string&gt;
+    &lt;/dict&gt;
+  &lt;/dict&gt;
+  &lt;key&gt;inetdCompatibility&lt;/key&gt;
+  &lt;dict&gt;
+    &lt;key&gt;Wait&lt;/key&gt;
+    &lt;false/&gt;
+  &lt;/dict&gt;
+  &lt;key&gt;StandardErrorPath&lt;/key&gt;
+  &lt;string&gt;/dev/null&lt;/string&gt;
+&lt;/dict&gt;
+&lt;/plist&gt;
+EOF
+</code></pre>
+</li>
+<li>
+<p>Unload the system plist and load the custom one:</p>
+<pre><code class="language-bash">sudo launchctl stop com.openssh.sshd
+sudo launchctl unload /System/Library/LaunchDaemons/ssh.plist 2&gt;/dev/null || true
+sudo launchctl load /Library/LaunchDaemons/localhost-ssh.plist
+</code></pre>
+</li>
+<li>
+<p>Verify:</p>
+<pre><code class="language-bash">sudo lsof -i :22
+</code></pre>
+<p>Expected output: <code>sshd ... TCP localhost:ssh (LISTEN)</code> — not <code>*:ssh</code>.</p>
+</li>
+</ol>
+<blockquote>
+<p>After a reboot, confirm with <code>sudo lsof -i :22</code> that the binding held. If the system plist
+reloads, ensure <strong>Remote Login</strong> remains <strong>disabled</strong> in System Settings → General → Sharing
+so macOS does not re-activate <code>com.openssh.sshd</code>.</p>
+</blockquote>
+<h3 id="ssh-public-key-authentication-fails"><a class="header" href="#ssh-public-key-authentication-fails">SSH public key authentication fails</a></h3>
+<ul>
+<li>Verify <code>~/.ssh/authorized_keys</code> contains the correct public key: <code>cat ~/.ssh/authorized_keys</code></li>
+<li>Check permissions: <code>chmod 700 ~/.ssh &amp;&amp; chmod 600 ~/.ssh/authorized_keys</code></li>
+<li>In Termius, confirm the correct key (<code>iphone-termius</code>) is selected for the host, not password auth</li>
+<li>Confirm the key passphrase entered in Termius matches the passphrase set during key generation</li>
+</ul>
+<h3 id="tmux-session-not-found-after-ssh"><a class="header" href="#tmux-session-not-found-after-ssh">tmux session not found after SSH</a></h3>
+<ul>
+<li>Run <code>tmux ls</code> — if empty, start fresh with <code>tmux new -s claude</code></li>
+<li>Always start Claude Code inside a named tmux session</li>
+</ul>
+<h3 id="tor-not-running-after-macbook-reboot"><a class="header" href="#tor-not-running-after-macbook-reboot">Tor not running after MacBook reboot</a></h3>
+<ul>
+<li>Re-run: <code>brew services start tor</code></li>
+<li>Confirm it is in the services list: <code>brew services list | grep tor</code></li>
+</ul>
+<h3 id="ntfy-notifications-not-arriving-on-iphone"><a class="header" href="#ntfy-notifications-not-arriving-on-iphone">ntfy notifications not arriving on iPhone</a></h3>
+<ul>
+<li>Test manually from MacBook: <code>curl -d "test" ntfy.sh/your-topic</code> — should appear on iPhone immediately</li>
+<li>Verify topic name in <code>settings.json</code> exactly matches the subscribed topic in the ntfy app</li>
+<li>Restart Claude Code after editing <code>settings.json</code></li>
+</ul>
+<hr>
+<p>👈 Prev: <a href="../experiment_journey.html">Rustacean/Bitcoiner Experiment Journey</a></p>
+<p>👉 Next: <a href="./claude_travel_intro.html">Claude Desktop: AI Travel Planning Partner</a></p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="../experiment_journey.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
+                            </a>
+
+                            <a rel="next prefetch" href="../experiment_journey/claude_travel_intro.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="../experiment_journey.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
+                    </a>
+
+                    <a rel="next prefetch" href="../experiment_journey/claude_travel_intro.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
+                    </a>
+            </nav>
+
+        </div>
+
+        <template id=fa-eye><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M288 32c-80.8 0-145.5 36.8-192.6 80.6C48.6 156 17.3 208 2.5 243.7c-3.3 7.9-3.3 16.7 0 24.6C17.3 304 48.6 356 95.4 399.4C142.5 443.2 207.2 480 288 480s145.5-36.8 192.6-80.6c46.8-43.5 78.1-95.4 93-131.1c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C433.5 68.8 368.8 32 288 32zM432 256c0 79.5-64.5 144-144 144s-144-64.5-144-144s64.5-144 144-144s144 64.5 144 144zM288 192c0 35.3-28.7 64-64 64c-11.5 0-22.3-3-31.6-8.4c-.2 2.8-.4 5.5-.4 8.4c0 53 43 96 96 96s96-43 96-96s-43-96-96-96c-2.8 0-5.6 .1-8.4 .4c5.3 9.3 8.4 20.1 8.4 31.6z"/></svg></span></template>
+        <template id=fa-eye-slash><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M38.8 5.1C28.4-3.1 13.3-1.2 5.1 9.2S-1.2 34.7 9.2 42.9l592 464c10.4 8.2 25.5 6.3 33.7-4.1s6.3-25.5-4.1-33.7L525.6 386.7c39.6-40.6 66.4-86.1 79.9-118.4c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C465.5 68.8 400.8 32 320 32c-68.2 0-125 26.3-169.3 60.8L38.8 5.1zM223.1 149.5C248.6 126.2 282.7 112 320 112c79.5 0 144 64.5 144 144c0 24.9-6.3 48.3-17.4 68.7L408 294.5c5.2-11.8 8-24.8 8-38.5c0-53-43-96-96-96c-2.8 0-5.6 .1-8.4 .4c5.3 9.3 8.4 20.1 8.4 31.6c0 10.2-2.4 19.8-6.6 28.3l-90.3-70.8zm223.1 298L373 389.9c-16.4 6.5-34.3 10.1-53 10.1c-79.5 0-144-64.5-144-144c0-6.9 .5-13.6 1.4-20.2L83.1 161.5C60.3 191.2 44 220.8 34.5 243.7c-3.3 7.9-3.3 16.7 0 24.6c14.9 35.7 46.2 87.7 93 131.1C174.5 443.2 239.2 480 320 480c47.8 0 89.9-12.9 126.2-32.5z"/></svg></span></template>
+        <template id=fa-copy><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M502.6 70.63l-61.25-61.25C435.4 3.371 427.2 0 418.7 0H255.1c-35.35 0-64 28.66-64 64l.0195 256C192 355.4 220.7 384 256 384h192c35.2 0 64-28.8 64-64V93.25C512 84.77 508.6 76.63 502.6 70.63zM464 320c0 8.836-7.164 16-16 16H255.1c-8.838 0-16-7.164-16-16L239.1 64.13c0-8.836 7.164-16 16-16h128L384 96c0 17.67 14.33 32 32 32h47.1V320zM272 448c0 8.836-7.164 16-16 16H63.1c-8.838 0-16-7.164-16-16L47.98 192.1c0-8.836 7.164-16 16-16H160V128H63.99c-35.35 0-64 28.65-64 64l.0098 256C.002 483.3 28.66 512 64 512h192c35.2 0 64-28.8 64-64v-32h-47.1L272 448z"/></svg></span></template>
+        <template id=fa-play><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M73 39c-14.8-9.1-33.4-9.4-48.5-.9S0 62.6 0 80V432c0 17.4 9.4 33.4 24.5 41.9s33.7 8.1 48.5-.9L361 297c14.3-8.7 23-24.2 23-41s-8.7-32.2-23-41L73 39z"/></svg></span></template>
+        <template id=fa-clock-rotate-left><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M75 75L41 41C25.9 25.9 0 36.6 0 57.9V168c0 13.3 10.7 24 24 24H134.1c21.4 0 32.1-25.9 17-41l-30.8-30.8C155 85.5 203 64 256 64c106 0 192 86 192 192s-86 192-192 192c-40.8 0-78.6-12.7-109.7-34.4c-14.5-10.1-34.4-6.6-44.6 7.9s-6.6 34.4 7.9 44.6C151.2 495 201.7 512 256 512c141.4 0 256-114.6 256-256S397.4 0 256 0C185.3 0 121.3 28.7 75 75zm181 53c-13.3 0-24 10.7-24 24V256c0 6.4 2.5 12.5 7 17l72 72c9.4 9.4 24.6 9.4 33.9 0s9.4-24.6 0-33.9l-65-65V152c0-13.3-10.7-24-24-24z"/></svg></span></template>
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="../elasticlunr-ef4e11c1.min.js"></script>
+        <script src="../mark-09e88c2c.min.js"></script>
+        <script src="../searcher-09f2665d.js"></script>
+
+        <script src="../clipboard-1626706a.min.js"></script>
+        <script src="../highlight-abc7f01d.js"></script>
+        <script src="../book-c22b7243.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+
+    </div>
+    </body>
+</html>
